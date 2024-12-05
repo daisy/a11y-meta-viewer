@@ -1,76 +1,73 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en">
 	<head>
-		<meta charset="utf-8">
-		<title>Accessibility Metadata Display Processor</title>
+		<meta charset="utf-8" />
+		<title>DAISY AMP</title>
+		<link rel="stylesheet" type="text/css" href="css/amp.css" />
 		<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
-		<style>
-			body {
-				font-family: Arial,sans-serif;
-				font-size: 62.5%;
-				background-color: rgb(245,245,245);
-			}
-			h1 {
-				font-size: 1.6rem;
-			}
-			h2 {
-				font-size: 1.3rem;
-				margin-top: 2rem;
-				margin-bottom: 2rem;
-			}
-			textarea {
-				width: 60%;
-			}
-			p {
-				font-size: 1.1rem;
-			}
-			dt, dd {
-				font-size: 1.1rem;
-				margin: 0.5rem;
-			}
-			dt {
-				font-weight: bold;
-			}
-			dd {
-				margin-left: 5rem;
-			}
-		</style>
 	</head>
+	
 	<body>
-		<h1>Accessibility Metadata Display Processor</h1>
-		
-		<p>Type or paste a package document or onix record to generate the resulting accessibility statements.</p>
-		
-		<textarea id="input_packagedoc" rows="15" autocomplete="off"></textarea>
-
-		<div><input type="button" onclick="processXML()" value="Process"/></div>
-
-		<h2>Result of Processing:</h2>
-
-		<dl id="result"></dl>
-		
-		<script>
-			function processXML() {
+		<header>
+			<h1><img class="logo" src="graphics/daisy_high.jpg" alt="DAISY"> Accessibility Metadata Processor (AMP)</h1>
+		</header>
+		<main>
+			<p>DAISY AMP converts the accessibility metadata in an EPUB package document or ONIX record into display
+				statements in accordance with the <a
+					href="https://w3c.github.io/publ-a11y/a11y-meta-display-guide/2.0/guidelines/">W3C Accessibility
+					Metadata Display Guide for Digial Publications 2.0</a>.</p>
 			
-				var xml = document.getElementById('input_packagedoc').value;
-				/* the following test is not in the spec */
+			<p>To begin, type or paste a package document or onix record in the following field.</p>
+			
+			<textarea id="input_packagedoc" rows="15" autocomplete="off"></textarea>
+			
+			<div><input type="button" onclick="processXML()" value="Preview"/></div>
+			
+			<dl id="result"></dl>
+			
+			<script>
+				function processXML() {
 				
-				if (xml.match('<package ')) {
-					packageProcessor.processPackageDoc(xml)
+					var xml = document.getElementById('input_packagedoc').value;
+					/* the following test is not in the spec */
+					
+					if (xml.match('<package ')) {
+						packageProcessor.processPackageDoc(xml)
+					}
+					
+					else if (xml.match('<ONIXMessage ')) {
+						onixProcessor.processOnixRecord(xml)
+					}
+					
+					else {
+						alert('Invalid xml document - package or onix root element not found');
+						return;
+					}
 				}
-				
-				else if (xml.match('<ONIXMessage ')) {
-					onixProcessor.processOnixRecord(xml)
-				}
-				
-				else {
-					alert('Invalid xml document - package or onix root element not found');
-					return;
-				}
-			}
-		</script>
-
-		<script src="js/packageProcessor.js"></script>
-		<script src="js/onixProcessor.js"></script>
+			</script>
+	
+			<script src="js/packageProcessor.js"></script>
+			<script src="js/onixProcessor.js"></script>
+		</main>
+		<footer>
+			<div class="footer-lists">
+				<div class="footer-list">
+					<div>Feedback</div>
+					<ul>
+						<li><a href="https://github.com/DAISY/amp/commits/main/">Report Bugs</a></li>
+						<li><a href="https://github.com/DAISY/amp/commits/main/">Revision History</a></li>
+					</ul>
+				</div>
+				<div class="footer-list">
+					<div>Specifications</div>
+					<ul>
+						<li><a href="https://w3c.github.io/publ-a11y/a11y-meta-display-guide/2.0/guidelines/">Accessibility Metadata Display Guide</a></li>
+						<li><a href="https://w3c.github.io/publ-a11y/a11y-meta-display-guide/2.0/techniques/epub-metadata/">EPUB Metadata Techniques</a></li>
+						<li><a href="https://w3c.github.io/publ-a11y/a11y-meta-display-guide/2.0/techniques/onix-metadata/">ONIX Metadata Techniques</a></li>
+					</ul>
+				</div>
+			</div>
+			<p class="copy">© 2024 The DAISY Consortium&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="http://www.daisy.org/terms-use">Terms of Use&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</a><a href="https://daisy.org/about-us/terms-and-conditions/privacy/">Privacy Policy</a></p>
+		</footer>
 	</body>
 </html>

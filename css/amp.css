@@ -1,0 +1,256 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+@font-face{
+	font-family: 'Open Sans Light';
+	src: url(../fonts/OpenSans-Light.ttf) format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+
+
+@font-face{
+	font-family: 'Raleway';
+	src: url(../fonts/Raleway-Regular.ttf) format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+
+html {
+	font-size: 62.5%;
+}
+
+html, body {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	font-family: Calibri,Helvetica,Arial,sans-serif;
+	font-size: 1.8rem;
+	background-color: rgb(251,252,253);
+	color: rgb(0,0,0);
+	line-height: 2.6rem;
+}
+
+/* general headings */
+
+h1 {
+	line-height: 3.65rem;
+	font-family: Roboto,'Open Sans Light',Helvetica,Arial,sans-serif;
+	font-size: 130%;
+	font-weight: normal;
+	letter-spacing: 0.15rem;
+	text-indent: 4.5rem;
+	margin: 0;
+	padding: 1rem 0;
+	color: rgb(32,53,139);
+	background-color: rgb(255,255,255);
+}
+
+h2 {
+	font-family: Raleway;
+	font-size: 180%;
+	padding: 0.5em 0.7em 0 0.7em;
+	margin: 0 0 6rem 1.5rem;
+	letter-spacing: 0.125rem;
+}
+
+h2.noCategory {
+	margin-top: 5.8rem;
+	margin-bottom: 0;
+}
+
+
+h3 {
+	font-size: 140%;
+	color: rgb(0,0,100);
+	margin-top: 1.75em;
+}
+
+h4 {
+	font-size: 125%;
+}
+
+h5 {
+	font-size: 115%;
+	color: rgb(0,0,180);
+}
+
+/* general links */
+
+a {
+	text-decoration: none;
+}
+
+h1 a {
+	color: rgb(32,53,139) !important;
+}
+
+a:link {
+	color: rgb(0,0,200);
+}
+
+a:visited {
+	color: rgb(102,51,102);
+}
+
+a:hover,
+a:visited:hover {
+	color: rgb(180,0,0);
+}
+
+/* page headers and footers */
+
+header {
+	position: -webkit-sticky;
+	position: sticky;
+	top: 0;
+	height: 5.6rem;
+	padding: 0;
+	margin: 0;
+	z-index: 999;
+	border-bottom: 0.5rem solid rgb(27,95,161);
+}
+
+footer {
+	font-size: 90%;
+	padding-bottom: 0;
+	border-top: 2px solid rgb(240,240,255);
+	background-color: rgb(47,115,181);
+	color: rgb(255,255,255);
+	font-family: Arial, sans-serif;
+}
+
+footer > * {
+	padding-left: 5em;
+}
+
+.footer-lists {
+	margin-top: 2em;
+}
+
+.footer-list {
+	float: left;
+}
+
+.footer-list > div {
+	color: rgb(255,255,200);
+}
+
+.footer-list > ul {
+	list-style-type: none;
+	padding-left: 0.1em;
+	margin-right: 5em;
+}
+
+footer p {
+	clear: both;
+}
+
+p.copy {
+	margin-top: 10em;
+	margin-bottom: 0;
+	padding: 1em 0 1em 5em;
+	background-color: rgb(27,95,161);
+}
+
+footer a {
+	color: rgb(255,255,255) !important;
+}
+
+/* sponsorship box */
+
+aside#sponsor.kb {
+	padding-left: 4rem;
+	width: 96vw;
+}
+
+
+/* section spacing */
+
+section {
+	margin-top: 2.5em;
+}
+
+main {
+	margin-top: 0;
+	margin-left: 3rem;
+	max-width: 60vw;
+}
+
+/* general directionality */
+.center {
+	text-align: center;
+}
+
+/* daisy logo */
+img.logo {
+	vertical-align: bottom;
+	padding-right: 0.5em;
+}
+
+/* input */
+
+textarea {
+	width: 100%
+}
+
+/* zoom and mobile fixes */
+
+@media screen and (max-width: 600px) {
+	header {
+		width: 100vw;
+		display: block;
+		position: relative;
+		height: auto;
+		margin-left: 1rem;
+	}
+	
+	h1 {
+		text-indent: 0;
+		display: table-row;
+	}
+	h1 img {
+		display: table-cell;
+		padding-top: 1em;
+		padding-left: 0.5em;
+	}
+	
+	h1 a {
+		display: table-cell;
+		vertical-align: top;
+		padding-top: 1.2rem;
+		padding-bottom: 1rem;
+		color: rgb(32,53,139) !important;
+	}
+	
+	h1 a:visited {
+		color: rgb(32,53,139) !important;
+	}
+	
+	main {
+		padding-left: 0;
+		margin-left: 0;
+		width: auto;
+		max-width: 100vw;
+	}
+	
+	footer > * {
+		padding-left: 2em;
+	}
+	
+	.footer-list {
+		float: none;
+	}
+	
+	p.copy {
+		margin-top: 2rem;
+		padding-left: 2rem;
+	}
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	html {
+		scroll-behavior: smooth;
+	}
+}
