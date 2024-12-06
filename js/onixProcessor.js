@@ -129,7 +129,6 @@ var onixProcessor = (function() {
 		else {
 			conf_p.appendChild(document.createTextNode('The publication does not include a conformance statement'));
 		}
-		
 		// add punctuation - not in algorithm
 		conf_p.appendChild(document.createTextNode('.'));
 		
@@ -163,13 +162,11 @@ var onixProcessor = (function() {
 				cred_p.appendChild(document.createTextNode(certifier_credentials));
 			}
 			
-			conf_result.appendChild(cred_p);
-			
 			// add punctuation - not in algorithm
-			conf_result.appendChild(document.createTextNode('.'));
+			cred_p.appendChild(document.createTextNode('.'));
+			
+			result.appendChild(cred_p);
 		}
-		
-		result.appendChild(conf_result);
 		
 		var detconf_hd = document.createElement('h3');
 			detconf_hd.appendChild(document.createTextNode('Detailed Conformance Information'));
@@ -664,7 +661,13 @@ var onixProcessor = (function() {
 			var adaptation_string = joinArray(adaptation);
 				adaptation_string = String(adaptation_string).charAt(0).toUpperCase() + String(adaptation_string).slice(1);
 
-			aai_result.appendChild(document.createTextNode('Adaptability: ' + adaptation_string));
+			var adapt_result = document.createElement('p');
+				adapt_result.appendChild(document.createTextNode('Adaptability: ' + adaptation_string));
+			
+			// add punctuation - not in algorithm
+			adapt_result.appendChild(document.createTextNode('.'));
+			
+			results.appendChild(adapt_result);
 		}
 		
 		// 4.10.2 Clarity
@@ -713,10 +716,14 @@ var onixProcessor = (function() {
 			var clarity_string = joinArray(adaptation);
 				clarity_string = String(clarity_string).charAt(0).toUpperCase() + String(clarity_string).slice(1);
 
-			aai_result.appendChild(document.createTextNode('Clarity: ' + clarity_string));
+			var clarity_result = document.createElement('p');
+				clarity_result.appendChild(document.createTextNode('Clarity: ' + clarity_string));
+			
+			// add punctuation - not in algorithm
+			clarity_result.appendChild(document.createTextNode('.'));
+			
+			results.appendChild(clarity_result);
 		}
-		
-		result.appendChild(aai_result);
 		
 		return result;
 	}
