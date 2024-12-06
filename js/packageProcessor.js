@@ -117,7 +117,9 @@ var packageProcessor = (function() {
 		
 		if (conformance) {
 			conformance_string = conformance.replace(' - ', ' ');
-			wcag_level = conformance.replace('EPUB Accessibility 1\.1 - WCAG 2\.[0-2] Level ', '');
+			
+			var level_re = new RegExp('EPUB Accessibility 1\\.1 - WCAG 2\\.[0-2] Level ');
+			wcag_level = conformance.replace(level_re, '');
 		}
 		
 		var certifier = package_document.evaluate('/opf:package/opf:metadata/opf:meta[@property="a11y:certifiedBy"]/text()', package_document, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
@@ -153,9 +155,9 @@ var packageProcessor = (function() {
 			result.appendChild(conf_p);
 			
 			
-			
 			if (certifier) {
 				var cert_p = document.createElement('p');
+				
 				cert_p.appendChild(document.createTextNode('This publication is certified by '));
 				cert_p.appendChild(document.createTextNode(certifier));
 				
