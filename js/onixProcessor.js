@@ -32,7 +32,7 @@ var onixProcessor = (function() {
 			vis_hd.appendChild(document.createTextNode('Visual adjustments'));
 		result.appendChild(vis_hd);
 		
-		var vis_result = document.createElement('div');
+		var vis_result = document.createElement('p');
 		
 		if (all_textual_content_can_be_modified) {
 			vis_result.appendChild(document.createTextNode('Appearance can be modified'));
@@ -45,6 +45,9 @@ var onixProcessor = (function() {
 		else {
 			vis_result.appendChild(document.createTextNode('Appearance modifiability not known'));
 		}
+		
+		// add punctuation - not in algorithm
+		vis_result.appendChild(document.createTextNode('.'));
 		
 		result.appendChild(vis_result);
 		
@@ -65,7 +68,7 @@ var onixProcessor = (function() {
 			nonvis_hd.appendChild(document.createTextNode('Supports nonvisual reading'));
 		result.appendChild(nonvis_hd);
 		
-		var nonvis_result = document.createElement('div');
+		var nonvis_result = document.createElement('p');
 		
 		if (all_necessary_content_textual) {
 			nonvis_result.appendChild(document.createTextNode('Readable in read aloud or dynamic braille'));
@@ -78,6 +81,9 @@ var onixProcessor = (function() {
 		else {
 			nonvis_result.appendChild(document.createTextNode('May not be fully readable in read aloud or dynamic braille'));
 		}
+		
+		// add punctuation - not in algorithm
+		nonvis_result.appendChild(document.createTextNode('.'));
 		
 		result.appendChild(nonvis_result);
 		
@@ -106,8 +112,6 @@ var onixProcessor = (function() {
 			conf_hd.appendChild(document.createTextNode('Conformance'));
 		result.appendChild(conf_hd);
 		
-		var conf_result = document.createElement('div');
-		
 		var conf_p = document.createElement('p');
 		
 		if (level_aaa) {
@@ -125,14 +129,20 @@ var onixProcessor = (function() {
 		else {
 			conf_p.appendChild(document.createTextNode('The publication does not include a conformance statement'));
 		}
+		// add punctuation - not in algorithm
+		conf_p.appendChild(document.createTextNode('.'));
 		
-		conf_result.appendChild(conf_p);
-		
+		result.appendChild(conf_p);
+
 		if (certifier) {
 			var cert_p = document.createElement('p');
 				cert_p.appendChild(document.createTextNode('This publication is certified by '));
 				cert_p.appendChild(document.createTextNode(certifier));
-			conf_result.appendChild(cert_p);
+			
+			// add punctuation - not in algorithm
+			cert_p.appendChild(document.createTextNode('.'));
+			
+			result.appendChild(cert_p);
 		}
 		
 		if (certifier_credentials) {
@@ -152,16 +162,15 @@ var onixProcessor = (function() {
 				cred_p.appendChild(document.createTextNode(certifier_credentials));
 			}
 			
-			conf_result.appendChild(cred_p);
+			// add punctuation - not in algorithm
+			cred_p.appendChild(document.createTextNode('.'));
+			
+			result.appendChild(cred_p);
 		}
-		
-		result.appendChild(conf_result);
 		
 		var detconf_hd = document.createElement('h3');
 			detconf_hd.appendChild(document.createTextNode('Detailed Conformance Information'));
 		result.appendChild(detconf_hd);
-		
-		var detconf_result = document.createElement('div');
 		
 		var conf_p = document.createElement('p');
 		
@@ -201,7 +210,10 @@ var onixProcessor = (function() {
 			conf_p.appendChild(document.createTextNode(' Level A'));
 		}
 		
-		detconf_result.appendChild(conf_p);
+		// add punctuation - not in algorithm
+		conf_p.appendChild(document.createTextNode('.'));
+		
+		result.appendChild(conf_p);
 		
 		var cert_p = document.createElement('p');
 		
@@ -233,8 +245,11 @@ var onixProcessor = (function() {
 				cert_p.appendChild(document.createTextNode(certifier_credentials));
 			}
 		}
+
+		// add punctuation - not in algorithm
+		cert_p.appendChild(document.createTextNode('.'));
 		
-		detconf_result.appendChild(cert_p);
+		result.appendChild(cert_p);
 		
 		if (certifier_report) {
 			
@@ -247,10 +262,11 @@ var onixProcessor = (function() {
 				rep_link.appendChild(document.createTextNode(certifier_report));
 			rep_p.appendChild(rep_link);
 			
-			detconf_result.appendChild(rep_p);
+			// add punctuation - not in algorithm
+			rep_p.appendChild(document.createTextNode('.'));
+			
+			result.appendChild(rep_p);
 		}
-		
-		result.appendChild(detconf_result);
 		
 
 		/* 
@@ -271,7 +287,7 @@ var onixProcessor = (function() {
 			prerec_hd.appendChild(document.createTextNode('Prerecorded audio'));
 		result.appendChild(prerec_hd);
 		
-		var prerec_result = document.createElement('div');
+		var prerec_result = document.createElement('p');
 		
 		if (all_content_audio && !synchronised_pre_recorded_audio) {
 			prerec_result.appendChild(document.createTextNode('Audio only'));
@@ -288,6 +304,9 @@ var onixProcessor = (function() {
 		else {
 			prerec_result.appendChild(document.createTextNode('No information about pre-recorded audio is available'));
 		}
+		
+		// add punctuation - not in algorithm
+		prerec_result.appendChild(document.createTextNode('.'));
 		
 		result.appendChild(prerec_result);
 		
@@ -308,7 +327,7 @@ var onixProcessor = (function() {
 			nav_hd.appendChild(document.createTextNode('Navigation'));
 		result.appendChild(nav_hd);
 		
-		var nav_result = document.createElement('div');
+		var nav_result = document.createElement('p');
 		
 		if (table_of_contents_navigation || index_navigation || page_navigation || next_previous_structural_navigation) {
 			
@@ -364,39 +383,55 @@ var onixProcessor = (function() {
 			cdmf_hd.appendChild(document.createTextNode('Charts, diagrams, math, and formulas'));
 		result.appendChild(cdmf_hd);
 		
-		var cdmf_result = document.createElement('div');
-		
 		if (contains_charts_diagrams && charts_diagrams_diagrams_as_long_text) {
 			var p = document.createElement('p');
 				p.appendChild(document.createTextNode('Charts and diagrams have extended descriptions'));
-			cdmf_result.appendChild(p);
+			
+			// add punctuation - not in algorithm
+			p.appendChild(document.createTextNode('.'));
+			
+			result.appendChild(p);
 		}
 		
 		if (contains_charts_diagrams && charts_diagrams_as_non_graphical_data) {
 			var p = document.createElement('p');
 				p.appendChild(document.createTextNode('Visualized data also available as non-graphical data'));
-			cdmf_result.appendChild(p);
+				
+			// add punctuation - not in algorithm
+			p.appendChild(document.createTextNode('.'));
+			
+			result.appendChild(p);
 		}
 		
 		if (chemical_formula_as_chemml || chemical_formula_as_mathml) {
 			var p = document.createElement('p');
 				p.appendChild(document.createTextNode('Accessible chemistry content'));
-			cdmf_result.appendChild(p);
+			
+			// add punctuation - not in algorithm
+			p.appendChild(document.createTextNode('.'));
+			
+			result.appendChild(p);
 		}
 		
 		if (math_formula_as_latex || math_formula_as_mathml) {
 			var p = document.createElement('p');
 				p.appendChild(document.createTextNode('Accessible math content'));
-			cdmf_result.appendChild(p);
+			
+			// add punctuation - not in algorithm
+			p.appendChild(document.createTextNode('.'));
+			
+			result.appendChild(p);
 		}
 		
 		if ((contains_charts_diagrams || contains_chemical_formula || contains_math_formula) && !(charts_diagrams_diagrams_as_long_text || charts_diagrams_as_non_graphical_data || chemical_formula_as_chemml || chemical_formula_as_mathml || math_formula_as_latex || math_formula_as_mathml)) {
 			var p = document.createElement('p');
 				p.appendChild(document.createTextNode('accessibility of formulas, charts, math, and diagrams not identified as being accessible'));
-			cdmf_result.appendChild(p);
+			
+			// add punctuation - not in algorithm
+			p.appendChild(document.createTextNode('.'));
+			
+			result.appendChild(p);
 		}
-		
-		result.appendChild(cdmf_result);
 		
 		
 		/* 
@@ -419,7 +454,7 @@ var onixProcessor = (function() {
 			haz_hd.appendChild(document.createTextNode('Hazards'));
 		result.appendChild(haz_hd);
 		
-		var haz_result = document.createElement('div');
+		var haz_result = document.createElement('p');
 		
 		if (no_hazards_or_warnings_confirmed || (no_flashing_hazards && no_motion_hazards && no_sound_hazards)) {
 			haz_result.appendChild(document.createTextNode('No hazards'));
@@ -462,6 +497,9 @@ var onixProcessor = (function() {
 			haz_result.appendChild(document.createTextNode('No information about possible hazards is available'));
 		}
 		
+		// add punctuation - not in algorithm
+		haz_result.appendChild(document.createTextNode('.'));
+		
 		result.appendChild(haz_result);
 		
 		
@@ -487,8 +525,6 @@ var onixProcessor = (function() {
 		var sum_hd = document.createElement('h3');
 			sum_hd.appendChild(document.createTextNode('Accessibility summary'));
 		result.appendChild(sum_hd);
-		
-		var sum_result = document.createElement('div');
 		
 		var language_accessibility_addendum;
 		var language_known_limited_accessibility;
@@ -522,30 +558,32 @@ var onixProcessor = (function() {
 			var p = document.createElement('p');
 				p.appendChild(document.createTextNode(known_limited_accessibility));
 				p.lang = language_known_limited_accessibility;
-			sum_result.appendChild(p);
+			result.appendChild(p);
 		}
 		
 		if (accessibility_addendum) {
 			var p = document.createElement('p');
 				P.appendChild(document.createTextNode(accessibility_addendum));
 				P.lang = language_accessibility_addendum;
-			sum_result.appendChild(p);
+			result.appendChild(p);
 		}
 		
 		else if (accessibility_summary) {
 			var p = document.createElement('p');
 				p.appendChild(document.createTextNode(accessibility_summary));
 				p.lang = language_accessibility_summary;
-			sum_result.appendChild(p);
+			result.appendChild(p);
 		}
 		
 		else {
 			var p = document.createElement('p');
 				P.appendChild(document.createTextNode('No accessibility summary is available'));
-			sum_result.appendChild(p);
+			
+			// add punctuation - not in algorithm
+			p.appendChild(document.createTextNode('.'));
+			
+			result.appendChild(p);
 		}
-		
-		result.appendChild(sum_result);
 		
 		
 		/* 
@@ -563,7 +601,7 @@ var onixProcessor = (function() {
 			legal_hd.appendChild(document.createTextNode('Legal considerations'));
 		result.appendChild(legal_hd);
 		
-		var legal_result = document.createElement('div');
+		var legal_result = document.createElement('p');
 		
 		if (eaa_exemption_micro_enterprises || eaa_exception_disproportionate_burden || eaa_exception_fundamental_modification) {
 			legal_result.appendChild(document.createTextNode('TBD'));
@@ -572,6 +610,9 @@ var onixProcessor = (function() {
 		else {
 			legal_result.appendChild(document.createTextNode('No legal considerations'));
 		}
+		
+		// add punctuation - not in algorithm
+		legal_result.appendChild(document.createTextNode('.'));
 		
 		result.appendChild(legal_result);
 		
@@ -583,8 +624,6 @@ var onixProcessor = (function() {
 		var aai_hd = document.createElement('h3');
 			aai_hd.appendChild(document.createTextNode('Additional accessibility information'));
 		result.appendChild(aai_hd);
-		
-		var aai_result = document.createElement('div');
 		
 		// 4.10.1 Adaptation
 		// 4.10.1.2 Variables setup
@@ -622,7 +661,13 @@ var onixProcessor = (function() {
 			var adaptation_string = joinArray(adaptation);
 				adaptation_string = String(adaptation_string).charAt(0).toUpperCase() + String(adaptation_string).slice(1);
 
-			aai_result.appendChild(document.createTextNode('Adaptability: ' + adaptation_string));
+			var adapt_result = document.createElement('p');
+				adapt_result.appendChild(document.createTextNode('Adaptability: ' + adaptation_string));
+			
+			// add punctuation - not in algorithm
+			adapt_result.appendChild(document.createTextNode('.'));
+			
+			result.appendChild(adapt_result);
 		}
 		
 		// 4.10.2 Clarity
@@ -671,10 +716,14 @@ var onixProcessor = (function() {
 			var clarity_string = joinArray(adaptation);
 				clarity_string = String(clarity_string).charAt(0).toUpperCase() + String(clarity_string).slice(1);
 
-			aai_result.appendChild(document.createTextNode('Clarity: ' + clarity_string));
+			var clarity_result = document.createElement('p');
+				clarity_result.appendChild(document.createTextNode('Clarity: ' + clarity_string));
+			
+			// add punctuation - not in algorithm
+			clarity_result.appendChild(document.createTextNode('.'));
+			
+			result.appendChild(clarity_result);
 		}
-		
-		result.appendChild(aai_result);
 		
 		return result;
 	}
