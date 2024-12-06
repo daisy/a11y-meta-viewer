@@ -667,7 +667,7 @@ var onixProcessor = (function() {
 			// add punctuation - not in algorithm
 			adapt_result.appendChild(document.createTextNode('.'));
 			
-			results.appendChild(adapt_result);
+			result.appendChild(adapt_result);
 		}
 		
 		// 4.10.2 Clarity
@@ -722,7 +722,7 @@ var onixProcessor = (function() {
 			// add punctuation - not in algorithm
 			clarity_result.appendChild(document.createTextNode('.'));
 			
-			results.appendChild(clarity_result);
+			result.appendChild(clarity_result);
 		}
 		
 		return result;
