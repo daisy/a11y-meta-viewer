@@ -3,8 +3,10 @@
 
 var onixProcessor = (function() {
 
-	function processOnixRecord(onix_record_as_text, result) {
+	function processOnixRecord(onix_record_as_text) {
 	
+		var result;
+		
 		/* 
 		 * The specification calls the preprocessing step for every technique but that's
 		 * omitted from this code. The onix variable is only configured once
@@ -671,6 +673,10 @@ var onixProcessor = (function() {
 
 			aai_result.appendChild(document.createTextNode('Clarity: ' + clarity_string));
 		}
+		
+		result.appendChild(aai_result);
+		
+		return result;
 	}
 	
 	// 3.1 Preprocessing
