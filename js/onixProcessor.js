@@ -5,7 +5,7 @@ var onixProcessor = (function() {
 
 	function processOnixRecord(onix_record_as_text) {
 	
-		var result;
+		var result = document.createElement('div');
 		
 		/* 
 		 * The specification calls the preprocessing step for every technique but that's
@@ -28,11 +28,11 @@ var onixProcessor = (function() {
 		
 		// 4.1.3 Instructions
 		
-		var vis_hd = document.createElement('dt');
+		var vis_hd = document.createElement('h3');
 			vis_hd.appendChild(document.createTextNode('Visual adjustments'));
 		result.appendChild(vis_hd);
 		
-		var vis_result = document.createElement('dd');
+		var vis_result = document.createElement('div');
 		
 		if (all_textual_content_can_be_modified) {
 			vis_result.appendChild(document.createTextNode('Appearance can be modified'));
@@ -61,11 +61,11 @@ var onixProcessor = (function() {
 		
 		// 4.2.3 Instructions
 		
-		var nonvis_hd = document.createElement('dt');
+		var nonvis_hd = document.createElement('h3');
 			nonvis_hd.appendChild(document.createTextNode('Supports nonvisual reading'));
 		result.appendChild(nonvis_hd);
 		
-		var nonvis_result = document.createElement('dd');
+		var nonvis_result = document.createElement('div');
 		
 		if (all_necessary_content_textual) {
 			nonvis_result.appendChild(document.createTextNode('Readable in read aloud or dynamic braille'));
@@ -102,11 +102,11 @@ var onixProcessor = (function() {
 		
 		// 4.3.3 Instructions
 		
-		var conf_hd = document.createElement('dt');
+		var conf_hd = document.createElement('h3');
 			conf_hd.appendChild(document.createTextNode('Conformance'));
 		result.appendChild(conf_hd);
 		
-		var conf_result = document.createElement('dd');
+		var conf_result = document.createElement('div');
 		
 		var conf_p = document.createElement('p');
 		
@@ -157,11 +157,11 @@ var onixProcessor = (function() {
 		
 		result.appendChild(conf_result);
 		
-		var detconf_hd = document.createElement('dt');
+		var detconf_hd = document.createElement('h3');
 			detconf_hd.appendChild(document.createTextNode('Detailed Conformance Information'));
 		result.appendChild(detconf_hd);
 		
-		var detconf_result = document.createElement('dd');
+		var detconf_result = document.createElement('div');
 		
 		var conf_p = document.createElement('p');
 		
@@ -267,11 +267,11 @@ var onixProcessor = (function() {
 		
 		// 4.4.3 Instructions
 		
-		var prerec_hd = document.createElement('dt');
+		var prerec_hd = document.createElement('h3');
 			prerec_hd.appendChild(document.createTextNode('Prerecorded audio'));
 		result.appendChild(prerec_hd);
 		
-		var prerec_result = document.createElement('dd');
+		var prerec_result = document.createElement('div');
 		
 		if (all_content_audio && !synchronised_pre_recorded_audio) {
 			prerec_result.appendChild(document.createTextNode('Audio only'));
@@ -304,11 +304,11 @@ var onixProcessor = (function() {
 		
 		// 4.5.3 Instructions
 		
-		var nav_hd = document.createElement('dt');
+		var nav_hd = document.createElement('h3');
 			nav_hd.appendChild(document.createTextNode('Navigation'));
 		result.appendChild(nav_hd);
 		
-		var nav_result = document.createElement('dd');
+		var nav_result = document.createElement('div');
 		
 		if (table_of_contents_navigation || index_navigation || page_navigation || next_previous_structural_navigation) {
 			
@@ -360,11 +360,11 @@ var onixProcessor = (function() {
 		
 		// 4.6.3 Instructions
 		
-		var cdmf_hd = document.createElement('dt');
+		var cdmf_hd = document.createElement('h3');
 			cdmf_hd.appendChild(document.createTextNode('Charts, diagrams, math, and formulas'));
 		result.appendChild(cdmf_hd);
 		
-		var cdmf_result = document.createElement('dd');
+		var cdmf_result = document.createElement('div');
 		
 		if (contains_charts_diagrams && charts_diagrams_diagrams_as_long_text) {
 			var p = document.createElement('p');
@@ -415,11 +415,11 @@ var onixProcessor = (function() {
 		
 		// 4.7.3 Instructions
 		
-		var haz_hd = document.createElement('dt');
+		var haz_hd = document.createElement('h3');
 			haz_hd.appendChild(document.createTextNode('Hazards'));
 		result.appendChild(haz_hd);
 		
-		var haz_result = document.createElement('dd');
+		var haz_result = document.createElement('div');
 		
 		if (no_hazards_or_warnings_confirmed || (no_flashing_hazards && no_motion_hazards && no_sound_hazards)) {
 			haz_result.appendChild(document.createTextNode('No hazards'));
@@ -484,11 +484,11 @@ var onixProcessor = (function() {
 		
 		// 4.8.3 Instructions
 		
-		var sum_hd = document.createElement('dt');
+		var sum_hd = document.createElement('h3');
 			sum_hd.appendChild(document.createTextNode('Accessibility summary'));
 		result.appendChild(sum_hd);
 		
-		var sum_result = document.createElement('dd');
+		var sum_result = document.createElement('div');
 		
 		var language_accessibility_addendum;
 		var language_known_limited_accessibility;
@@ -559,11 +559,11 @@ var onixProcessor = (function() {
 		
 		// 4.9.3 Instructions
 		
-		var legal_hd = document.createElement('dt');
+		var legal_hd = document.createElement('h3');
 			legal_hd.appendChild(document.createTextNode('Legal considerations'));
 		result.appendChild(legal_hd);
 		
-		var legal_result = document.createElement('dd');
+		var legal_result = document.createElement('div');
 		
 		if (eaa_exemption_micro_enterprises || eaa_exception_disproportionate_burden || eaa_exception_fundamental_modification) {
 			legal_result.appendChild(document.createTextNode('TBD'));
@@ -580,11 +580,11 @@ var onixProcessor = (function() {
 		 * 4.10 Additional accessibility information
 		 */
 		 
-		var aai_hd = document.createElement('dt');
+		var aai_hd = document.createElement('h3');
 			aai_hd.appendChild(document.createTextNode('Additional accessibility information'));
 		result.appendChild(aai_hd);
 		
-		var aai_result = document.createElement('dd');
+		var aai_result = document.createElement('div');
 		
 		// 4.10.1 Adaptation
 		// 4.10.1.2 Variables setup
@@ -724,8 +724,8 @@ var onixProcessor = (function() {
 	}
 	
 	return {
-		processOnixRecord: function(onixRecord, result_field) {
-			return processOnixRecord(onixRecord, result_field);
+		processOnixRecord: function(onixRecord) {
+			return processOnixRecord(onixRecord);
 		}
 	}
 

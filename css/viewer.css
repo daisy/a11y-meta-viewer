@@ -62,9 +62,11 @@ h2.noCategory {
 
 
 h3 {
-	font-size: 140%;
+	font-size: 130%;
 	color: rgb(0,0,100);
 	margin-top: 1.75em;
+	font-weight: normal;
+	margin-bottom: 1rem;
 }
 
 h4 {
@@ -210,6 +212,12 @@ label.block{
 
 label.pad-left{
 	margin-left: 2.4rem;
+}
+
+div#result p,
+div#result div,
+div#result li {
+	font-size: 1.6rem
 }
 
 /* zoom and mobile fixes */
