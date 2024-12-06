@@ -449,8 +449,8 @@ var packageProcessor = (function() {
 		 */
 		 
 		 // 4.8.2 Variables setup
-		var accessibility_summary =  package_document.evaluate('/opf:package/opf:metadata/opf:meta[@property="schema:accessibilitySummary"]', package_document, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
-		var lang_attribute_accessibility_summary = package_document.evaluate('(/opf:package/opf:metadata/opf:meta[@property="schema:accessibilitySummary"]/@xml:lang | /opf:package/@xml:lang)[last()]', package_document, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+		var accessibility_summary =  package_document.evaluate('/opf:package/opf:metadata/opf:meta[@property="schema:accessibilitySummary"][1]', package_document, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+		var lang_attribute_accessibility_summary = package_document.evaluate('(/opf:package/opf:metadata/opf:meta[@property="schema:accessibilitySummary"][1]/@xml:lang | /opf:package/@xml:lang)[last()]', package_document, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
 		var language_of_text = package_document.evaluate('/opf:package/opf:metadata/dc:language[1]/text()', package_document, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
 		
 		// 4.8.3 Instructions
@@ -628,6 +628,11 @@ var packageProcessor = (function() {
 
 			aai_result.appendChild(document.createTextNode('Clarity: ' + clarity_string));
 		}
+		
+		result.appendChild(aai_result);
+		
+		return result;
+		
 	}
 	
 	// 3.1 Preprocessing

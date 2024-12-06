@@ -23,12 +23,14 @@ function processXML() {
 	
 	console.clear();
 	
+	var result;
+	
 	if (xml.match('<package ')) {
-		packageProcessor.processPackageDoc(xml, result_field)
+		result = packageProcessor.processPackageDoc(xml, result_field);
 	}
 	
 	else if (xml.match('<ONIXMessage ')) {
-		onixProcessor.processOnixRecord(xml, result_field)
+		result = onixProcessor.processOnixRecord(xml, result_field);
 	}
 	
 	else {
@@ -36,8 +38,12 @@ function processXML() {
 		return;
 	}
 	
-	if (meta_dialog) {
-		meta_dialog.dialog('open');
+	if (result) {
+		result_field.appendChild(result);
+		
+		if (meta_dialog) {
+			meta_dialog.dialog('open');
+		}
 	}
 }
 
