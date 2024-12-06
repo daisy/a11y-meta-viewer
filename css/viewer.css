@@ -168,13 +168,10 @@ aside#sponsor.kb {
 
 /* section spacing */
 
-section {
-	margin-top: 2.5em;
-}
-
 main {
 	margin-top: 0;
 	margin-left: 3rem;
+	margin-bottom: 3rem;
 	max-width: 60vw;
 }
 
@@ -193,6 +190,26 @@ img.logo {
 
 textarea {
 	width: 100%
+}
+
+
+/* config dialog */
+
+.ui-dialog {
+	font-size: 1.4rem;
+}
+
+.ui-widget-header{
+	background-color: rgb(232, 244, 248);
+}
+
+label.block{
+	display: block;
+	margin-top: 0.3rem;
+}
+
+label.pad-left{
+	margin-left: 2.4rem;
 }
 
 /* zoom and mobile fixes */

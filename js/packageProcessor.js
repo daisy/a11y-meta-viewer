@@ -3,13 +3,8 @@
 
 var packageProcessor = (function() {
 
-	var result = document.getElementById('result');
+	function processPackageDoc(package_document_as_text, result) {
 	
-	function processPackageDoc(package_document_as_text) {
-	
-		console.clear();
-		result.textContent = '';
-		
 		/* 
 		 * The specification calls the preprocessing step for every technique but that's
 		 * omitted from this code. The package_document variable is only configured once
@@ -680,8 +675,8 @@ var packageProcessor = (function() {
 	}
 	
 	return {
-		processPackageDoc: function(packageDoc) {
-			return processPackageDoc(packageDoc);
+		processPackageDoc: function(packageDoc, result_field) {
+			return processPackageDoc(packageDoc, result_field);
 		}
 	}
 

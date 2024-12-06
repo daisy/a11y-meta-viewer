@@ -3,13 +3,8 @@
 
 var onixProcessor = (function() {
 
-	var result = document.getElementById('result');
+	function processOnixRecord(onix_record_as_text, result) {
 	
-	function processOnixRecord(onix_record_as_text) {
-	
-		console.clear();
-		result.textContent = '';
-		
 		/* 
 		 * The specification calls the preprocessing step for every technique but that's
 		 * omitted from this code. The onix variable is only configured once
@@ -723,8 +718,8 @@ var onixProcessor = (function() {
 	}
 	
 	return {
-		processOnixRecord: function(onixRecord) {
-			return processOnixRecord(onixRecord);
+		processOnixRecord: function(onixRecord, result_field) {
+			return processOnixRecord(onixRecord, result_field);
 		}
 	}
 
