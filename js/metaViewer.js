@@ -43,6 +43,7 @@ function processXML() {
 		
 		if (meta_dialog) {
 			meta_dialog.dialog('open');
+			document.getElementById('meta-result').focus();
 		}
 	}
 }
