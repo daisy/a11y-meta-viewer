@@ -1,6 +1,29 @@
 
 'use strict';
 
+
+	var _EXPLAINER = {};
+	
+		_EXPLAINER.visualAdjustments = '<h3>Visual adjustments</h3>\
+<p>The value of this field is one of the following strings:</p>\
+<ul>\
+   <li>"Appearance can be modified." &#8212; when the package document metadata conains a <code>schema:accessibilityFeature</code> property with the value <code>displayTransformability</code>.</li>\
+   <li>"Appearance cannot be modified." &#8212; when the EPUB is identified as a fixed layout publication (<code>rendition:layout</code> equal to <code>pre-paginated</code>).</li>\
+   <li>"No information is available." &#8212; when the EPUB is reflowable but does not contain the <code>displayTransformability</code> value.</li>\
+</ul>\
+<p>For more information, please refer to the <a href="https://w3c.github.io/publ-a11y/a11y-meta-display-guide/2.0/draft/guidelines/#visual-adjustments" target="_blank">visual adjustments section of the Accessibility Metadata Display Guide for Digital Publications</a>.';
+		
+		_EXPLAINER.nonvisualReading = '<h3>Visual adjustments</h3>\
+<p>The value of this field is one of the following strings:</p>\
+<ul>\
+<ul>\
+   <li>"Readable in read aloud or dynamic braille." &#8212; \
+   <li>"Not fully readable in read aloud or dynamic braille." &#8212; \
+   <li>"May not be fully readable in read aloud or dynamic braille." &#8212; \
+</ul>\
+<p>For more information, please refer to the <a href="https://w3c.github.io/publ-a11y/a11y-meta-display-guide/2.0/draft/guidelines/#nonvisual-reading" target="_blank">visual adjustments section of the Accessibility Metadata Display Guide for Digital Publications</a>.';
+	
+
 var packageProcessor = (function() {
 
 	function processPackageDoc(package_document_as_text) {
@@ -28,8 +51,12 @@ var packageProcessor = (function() {
 		
 		// 4.1.3 Instructions
 		
-		var vis_hd = document.createElement('h3');
+		var vis_hd = document.createElement('h2');
 			vis_hd.appendChild(document.createTextNode('Visual adjustments'));
+			
+			// add explainer
+			vis_hd.appendChild(writeExplainerLink('visualAdjustments'));
+		
 		result.appendChild(vis_hd);
 		
 		var vis_result = document.createElement('p');
@@ -46,7 +73,9 @@ var packageProcessor = (function() {
 			vis_result.appendChild(document.createTextNode('Appearance modifiability not known'));
 		}
 		
-		// add punctuation - not in algorithm
+		// Following additions are not in the algorithm
+		
+		// add punctuation
 		vis_result.appendChild(document.createTextNode('.'));
 		
 		result.appendChild(vis_result);
@@ -63,8 +92,12 @@ var packageProcessor = (function() {
 		
 		// 4.2.3 Instructions
 		
-		var nonvis_hd = document.createElement('h3');
+		var nonvis_hd = document.createElement('h2');
 			nonvis_hd.appendChild(document.createTextNode('Supports nonvisual reading'));
+			
+			// add explainer
+			nonvis_hd.appendChild(writeExplainerLink('nonvisualReading'));
+		
 		result.appendChild(nonvis_hd);
 		
 		var nonvis_result = document.createElement('p');
@@ -129,7 +162,7 @@ var packageProcessor = (function() {
 		
 		// 4.3.3 Instructions
 		
-		var conf_hd = document.createElement('h3');
+		var conf_hd = document.createElement('h2');
 			conf_hd.appendChild(document.createTextNode('Conformance'));
 		result.appendChild(conf_hd);
 		
@@ -190,7 +223,7 @@ var packageProcessor = (function() {
 				result.appendChild(cred_p);
 			}
 			
-			var detconf_hd = document.createElement('h3');
+			var detconf_hd = document.createElement('h2');
 				detconf_hd.appendChild(document.createTextNode('Detailed Conformance Information'));
 			result.appendChild(detconf_hd);
 			
@@ -274,7 +307,7 @@ var packageProcessor = (function() {
 		
 		// 4.4.3 Instructions
 		
-		var prerec_hd = document.createElement('h3');
+		var prerec_hd = document.createElement('h2');
 			prerec_hd.appendChild(document.createTextNode('Prerecorded audio'));
 		result.appendChild(prerec_hd);
 		
@@ -314,7 +347,7 @@ var packageProcessor = (function() {
 		
 		// 4.5.3 Instructions
 		
-		var nav_hd = document.createElement('h3');
+		var nav_hd = document.createElement('h2');
 			nav_hd.appendChild(document.createTextNode('Navigation'));
 		result.appendChild(nav_hd);
 		
@@ -371,7 +404,7 @@ var packageProcessor = (function() {
 		
 		// 4.6.3 Instructions
 		
-		var cdmf_hd = document.createElement('h3');
+		var cdmf_hd = document.createElement('h2');
 			cdmf_hd.appendChild(document.createTextNode('Charts, diagrams, math, and formulas'));
 		result.appendChild(cdmf_hd);
 		
@@ -432,7 +465,7 @@ var packageProcessor = (function() {
 		
 		// 4.7.3 Instructions
 		
-		var haz_hd = document.createElement('h3');
+		var haz_hd = document.createElement('h2');
 			haz_hd.appendChild(document.createTextNode('Hazards'));
 		result.appendChild(haz_hd);
 		
@@ -496,7 +529,7 @@ var packageProcessor = (function() {
 		
 		// 4.8.3 Instructions
 		
-		var sum_hd = document.createElement('h3');
+		var sum_hd = document.createElement('h2');
 			sum_hd.appendChild(document.createTextNode('Accessibility summary'));
 		result.appendChild(sum_hd);
 		
@@ -538,7 +571,7 @@ var packageProcessor = (function() {
 		
 		// 4.9.3 Instructions
 		
-		var legal_hd = document.createElement('h3');
+		var legal_hd = document.createElement('h2');
 			legal_hd.appendChild(document.createTextNode('Legal considerations'));
 		result.appendChild(legal_hd);
 		
@@ -562,7 +595,7 @@ var packageProcessor = (function() {
 		 * 4.10 Additional accessibility information
 		 */
 		 
-		var aai_hd = document.createElement('h3');
+		var aai_hd = document.createElement('h2');
 			aai_hd.appendChild(document.createTextNode('Additional accessibility information'));
 		result.appendChild(aai_hd);
 		
@@ -734,10 +767,33 @@ var packageProcessor = (function() {
 			return output_string;
 	}
 	
+	
+	// create a help explainer
+	
+	function writeExplainerLink(id) {
+		var a = document.createElement('a');
+			a.href = '#';
+			a.classList.add('explainer-link');
+			a.onclick = function () { showExplainer(id); return false; }
+			a.title = 'Show explainer for this field';
+		
+		var img = document.createElement('img');
+			img.src = 'graphics/info.png';
+			img.alt = 'Show explainer for this field';
+		
+		a.appendChild(img);
+		
+		return a;
+	}
+	
+	
 	return {
 		processPackageDoc: function(packageDoc) {
 			return processPackageDoc(packageDoc);
+		},
+		
+		getExplainer: function(id) {
+			return _EXPLAINER[id];
 		}
-	}
-
+	}	
 })();

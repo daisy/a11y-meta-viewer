@@ -3,10 +3,18 @@
 	<head>
 		<meta charset="utf-8" />
 		<title>DAISY Accessibility Metadata Viewer</title>
-		<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"/>
 		<link rel="stylesheet" type="text/css" href="css/viewer.css" />
-		<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
-		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+		<style>
+			input[type='button'] {
+				margin-top: 1rem;
+				width: 10rem;
+				padding: 1rem 0;
+				font-weight: bold;
+			}
+			select {
+				width: 20rem;
+			}
+		</style>
 	</head>
 	
 	<body>
@@ -23,11 +31,30 @@
 			
 			<textarea id="input_packagedoc" rows="15" autocomplete="off"></textarea>
 			
+			<fieldset>
+				<legend>Message type:</legend>
+				<label><input name="msgtype" id="msg-compact" type="radio" checked=""/> Compact</label>
+				<label><input name="msgtype" id="msg-descriptive" type="radio" disabled=""/> Descriptive</label>
+			</fieldset>
+			
+			<fieldset>
+				<legend>Language:</legend>
+				<select id="lang" disabled="">
+					<option id="en">English</option>
+				</select>
+			</fieldset>
+			
 			<div><input type="button" onclick="processXML()" value="Preview"/></div>
 			
-			<section id="meta-result" aria-label="Resulting Metadata Statements" title="Resulting Metadata Statements">
-				<div id="result"></div>
-			</section>
+			<dialog id="result">
+				<div id="result_body"></div>
+				<button>Close</button>
+			</dialog>
+			
+			<dialog id="explainer">
+				<div id="explainer_body"></div>
+				<button>Close</button>
+			</dialog>
 			
 			<script src="js/metaViewer.js"></script>
 			<script src="js/packageProcessor.js"></script>

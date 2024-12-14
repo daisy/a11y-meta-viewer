@@ -1,24 +1,21 @@
 
-var close_button = {};
-	close_button['Close'] = function() {
-		$(this).dialog('close');
-	};
+/* result dialog */
 
-var meta_dialog = $("#meta-result").dialog({
-	autoOpen: false,
-	height: 450,
-	width: '60vw',
-	top: '5vw',
-	modal: true,
-	buttons: close_button
+var result_dialog = document.getElementById("result");
+var result_close = document.querySelector("dialog#result button");
+
+result_close.addEventListener("click", () => {
+  result_dialog.close();
 });
+
+/* process input metadata */
 
 function processXML() {
 
 	var xml = document.getElementById('input_packagedoc').value;
 	
 	// reest the result pane
-	var result_field = document.getElementById('result');
+	var result_field = document.getElementById('result_body');
 		result_field.textContent = '';
 	
 	console.clear();
@@ -40,11 +37,23 @@ function processXML() {
 	
 	if (result) {
 		result_field.appendChild(result);
-		
-		if (meta_dialog) {
-			meta_dialog.dialog('open');
-			document.getElementById('meta-result').focus();
-		}
+		result_dialog.showModal();
 	}
 }
 
+
+/* explainer dialog */
+
+var expl_dialog = document.getElementById("explainer");
+var expl_body = document.getElementById("explainer_body");
+
+function showExplainer(id) {
+	expl_body.innerHTML = packageProcessor.getExplainer(id);
+	expl_dialog.showModal();
+}
+
+var expl_close = document.querySelector("dialog#explainer button");
+
+expl_close.addEventListener("click", () => {
+  expl_dialog.close();
+});

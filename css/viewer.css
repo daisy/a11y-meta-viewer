@@ -48,20 +48,6 @@ h1 {
 }
 
 h2 {
-	font-family: Raleway;
-	font-size: 180%;
-	padding: 0.5em 0.7em 0 0.7em;
-	margin: 0 0 6rem 1.5rem;
-	letter-spacing: 0.125rem;
-}
-
-h2.noCategory {
-	margin-top: 5.8rem;
-	margin-bottom: 0;
-}
-
-
-h3 {
 	font-size: 130%;
 	color: rgb(0,0,100);
 	margin-top: 1.75em;
@@ -69,20 +55,14 @@ h3 {
 	margin-bottom: 1rem;
 }
 
-h4 {
+h3 {
 	font-size: 125%;
-}
-
-h5 {
-	font-size: 115%;
-	color: rgb(0,0,180);
+	color: rgb(0,0,100);
+	font-weight: normal;
+	margin: 0;
 }
 
 /* general links */
-
-a {
-	text-decoration: none;
-}
 
 h1 a {
 	color: rgb(32,53,139) !important;
@@ -99,6 +79,26 @@ a:visited {
 a:hover,
 a:visited:hover {
 	color: rgb(180,0,0);
+}
+
+/* explainers */
+
+a.explainer-link {
+	display: inline-block;
+	margin-left: 1rem;
+}
+
+a.explainer-link {
+	min-width: 2.4rem;
+	min-height: 2.4rem;
+}
+
+a.explainer-link img {
+	max-height: 1.9rem;
+}
+
+dialog {
+	max-width: 80vw;
 }
 
 /* page headers and footers */
