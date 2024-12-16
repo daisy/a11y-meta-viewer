@@ -48,10 +48,11 @@ h1 {
 }
 
 h2 {
+	display: inline-block;
 	font-size: 130%;
+	font-weight: normal;
 	color: rgb(0,0,100);
 	margin-top: 1.75em;
-	font-weight: normal;
 	margin-bottom: 1rem;
 }
 

@@ -44,11 +44,29 @@ function processXML() {
 
 /* explainer dialog */
 
+function writeExplainerLink(id) {
+	var a = document.createElement('a');
+		a.href = '#';
+		a.classList.add('explainer-link');
+		a.onclick = function () { showExplainer(id); return false; }
+		a.title = 'Show explainer for this field';
+	
+	var img = document.createElement('img');
+		img.src = 'graphics/info.png';
+		img.alt = 'Show explainer for this field';
+		img.onmouseover = function () { this.src = 'graphics/info_hover.png' }
+		img.onmouseout = function () { this.src = 'graphics/info.png' }
+	
+	a.appendChild(img);
+	
+	return a;
+}
+
 var expl_dialog = document.getElementById("explainer");
 var expl_body = document.getElementById("explainer_body");
 
 function showExplainer(id) {
-	expl_body.innerHTML = packageProcessor.getExplainer(id);
+	expl_body.innerHTML = document.getElementById(id).innerHTML;
 	expl_dialog.showModal();
 }
 

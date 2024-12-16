@@ -1,29 +1,6 @@
 
 'use strict';
 
-
-	var _EXPLAINER = {};
-	
-		_EXPLAINER.visualAdjustments = '<h3>Visual adjustments</h3>\
-<p>The value of this field is one of the following strings:</p>\
-<ul>\
-   <li>"Appearance can be modified." &#8212; when the package document metadata conains a <code>schema:accessibilityFeature</code> property with the value <code>displayTransformability</code>.</li>\
-   <li>"Appearance cannot be modified." &#8212; when the EPUB is identified as a fixed layout publication (<code>rendition:layout</code> equal to <code>pre-paginated</code>).</li>\
-   <li>"No information is available." &#8212; when the EPUB is reflowable but does not contain the <code>displayTransformability</code> value.</li>\
-</ul>\
-<p>For more information, please refer to the <a href="https://w3c.github.io/publ-a11y/a11y-meta-display-guide/2.0/draft/guidelines/#visual-adjustments" target="_blank">visual adjustments section of the Accessibility Metadata Display Guide for Digital Publications</a>.';
-		
-		_EXPLAINER.nonvisualReading = '<h3>Visual adjustments</h3>\
-<p>The value of this field is one of the following strings:</p>\
-<ul>\
-<ul>\
-   <li>"Readable in read aloud or dynamic braille." &#8212; \
-   <li>"Not fully readable in read aloud or dynamic braille." &#8212; \
-   <li>"May not be fully readable in read aloud or dynamic braille." &#8212; \
-</ul>\
-<p>For more information, please refer to the <a href="https://w3c.github.io/publ-a11y/a11y-meta-display-guide/2.0/draft/guidelines/#nonvisual-reading" target="_blank">visual adjustments section of the Accessibility Metadata Display Guide for Digital Publications</a>.';
-	
-
 var packageProcessor = (function() {
 
 	function processPackageDoc(package_document_as_text) {
@@ -53,11 +30,10 @@ var packageProcessor = (function() {
 		
 		var vis_hd = document.createElement('h2');
 			vis_hd.appendChild(document.createTextNode('Visual adjustments'));
-			
-			// add explainer
-			vis_hd.appendChild(writeExplainerLink('visualAdjustments'));
-		
 		result.appendChild(vis_hd);
+			
+		// add explainer
+		result.appendChild(writeExplainerLink('epub-visualAdjustments'));
 		
 		var vis_result = document.createElement('p');
 		
@@ -768,32 +744,9 @@ var packageProcessor = (function() {
 	}
 	
 	
-	// create a help explainer
-	
-	function writeExplainerLink(id) {
-		var a = document.createElement('a');
-			a.href = '#';
-			a.classList.add('explainer-link');
-			a.onclick = function () { showExplainer(id); return false; }
-			a.title = 'Show explainer for this field';
-		
-		var img = document.createElement('img');
-			img.src = 'graphics/info.png';
-			img.alt = 'Show explainer for this field';
-		
-		a.appendChild(img);
-		
-		return a;
-	}
-	
-	
 	return {
 		processPackageDoc: function(packageDoc) {
 			return processPackageDoc(packageDoc);
-		},
-		
-		getExplainer: function(id) {
-			return _EXPLAINER[id];
 		}
 	}	
 })();

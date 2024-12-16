@@ -56,6 +56,44 @@
 				<button>Close</button>
 			</dialog>
 			
+			<section hidden="hidden">
+				<h2>Explainers</h2>
+				
+				<section id="epub">
+					<section id="epub-visualAdjustments">
+						<h3>Visual adjustments</h3>
+						<p>The value of this field is one of the following strings:</p>
+						<ul>
+							<li>"Appearance can be modified." &#8212; when the package document metadata conains a <code>schema:accessibilityFeature</code> property with the value <code>displayTransformability</code>.</li>
+							<li>"Appearance cannot be modified." &#8212; when the EPUB is identified as a fixed layout publication (<code>rendition:layout</code> equal to <code>pre-paginated</code>).</li>
+							<li>"No information is available." &#8212; when the EPUB is reflowable but does not contain the <code>displayTransformability</code> value.</li>
+						</ul>
+						<p>For more information, please refer to the <a href="https://w3c.github.io/publ-a11y/a11y-meta-display-guide/2.0/draft/guidelines/#visual-adjustments" target="_blank">visual adjustments section of the Accessibility Metadata Display Guide for Digital Publications</a>.</p>
+					</section>
+					
+					<section id="epub-nonvisualReading">
+						<h3>Nonvisual reading</h3>
+						<p>The value of this field is one of the following strings:</p>
+						<ul>
+							<li>"Readable in read aloud or dynamic braille." &#8212; </li>
+							<li>"Not fully readable in read aloud or dynamic braille." &#8212;</li>
+							<li>"May not be fully readable in read aloud or dynamic braille." &#8212;</li>
+						</ul>
+						<p>For more information, please refer to the <a href="https://w3c.github.io/publ-a11y/a11y-meta-display-guide/2.0/draft/guidelines/#nonvisual-reading" target="_blank">visual adjustments section of the Accessibility Metadata Display Guide for Digital Publications</a>.</p>
+					</section>
+				</section>
+				
+				<section id="onix">
+					<section id="onix-visualAdjustments">
+						<h3>Visual adjustments</h3>
+					</section>
+					
+					<section id="onix-nonvisualReading">
+						<h3>Nonvisual reading</h3>
+					</section>
+				</section>
+			</section>
+			
 			<script src="js/metaViewer.js"></script>
 			<script src="js/packageProcessor.js"></script>
 			<script src="js/onixProcessor.js"></script>
