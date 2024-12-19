@@ -329,7 +329,7 @@ var onixProcessor = (function() {
 		
 		var nav_result = document.createElement('p');
 		
-		if (table_of_contents_navigation || index_navigation || page_navigation || next_previous_structural_navigation) {
+		if (table_of_contents_navigation || index_navigation || print_equivalent_page_numbering || next_previous_structural_navigation) {
 			
 			var navigation = [];
 			
