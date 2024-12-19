@@ -577,7 +577,7 @@ var onixProcessor = (function() {
 		
 		else {
 			var p = document.createElement('p');
-				P.appendChild(document.createTextNode('No accessibility summary is available'));
+				p.appendChild(document.createTextNode('No accessibility summary is available'));
 			
 			// add punctuation - not in algorithm
 			p.appendChild(document.createTextNode('.'));
