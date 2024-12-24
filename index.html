@@ -48,13 +48,17 @@
 			<div><input type="button" onclick="processXML()" value="Preview"/></div>
 			
 			<dialog id="result">
-				<div id="result_body"></div>
-				<button>Close</button>
+				<h2>Metadata Display</h2>
+				<a href="#result-close" id="result-close-img" class="close" title="Close"><img src="graphics/close-icon.png" alt="Close"></a>
+				<div id="result-body"></div>
+				<button id="result-close-button">Close</button>
 			</dialog>
 			
 			<dialog id="explainer">
-				<div id="explainer_body"></div>
-				<button>Close</button>
+				<h2>Explainer</h2>
+				<a href="#explainer-close" id="explainer-close-img" class="close" title="Close"><img src="graphics/close-icon.png" alt="Close"></a>
+				<div id="explainer-body"></div>
+				<button id="explainer-close-button">Close</button>
 			</dialog>
 			
 			<section hidden="hidden">

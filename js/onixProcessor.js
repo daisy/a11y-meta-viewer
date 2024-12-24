@@ -3,6 +3,8 @@
 
 var onixProcessor = (function() {
 
+	const hd_type = 'h3';
+	
 	function processOnixRecord(onix_record_as_text) {
 	
 		var result = document.createElement('div');
@@ -28,7 +30,7 @@ var onixProcessor = (function() {
 		
 		// 4.1.3 Instructions
 		
-		var vis_hd = document.createElement('h3');
+		var vis_hd = document.createElement(hd_type);
 			vis_hd.appendChild(document.createTextNode('Visual adjustments'));
 		result.appendChild(vis_hd);
 		
@@ -64,7 +66,7 @@ var onixProcessor = (function() {
 		
 		// 4.2.3 Instructions
 		
-		var nonvis_hd = document.createElement('h3');
+		var nonvis_hd = document.createElement(hd_type);
 			nonvis_hd.appendChild(document.createTextNode('Supports nonvisual reading'));
 		result.appendChild(nonvis_hd);
 		
@@ -108,7 +110,7 @@ var onixProcessor = (function() {
 		
 		// 4.3.3 Instructions
 		
-		var conf_hd = document.createElement('h3');
+		var conf_hd = document.createElement(hd_type);
 			conf_hd.appendChild(document.createTextNode('Conformance'));
 		result.appendChild(conf_hd);
 		
@@ -168,7 +170,7 @@ var onixProcessor = (function() {
 			result.appendChild(cred_p);
 		}
 		
-		var detconf_hd = document.createElement('h3');
+		var detconf_hd = document.createElement(hd_type);
 			detconf_hd.appendChild(document.createTextNode('Detailed Conformance Information'));
 		result.appendChild(detconf_hd);
 		
@@ -283,7 +285,7 @@ var onixProcessor = (function() {
 		
 		// 4.4.3 Instructions
 		
-		var prerec_hd = document.createElement('h3');
+		var prerec_hd = document.createElement(hd_type);
 			prerec_hd.appendChild(document.createTextNode('Prerecorded audio'));
 		result.appendChild(prerec_hd);
 		
@@ -323,7 +325,7 @@ var onixProcessor = (function() {
 		
 		// 4.5.3 Instructions
 		
-		var nav_hd = document.createElement('h3');
+		var nav_hd = document.createElement(hd_type);
 			nav_hd.appendChild(document.createTextNode('Navigation'));
 		result.appendChild(nav_hd);
 		
@@ -379,7 +381,7 @@ var onixProcessor = (function() {
 		
 		// 4.6.3 Instructions
 		
-		var cdmf_hd = document.createElement('h3');
+		var cdmf_hd = document.createElement(hd_type);
 			cdmf_hd.appendChild(document.createTextNode('Charts, diagrams, math, and formulas'));
 		result.appendChild(cdmf_hd);
 		
@@ -450,7 +452,7 @@ var onixProcessor = (function() {
 		
 		// 4.7.3 Instructions
 		
-		var haz_hd = document.createElement('h3');
+		var haz_hd = document.createElement(hd_type);
 			haz_hd.appendChild(document.createTextNode('Hazards'));
 		result.appendChild(haz_hd);
 		
@@ -522,7 +524,7 @@ var onixProcessor = (function() {
 		
 		// 4.8.3 Instructions
 		
-		var sum_hd = document.createElement('h3');
+		var sum_hd = document.createElement(hd_type);
 			sum_hd.appendChild(document.createTextNode('Accessibility summary'));
 		result.appendChild(sum_hd);
 		
@@ -597,7 +599,7 @@ var onixProcessor = (function() {
 		
 		// 4.9.3 Instructions
 		
-		var legal_hd = document.createElement('h3');
+		var legal_hd = document.createElement(hd_type);
 			legal_hd.appendChild(document.createTextNode('Legal considerations'));
 		result.appendChild(legal_hd);
 		
@@ -621,7 +623,7 @@ var onixProcessor = (function() {
 		 * 4.10 Additional accessibility information
 		 */
 		 
-		var aai_hd = document.createElement('h3');
+		var aai_hd = document.createElement(hd_type);
 			aai_hd.appendChild(document.createTextNode('Additional accessibility information'));
 		result.appendChild(aai_hd);
 		

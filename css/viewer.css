@@ -48,18 +48,19 @@ h1 {
 }
 
 h2 {
-	display: inline-block;
-	font-size: 130%;
 	font-weight: normal;
-	color: rgb(0,0,100);
-	margin-top: 1.75em;
-	margin-bottom: 1rem;
+	font-size: 115%;
+	margin: -2rem -1.8rem 2rem -2rem;
+	padding: 0.5rem 0 0.5rem 2rem;
+	background-color: rgb(0,60,120);
+	color: rgb(255,255,255);
 }
 
 h3 {
-	font-size: 125%;
-	color: rgb(0,0,100);
+	display: inline-block;
+	font-size: 115%;
 	font-weight: normal;
+	color: rgb(0,0,100);
 	margin: 0;
 }
 
@@ -100,6 +101,19 @@ a.explainer-link img {
 
 dialog {
 	max-width: 80vw;
+}
+
+/* result dialog */
+
+dialog#result p,
+dialog#result ul {
+	margin-left: 3rem;
+}
+
+a.close {
+	position: absolute;
+	top: 0.5rem;
+	right: 2rem;
 }
 
 /* page headers and footers */

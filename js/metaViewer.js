@@ -1,11 +1,16 @@
 
 /* result dialog */
 
-var result_dialog = document.getElementById("result");
-var result_close = document.querySelector("dialog#result button");
+var result_dialog = document.getElementById('result');
+var result_close_button = document.getElementById("result-close-button");
+var result_close_img = document.getElementById("result-close-img");
 
-result_close.addEventListener("click", () => {
-  result_dialog.close();
+result_close_button.addEventListener("click", () => {
+  document.getElementById("result").close();
+});
+
+result_close_img.addEventListener("click", () => {
+  document.getElementById("result").close();
 });
 
 /* process input metadata */
@@ -15,7 +20,7 @@ function processXML() {
 	var xml = document.getElementById('input_packagedoc').value;
 	
 	// reest the result pane
-	var result_field = document.getElementById('result_body');
+	var result_field = document.getElementById('result-body');
 		result_field.textContent = '';
 	
 	console.clear();
@@ -62,16 +67,21 @@ function writeExplainerLink(id) {
 	return a;
 }
 
-var expl_dialog = document.getElementById("explainer");
-var expl_body = document.getElementById("explainer_body");
+var explainer_dialog = document.getElementById("explainer");
 
 function showExplainer(id) {
-	expl_body.innerHTML = document.getElementById(id).innerHTML;
-	expl_dialog.showModal();
+	var expl_body = document.getElementById("explainer-body");
+		expl_body.innerHTML = document.getElementById(id).innerHTML;
+	explainer_dialog.showModal();
 }
 
-var expl_close = document.querySelector("dialog#explainer button");
+var explainer_close_button = document.getElementById("explainer-close-button");
+var explainer_close_img = document.getElementById("explainer-close-img");
 
-expl_close.addEventListener("click", () => {
-  expl_dialog.close();
+explainer_close_button.addEventListener('click', () => {
+  explainer_dialog.close();
+});
+
+explainer_close_img.addEventListener('click', () => {
+  explainer_dialog.close();
 });
