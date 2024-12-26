@@ -4,17 +4,6 @@
 		<meta charset="utf-8" />
 		<title>DAISY Accessibility Metadata Viewer</title>
 		<link rel="stylesheet" type="text/css" href="css/viewer.css" />
-		<style>
-			input[type='button'] {
-				margin-top: 1rem;
-				width: 10rem;
-				padding: 1rem 0;
-				font-weight: bold;
-			}
-			select {
-				width: 20rem;
-			}
-		</style>
 	</head>
 	
 	<body>
@@ -46,18 +35,22 @@
 			</fieldset>
 			-->
 			
-			<div><input type="button" onclick="processXML()" value="Preview"/></div>
+			<div><button onclick="processXML()">Preview</button></div>
 			
 			<dialog id="result">
-				<h2>Metadata Display</h2>
-				<a href="#result-close" id="result-close-img" class="close" title="Close"><img src="graphics/close-icon.png" alt="Close"></a>
+				<div class="dialog-hd">
+					<h2>Metadata Display</h2>
+					<a href="#result-close" id="result-close-img" class="close" title="Close"><img src="graphics/close-icon.png" alt="Close"></a>
+				</div>
 				<div id="result-body"></div>
 				<button id="result-close-button">Close</button>
 			</dialog>
 			
 			<dialog id="explainer">
-				<h2>Explainer</h2>
-				<a href="#explainer-close" id="explainer-close-img" class="close" title="Close"><img src="graphics/close-icon.png" alt="Close"></a>
+				<div class="dialog-hd">
+					<h2>Explainer</h2>
+					<a href="#explainer-close" id="explainer-close-img" class="close" title="Close"><img src="graphics/close-icon.png" alt="Close"></a>
+				</div>
 				<div id="explainer-body"></div>
 				<button id="explainer-close-button">Close</button>
 			</dialog>

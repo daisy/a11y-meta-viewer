@@ -72,6 +72,11 @@ h1 a {
 
 a:link {
 	color: rgb(0,0,200);
+	text-decoration: none;
+}
+
+main a:link {
+	text-decoration: underline;
 }
 
 a:visited {
@@ -103,6 +108,18 @@ dialog {
 	max-width: 80vw;
 }
 
+.dialog-hd {
+	position: sticky;
+	top: -2rem;
+}
+
+button {
+	margin-top: 1rem;
+	font-weight: bold;
+	min-width: 10rem;
+	padding: 0.5rem;
+}
+
 /* result dialog */
 
 dialog#result p,
@@ -112,8 +129,12 @@ dialog#result ul {
 
 a.close {
 	position: absolute;
-	top: 0.5rem;
-	right: 2rem;
+	top: 0.7rem;
+	right: 0;
+}
+
+a.close img {
+	width: 2.4rem;
 }
 
 /* page headers and footers */
@@ -175,6 +196,10 @@ footer a {
 	color: rgb(255,255,255) !important;
 }
 
+footer a:hover {
+	color: rgb(250,250,200) !important;
+}
+
 /* sponsorship box */
 
 aside#sponsor.kb {
@@ -209,6 +234,9 @@ textarea {
 	width: 100%
 }
 
+select {
+	width: 20rem;
+}
 
 /* config dialog */
 
