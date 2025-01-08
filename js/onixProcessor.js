@@ -276,12 +276,12 @@ var onixProcessor = (function() {
 		 */
 		 
 		 // 4.4.2 Variables setup
-		 var audiobook = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:DescriptiveDetail[onix:PrimaryContentType = "81" or onix:ProductContentType = "81"]');
+		 var audiobook = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail[onix:PrimaryContentType = "81" or onix:ProductContentType = "81"]');
 		 var all_content_audio = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "39"]');
 		 var all_content_pre_recorded = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "51"]');
 		 var synchronised_pre_recorded_audio = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "20"]') && checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormDetail[normalize-space() = "A305"]');
-		 var non_textual_content_audio = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:DescriptiveDetail[contains(" 21 22 ", onix:PrimaryContentType) or contains(" 21 22 ", onix:ProductContentType)]');
-		 var non_textual_content_audio_in_video = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:DescriptiveDetail[contains(" 06 25 26 27 28 29 30 ", onix:PrimaryContentType) or contains(" 06 25 26 27 28 29 30 ", onix:ProductContentType)]');
+		 var non_textual_content_audio = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail[contains(" 21 22 ", onix:PrimaryContentType) or contains(" 21 22 ", onix:ProductContentType)]');
+		 var non_textual_content_audio_in_video = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail[contains(" 06 25 26 27 28 29 30 ", onix:PrimaryContentType) or contains(" 06 25 26 27 28 29 30 ", onix:ProductContentType)]');
 		
 		// 4.4.3 Instructions
 		
@@ -329,39 +329,46 @@ var onixProcessor = (function() {
 			nav_hd.appendChild(document.createTextNode('Navigation'));
 		result.appendChild(nav_hd);
 		
-		var nav_result = document.createElement('p');
-		
 		if (table_of_contents_navigation || index_navigation || print_equivalent_page_numbering || next_previous_structural_navigation) {
 			
-			var navigation = [];
+			var navigation = document.createElement('ul');
 			
 			if (table_of_contents_navigation) {
-				navigation.push("table of contents");
+				var li = document.createElement('li');
+					li.appendChild(document.createTextNode('Table of contents'));
+				navigation.appendChild(li);
 			}
 			
 			if (index_navigation) {
-				navigation.push("index");
+				var li = document.createElement('li');
+					li.appendChild(document.createTextNode('Index'));
+				navigation.appendChild(li);
 			}
 			
 			if (print_equivalent_page_numbering) {
-				navigation.push("supports page navigation");
+				var li = document.createElement('li');
+					li.appendChild(document.createTextNode('Supports page navigation'));
+				navigation.appendChild(li);
 			}
 			
 			if (next_previous_structural_navigation) {
-				navigation.push("headings");
+				var li = document.createElement('li');
+					li.appendChild(document.createTextNode('Headings'));
+				navigation.appendChild(li);
 			}
 			
-			var navigation_string = joinArray(navigation);
-				navigation_string = "Navigation by " + navigation_string;
-			
-			nav_result.appendChild(document.createTextNode(navigation_string));
+			result.appendChild(navigation);
 		}
 		
 		else {
-			nav_result.appendChild(document.createTextNode('No information about navigation is available'));
+			var p = document.createElement('p');
+				p.appendChild(document.createTextNode('No information is available'));
+				
+				// add punctuation - not in algorithm
+				p.appendChild(document.createTextNode('.'));
+			
+			result.appendChild(p);
 		}
-		
-		result.appendChild(nav_result);
 		
 		
 		/* 
@@ -369,13 +376,13 @@ var onixProcessor = (function() {
 		 */
 		 
 		 // 4.6.2 Variables setup
-		var contains_charts_diagrams  = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:DescriptiveDetail[onix:PrimaryContentType = "19" or onix:ProductContentType = "19"]');
+		var contains_charts_diagrams  = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail[onix:PrimaryContentType = "19" or onix:ProductContentType = "19"]');
 		var charts_diagrams_as_non_graphical_data = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "16"]');
 		var charts_diagrams_diagrams_as_long_text = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "15"]');
-		var contains_chemical_formula = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:DescriptiveDetail[onix:PrimaryContentType = "47" or onix:ProductContentType = "47"]');
+		var contains_chemical_formula = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail[onix:PrimaryContentType = "47" or onix:ProductContentType = "47"]');
 		var chemical_formula_as_chemml = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "18"]');
 		var chemical_formula_as_mathml = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "34"]');
-		var contains_math_formula = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:DescriptiveDetail[onix:PrimaryContentType = "48" or onix:ProductContentType = "48"]');
+		var contains_math_formula = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail[onix:PrimaryContentType = "48" or onix:ProductContentType = "48"]');
 		var math_formula_as_latex = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "35"]');
 		var math_formula_as_mathml = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "17"]');
 		
@@ -456,53 +463,64 @@ var onixProcessor = (function() {
 			haz_hd.appendChild(document.createTextNode('Hazards'));
 		result.appendChild(haz_hd);
 		
-		var haz_result = document.createElement('p');
-		
 		if (no_hazards_or_warnings_confirmed || (no_flashing_hazards && no_motion_hazards && no_sound_hazards)) {
-			haz_result.appendChild(document.createTextNode('No hazards'));
+			var p = document.createElement('p');
+				p.appendChild(document.createTextNode('No hazards'));
+			result.appendChild(p);
 		}
 		
 		else if (flashing_hazard || motion_simulation_hazard || sound_hazard) {
 		
-			var hazards = [];
-		
 			if (flashing_hazard) {
-				hazards.push('flashing');
+				var p = document.createElement('p');
+					p.appendChild(document.createTextNode('Flashing'));
+			
+				// add punctuation - not in algorithm
+				p.appendChild(document.createTextNode('.'));
+				
+				hazards.appendChild(p);
 			}
 			
 			if (motion_simulation_hazard) {
-				hazards.push('motion simulation');
+				var p = document.createElement('p');
+					p.appendChild(document.createTextNode('Motion simulation'));
+			
+				// add punctuation - not in algorithm
+				p.appendChild(document.createTextNode('.'));
+				
+				hazards.appendChild(p);
 			}
 			
 			if (sound_hazard) {
-				hazards.push('sound');
-			}
+				var p = document.createElement('p');
+					p.appendChild(document.createTextNode('Loud sounds'));
 			
-			var hazards_string = joinArray(hazards);
-				hazards_string = String(hazards_string).charAt(0).toUpperCase() + String(hazards_string).slice(1);
-			
-			if (hazards.length > 1) {
-				hazards_string = hazards_string + ' hazards';	
+				// add punctuation - not in algorithm
+				p.appendChild(document.createTextNode('.'));
+				
+				hazards.appendChild(p);
 			}
-			else {
-				hazards_string = hazards_string + ' hazard';	
-			}
-			
-			haz_result.appendChild(document.createTextNode(hazards_string));
 		}
 
 		else if (unknown_if_contains_hazards) {
-			haz_result.appendChild(document.createTextNode('The presence of hazards is unknown'));
+			var p = document.createElement('p');
+				p.appendChild(document.createTextNode('The presence of hazards is unknown'));
+		
+			// add punctuation - not in algorithm
+			p.appendChild(document.createTextNode('.'));
+			
+			result.appendChild(p);
 		}
 		
 		else {
-			haz_result.appendChild(document.createTextNode('No information about possible hazards is available'));
+			var p = document.createElement('p');
+				p.appendChild(document.createTextNode('No information is available'));
+		
+			// add punctuation - not in algorithm
+			p.appendChild(document.createTextNode('.'));
+			
+			result.appendChild(p);
 		}
-		
-		// add punctuation - not in algorithm
-		haz_result.appendChild(document.createTextNode('.'));
-		
-		result.appendChild(haz_result);
 		
 		
 		/* 
@@ -627,6 +645,8 @@ var onixProcessor = (function() {
 			aai_hd.appendChild(document.createTextNode('Additional accessibility information'));
 		result.appendChild(aai_hd);
 		
+		var aai = document.createElement('ul');
+		
 		// 4.10.1 Adaptation
 		// 4.10.1.2 Variables setup
 		var dyslexia_readability = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "24"]');
@@ -637,40 +657,18 @@ var onixProcessor = (function() {
 		
 		// 4.10.1.3 Instructions
 		
-		var adaptation = [];
-		
 		if (dyslexia_readability) {
-			adaptation.push('dyslexia readability');
-		}
-		
-		if (closed_captions) {
-			adaptation.push('closed captions');
-		}
-		
-		if (open_captions) {
-			adaptation.push('open captions');
-		}
-		
-		if (full_transcript) {
-			adaptation.push('full transcript');
+			var li = document.createElement('li');
+				li.appendChild(document.createTextNode('Dyslexia readability'));
+			aai.appendChild(li);
 		}
 		
 		if (sign_language) {
-			adaptation.push('sign language');
+			var li = document.createElement('li');
+				li.appendChild(document.createTextNode('Sign language'));
+			aai.appendChild(li);
 		}
 		
-		if (adaptation.length) {
-			var adaptation_string = joinArray(adaptation);
-				adaptation_string = String(adaptation_string).charAt(0).toUpperCase() + String(adaptation_string).slice(1);
-
-			var adapt_result = document.createElement('p');
-				adapt_result.appendChild(document.createTextNode('Adaptability: ' + adaptation_string));
-			
-			// add punctuation - not in algorithm
-			adapt_result.appendChild(document.createTextNode('.'));
-			
-			result.appendChild(adapt_result);
-		}
 		
 		// 4.10.2 Clarity
 		// 4.10.2.2 Variables setup
@@ -687,45 +685,48 @@ var onixProcessor = (function() {
 		var clarity = [];
 		
 		if (text_to_speech_hinting) {
-			clarity.push('text-to-speech hinting provided');
+			var li = document.createElement('li');
+				li.appendChild(document.createTextNode('Text-to-speech hinting provided'));
+			aai.appendChild(li);
 		}
 		
 		if (color_not_sole_means_of_conveying_information) {
-			clarity.push('color is not the sole means of conveying information');
+			var li = document.createElement('li');
+				li.appendChild(document.createTextNode('Color is not the sole means of conveying information'));
+			aai.appendChild(li);
 		}
 		
 		if (high_contrast_between_text_and_background) {
-			clarity.push('high contrast between text and background');
+			var li = document.createElement('li');
+				li.appendChild(document.createTextNode('High contrast between text and background'));
+			aai.appendChild(li);
 		}
 		
 		if (ultra_high_contrast_between_text_and_background) {
-			clarity.push('ultra high contrast between text and background');
+			var li = document.createElement('li');
+				li.appendChild(document.createTextNode('Ultra high contrast between text and background'));
+			aai.appendChild(li);
 		}
 		
 		if (visible_page_numbering) {
-			clarity.push('visible page numbering');
+			var li = document.createElement('li');
+				li.appendChild(document.createTextNode('Visible page numbering'));
+			aai.appendChild(li);
 		}
 		
 		if (high_contrast_between_foreground_and_background_audio) {
-			clarity.push('high contrast between foreground and background audio');
+			var li = document.createElement('li');
+				li.appendChild(document.createTextNode('High contrast between foreground and background audio'));
+			aai.appendChild(li);
 		}
 		
 		if (without_background_sounds) {
-			clarity.push('without background sounds');
+			var li = document.createElement('li');
+				li.appendChild(document.createTextNode('Without background sounds'));
+			aai.appendChild(li);
 		}
 		
-		if (clarity.length) {
-			var clarity_string = joinArray(adaptation);
-				clarity_string = String(clarity_string).charAt(0).toUpperCase() + String(clarity_string).slice(1);
-
-			var clarity_result = document.createElement('p');
-				clarity_result.appendChild(document.createTextNode('Clarity: ' + clarity_string));
-			
-			// add punctuation - not in algorithm
-			clarity_result.appendChild(document.createTextNode('.'));
-			
-			result.appendChild(clarity_result);
-		}
+		result.appendChild(aai);
 		
 		return result;
 	}
@@ -765,14 +766,6 @@ var onixProcessor = (function() {
 				return "http://ns.editeur.org/onix/3.0/reference";
 		}
 	}	
-	
-	// 3.3 Join array to comma list
-	
-	function joinArray(string_array) {
-		var output_string = string_array.join(', ');
-			output_string = output_string.replace(/, ([^,]+)$/, ', and $1');
-			return output_string;
-	}
 	
 	return {
 		processOnixRecord: function(onixRecord) {

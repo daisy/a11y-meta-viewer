@@ -343,13 +343,13 @@ var packageProcessor = (function() {
 		}
 		
 		else {
-			var nav_result = document.createElement('p');
-				nav_result.appendChild(document.createTextNode('No information is available'));
+			var p = document.createElement('p');
+				p.appendChild(document.createTextNode('No information is available'));
 				
 				// add punctuation - not in algorithm
-				nav_result.appendChild(document.createTextNode('.'));
+				p.appendChild(document.createTextNode('.'));
 			
-			result.appendChild(nav_result);
+			result.appendChild(p);
 		}
 		
 		
@@ -516,7 +516,7 @@ var packageProcessor = (function() {
 				// add punctuation - not in algorithm
 				p.appendChild(document.createTextNode('.'));
 				
-				hazards.appendChild(p);
+				result.appendChild(p);
 			}
 			
 			if (motion_simulation_hazard) {
@@ -526,7 +526,7 @@ var packageProcessor = (function() {
 				// add punctuation - not in algorithm
 				p.appendChild(document.createTextNode('.'));
 				
-				hazards.appendChild(p);
+				result.appendChild(p);
 			}
 			
 			if (sound_hazard) {
@@ -536,7 +536,7 @@ var packageProcessor = (function() {
 				// add punctuation - not in algorithm
 				p.appendChild(document.createTextNode('.'));
 				
-				hazards.appendChild(p);
+				result.appendChild(p);
 			}
 		}
 
@@ -547,7 +547,7 @@ var packageProcessor = (function() {
 			// add punctuation - not in algorithm
 			p.appendChild(document.createTextNode('.'));
 			
-			hazards.appendChild(p);
+			result.appendChild(p);
 		}
 		
 		else {
@@ -557,7 +557,7 @@ var packageProcessor = (function() {
 			// add punctuation - not in algorithm
 			p.appendChild(document.createTextNode('.'));
 			
-			hazards.appendChild(p);
+			result.appendChild(p);
 		}
 		
 		
@@ -642,6 +642,8 @@ var packageProcessor = (function() {
 			aai_hd.appendChild(document.createTextNode('Additional accessibility information'));
 		result.appendChild(aai_hd);
 		
+		var aai = document.createElement('ul');
+		
 		// 4.10.1 Adaptation
 		// 4.10.1.2 Variables setup
 		var audio_descriptions = checkForNode(package_document, '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="audioDescription"]');
@@ -651,8 +653,6 @@ var packageProcessor = (function() {
 		var sign_language = checkForNode(package_document, '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="signLanguage"]');
 		
 		// 4.10.1.3 Instructions
-		
-		var aai = document.createElement('ul');
 		
 		if (audio_descriptions) {
 			var li = document.createElement('li');
@@ -786,14 +786,6 @@ var packageProcessor = (function() {
 				return "http://www.idpf.org/2007/opf";
 		}
 	}	
-	
-	// 3.3 Join array to comma list
-	
-	function joinArray(string_array) {
-		var output_string = string_array.join(', ');
-			output_string = output_string.replace(/, ([^,]+)$/, ', and $1');
-			return output_string;
-	}
 	
 	
 	return {
