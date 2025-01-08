@@ -467,18 +467,20 @@ var packageProcessor = (function() {
 			
 			richcontent.appendChild(li);
 		}
-
-		if (!(math_formula_as_mathml || math_formula_as_latex || (contains_math_formula && long_text_descriptions) || chemical_formula_as_mathml || long_text_descriptions || closed_captions || open_captions || transcript)) {
-			var li = document.createElement('li');
-				li.appendChild(document.createTextNode('No information is available'));
-			
-			// add punctuation - not in algorithm
-			li.appendChild(document.createTextNode('.'));
-			
-			richcontent.appendChild(li);
+		
+		if (richcontent.childElementCount) {
+			result.appendChild(richcontent);
 		}
 		
-		result.appendChild(richcontent);
+		if (!(math_formula_as_mathml || math_formula_as_latex || (contains_math_formula && long_text_descriptions) || chemical_formula_as_mathml || long_text_descriptions || closed_captions || open_captions || transcript)) {
+			var p = document.createElement('p');
+				p.appendChild(document.createTextNode('No information is available'));
+			
+			// add punctuation - not in algorithm
+			p.appendChild(document.createTextNode('.'));
+			
+			result.appendChild(p);
+		}
 		
 		
 		/* 
