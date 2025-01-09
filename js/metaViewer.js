@@ -28,11 +28,12 @@ function processXML() {
 	var result;
 	
 	if (xml.match('<package ')) {
-		result = packageProcessor.processPackageDoc(xml, result_field);
+		var version = xml.match('version="2.0"') ? 'epub2' : 'epub3';
+		result = packageProcessor.processPackageDoc(xml, version);
 	}
 	
 	else if (xml.match('<ONIXMessage ')) {
-		result = onixProcessor.processOnixRecord(xml, result_field);
+		result = onixProcessor.processOnixRecord(xml);
 	}
 	
 	else {

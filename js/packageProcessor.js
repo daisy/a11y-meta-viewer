@@ -3,9 +3,245 @@
 
 var packageProcessor = (function() {
 
+	var xpath = {
+		all_textual_content_can_be_modified: {
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="displayTransformability"]',
+			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessibilityFeature" and @content="displayTransformability"]'
+		},
+		is_fixed_layout: {
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="rendition:layout" and normalize-space()="pre-paginated"]',
+			epub2: '/opf:package/opf:metadata/opf:meta[@name="rendition:layout" and @content="pre-paginated"]'
+		},
+		all_necessary_content_textual: {
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessModeSufficient" and normalize-space()="textual"]',
+			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessModeSufficient" and @content="textual"]'
+		},
+		non_textual_content_images: {
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessMode" and contains(" chartOnVisual chemOnVisual diagramOnVisual mathOnVisual musicOnVisual textOnVisual ", normalize-space())]',
+			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessMode" and contains(" chartOnVisual chemOnVisual diagramOnVisual mathOnVisual musicOnVisual textOnVisual ", @content)]'
+		},
+		textual_alternative_images: {
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and contains(" longDescription alternativeText describedMath ", normalize-space())]',
+			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessibilityFeature" and contains(" longDescription alternativeText describedMath ", @content)]'
+		},
+		epub10a: {
+			epub3: '/package/metadata/link[@rel="dcterms:conformsTo" and @href="http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-a"] | /package/metadata/meta[@property="dcterms:conformsTo" and normalize-space() = "http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-a"]',
+			epub2: '/package/metadata/meta[@name="dcterms:conformsTo" and @content="http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-a"]'
+		},
+		epub10aa: {
+			epub3: '/package/metadata/link[@rel="dcterms:conformsTo" and @href="http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-aa"] | /package/metadata/meta[@property="dcterms:conformsTo" and text() = "http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-aa"]',
+			epub2: '/package/metadata/meta[@name="dcterms:conformsTo" and @content="http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-aa"]'
+		},
+		epub10aaa: {
+			epub3: '/package/metadata/link[@rel="dcterms:conformsTo" and @href="http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-aaa"] | /package/metadata/meta[@property="dcterms:conformsTo" and text() = "http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-aaa"]',
+			epub2: '/package/metadata/meta[@name="dcterms:conformsTo" and @content="http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-aaa"]'
+		},
+		conformance: {
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="dcterms:conformsTo" and contains(normalize-space(), "EPUB Accessibility 1.1 - WCAG 2.")]',
+			epub2: '/opf:package/opf:metadata/opf:meta[@name="dcterms:conformsTo" and contains(@content, "EPUB Accessibility 1.1 - WCAG 2.")]/@content'
+		},
+		certifier: {
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="a11y:certifiedBy"]',
+			epub2: '/opf:package/opf:metadata/opf:meta[@name="a11y:certifiedBy"]/@content'
+		},
+		certifier_credentials: {
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="a11y:certifierCredential"]',
+			epub2: '/opf:package/opf:metadata/opf:meta[@name="a11y:certifierCredential"]/@content'
+		},
+		certification_date: {
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="dcterms:date" and @refines=//opf:meta[@property="a11y:certifiedBy"]/@id]',
+			epub2: '/opf:package/opf:metadata/opf:meta[@name="dcterms:date"]/@content'
+		},
+		certifier_report: {
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="a11y:certifierReport"]',
+			epub2: '/opf:package/opf:metadata/opf:meta[@name="a11y:certifierReport"]/@content'
+		},
+		all_content_audio: {
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessModeSufficient" and normalize-space()="auditory"]',
+			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessModeSufficient" and @content="auditory"]'
+		},
+		synchronised_pre_recorded_audio: {
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="sychronizedAudioText"]',
+			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessibilityFeature" and @content="sychronizedAudioText"]'
+		},
+		audio_content: {
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessMode" and normalize-space()="auditory"]',
+			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessMode" and @content="auditory"]'
+		},
+		table_of_contents_navigation: {
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="tableOfContents"]',
+			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessibilityFeature" and @content="tableOfContents"]'
+		},
+		index_navigation: {
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="index"]',
+			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessibilityFeature" and @content="index"]'
+		},
+		page_navigation: {
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="pageNavigation"]',
+			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessibilityFeature" and @content="pageNavigation"]'
+		},
+		next_previous_structural_navigation: {
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="structuralNavigation"]',
+			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessibilityFeature" and @content="structuralNavigation"]'
+		},
+		contains_charts_diagrams: {
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessMode" and normalize-space()="chartOnVisual"]',
+			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessMode" and @content="chartOnVisual"]'
+		},
+		long_text_descriptions: {
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="longDescriptions"]',
+			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessibilityFeature" and @content="longDescriptions"]'
+		},
+		contains_chemical_formula: {
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessMode" and normalize-space()="chemOnVisual"]',
+			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessMode" and @content="chemOnVisual"]'
+		},
+		chemical_formula_as_latex: {
+			epub3: '/package/metadata/meta[@property="schema:accessibilityFeature" and normalize-space()="latex-chemistry"]',
+			epub2: '/package/metadata/meta[@name="schema:accessibilityFeature" and @content="latex-chemistry"]'
+		},
+		chemical_formula_as_mathml: {
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="MathML-chemistry"]',
+			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessibilityFeature" and @content="MathML-chemistry"]'
+		},
+		contains_math_formula: {
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="describedMath"]',
+			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessibilityFeature" and @content="describedMath"]'
+		},
+		math_formula_as_latex: {
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="latex"]',
+			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessibilityFeature" and @content="latex"]'
+		},
+		math_formula_as_mathml: {
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="MathML"]',
+			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessibilityFeature" and @content="MathML"]'
+		},
+		closed_captions: {
+			epub3: '/package/metadata/meta[@property="schema:accessibilityFeature" and normalize-space()="closedCaptions"]',
+			epub2: '/package/metadata/meta[@name="schema:accessibilityFeature" and @content="closedCaptions"]'
+		},
+		open_captions: {
+			epub3: '/package/metadata/meta[@property="schema:accessibilityFeature" and normalize-space()="openCaptions"]',
+			epub2: '/package/metadata/meta[@name="schema:accessibilityFeature" and @content="openCaptions"]'
+		},
+		transcript: {
+			epub3: '/package/metadata/meta[@property="schema:accessibilityFeature" and normalize-space()="transcript"]',
+			epub2: '/package/metadata/meta[@name="schema:accessibilityFeature" and @content="transcript"]'
+		},
+		no_hazards_or_warnings_confirmed: {
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityHazard" and normalize-space()="none"]',
+			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessibilityHazard" and @content="none"]'
+		},
+		flashing_hazard: {
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityHazard" and normalize-space()="flashing"]',
+			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessibilityHazard" and @content="flashing"]'
+		},
+		no_flashing_hazards: {
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityHazard" and normalize-space()="noFlashingHazard"]',
+			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessibilityHazard" and @content="noFlashingHazard"]'
+		},
+		motion_simulation_hazard: {
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityHazard" and normalize-space()="motionSimulation"]',
+			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessibilityHazard" and @content="motionSimulation"]'
+		},
+		no_motion_hazards: {
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityHazard" and normalize-space()="noMotionSimulation"]',
+			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessibilityHazard" and @content="noMotionSimulation"]'
+		},
+		sound_hazard: {
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityHazard" and normalize-space()="sound"]',
+			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessibilityHazard" and @content="sound"]'
+		},
+		no_sound_hazards: {
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityHazard" and normalize-space()="noSoundHazard"]',
+			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessibilityHazard" and @content="noSoundHazard"]'
+		},
+		unknown_if_contains_hazards: {
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityHazard" and normalize-space()="unknown"]',
+			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessibilityHazard" and @content="unknown"]'
+		},
+		accessibility_summary: {
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilitySummary"][1]',
+			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessibilitySummary"][1]/@content'
+		},
+		lang_attribute_accessibility_summary: {
+			epub3: '(/opf:package/opf:metadata/opf:meta[@property="schema:accessibilitySummary"][1]/@xml:lang | /opf:package/@xml:lang)[last()]',
+			epub2: '(/opf:package/opf:metadata/opf:meta[@name="schema:accessibilitySummary"][1]/@xml:lang | /opf:package/@xml:lang)[last()]'
+		},
+		language_of_text: {
+			epub3: '/opf:package/opf:metadata/dc:language[1]',
+			epub2: '/opf:package/opf:metadata/dc:language[1]'
+		},
+		eaa_exemption_micro_enterprises: {
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="a11y:exemption" and normalize-space()="eaa-microenterprise"]',
+			epub2: '/opf:package/opf:metadata/opf:meta[@name="a11y:exemption" and @content="eaa-microenterprise"]'
+		},
+		eaa_exception_disproportionate_burden: {
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="a11y:exemption" and normalize-space()="eaa-disproportionate-burden"]',
+			epub2: '/opf:package/opf:metadata/opf:meta[@name="a11y:exemption" and @content="eaa-disproportionate-burden"]'
+		},
+		eaa_exception_fundamental_modification: {
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="a11y:exemption" and normalize-space()="eaa-fundamental-alteration"]',
+			epub2: '/opf:package/opf:metadata/opf:meta[@name="a11y:exemption" and @content="eaa-fundamental-alteration"]'
+		},
+		audio_descriptions: {
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="audioDescription"]',
+			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessibilityFeature" and @content="audioDescription"]'
+		},
+		braille: {
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="braille"]',
+			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessibilityFeature" and @content="braille"]'
+		},
+		tactile_graphic: {
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="tactileGraphic"]',
+			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessibilityFeature" and @content="tactileGraphic"]'
+		},
+		tactile_object: {
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="tactileObject"]',
+			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessibilityFeature" and @content="tactileObject"]'
+		},
+		sign_language: {
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="signLanguage"]',
+			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessibilityFeature" and @content="signLanguage"]'
+		},
+		aria: {
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="aria"]',
+			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessibilityFeature" and @content="aria"]'
+		},
+		full_ruby_annotations: {
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="fullRubyAnnotations"]',
+			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessibilityFeature" and @content="fullRubyAnnotations"]'
+		},
+		text_to_speech_hinting: {
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="ttsMarkup"]',
+			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessibilityFeature" and @content="ttsMarkup"]'
+		},
+		high_contrast_between_foreground_and_background_audio: {
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="highContrastAudio"]',
+			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessibilityFeature" and @content="highContrastAudio"]'
+		},
+		high_contrast_between_text_and_background: {
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="highContrastDisplay"]',
+			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessibilityFeature" and @content="highContrastDisplay"]'
+		},
+		large_print:  {
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="largePrint"]',
+			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessibilityFeature" and @content="largePrint"]'
+		},
+		page_break_markers: {
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="pageBreakMarkers"]',
+			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessibilityFeature" and @content="pageBreakMarkers"]'
+		},
+		ruby_annotations: {
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="rubyAnnotations"]',
+			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessibilityFeature" and @content="rubyAnnotations"]'
+		}
+	};
+
+
 	const hd_type = 'h3';
 	
-	function processPackageDoc(package_document_as_text) {
+	function processPackageDoc(package_document_as_text, version) {
 	
 		var result = document.createElement('div');
 		
@@ -25,8 +261,8 @@ var packageProcessor = (function() {
 		 */
 		 
 		// 4.1.2 Variables setup
-		var all_textual_content_can_be_modified = checkForNode(package_document, '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="displayTransformability"]');
-		var is_fixed_layout = checkForNode(package_document, '/opf:package/opf:metadata/opf:meta[@property="rendition:layout" and normalize-space()="pre-paginated"]');
+		var all_textual_content_can_be_modified = checkForNode(package_document, xpath.all_textual_content_can_be_modified[version]);
+		var is_fixed_layout = checkForNode(package_document, xpath.is_fixed_layout[version]);
 		
 		// 4.1.3 Instructions
 		
@@ -64,9 +300,9 @@ var packageProcessor = (function() {
 		 */
 		 
 		// 4.2.2 Variables setup
-		var all_necessary_content_textual = checkForNode(package_document, '/opf:package/opf:metadata/opf:meta[@property="schema:accessModeSufficient" and normalize-space()="textual"]');
-		var non_textual_content_images = checkForNode(package_document, '/opf:package/opf:metadata/opf:meta[@property="schema:accessMode" and contains(" chartOnVisual chemOnVisual diagramOnVisual mathOnVisual musicOnVisual textOnVisual ", normalize-space())]');
-		var textual_alternative_images = checkForNode(package_document, '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and contains(" longDescription alternativeText describedMath ", normalize-space())]');
+		var all_necessary_content_textual = checkForNode(package_document, xpath.all_necessary_content_textual[version]);
+		var non_textual_content_images = checkForNode(package_document, xpath.non_textual_content_images[version]);
+		var textual_alternative_images = checkForNode(package_document, xpath.textual_alternative_images[version]);
 		
 		// 4.2.3 Instructions
 		
@@ -110,17 +346,17 @@ var packageProcessor = (function() {
 		var conformance_string = '';
 		var wcag_level = '';
 		
-		if (checkForNode(package_document, '/package/metadata/link[@rel="dcterms:conformsTo" and @href="http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-a"] | /package/metadata/meta[@property="dcterms:conformsTo" and normalize-space() = "http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-a"]')) {
+		if (checkForNode(package_document, xpath.epub10a[version])) {
 			conformance_string = 'EPUB Accessibility 1.0 WCAG 2.0 Level A';
 			wcag_level = 'A';
 		}
 		
-		if (checkForNode(package_document, '/package/metadata/link[@rel="dcterms:conformsTo" and @href="http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-aa"] | /package/metadata/meta[@property="dcterms:conformsTo" and text() = "http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-aa"]')) {
+		if (checkForNode(package_document, xpath.epub10aa[version])) {
 			conformance_string = 'EPUB Accessibility 1.0 WCAG 2.0 Level AA';
 			wcag_level = 'AA';
 		}
 		
-		if (checkForNode(package_document, '/package/metadata/link[@rel="dcterms:conformsTo" and @href="http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-aaa"] | /package/metadata/meta[@property="dcterms:conformsTo" and text() = "http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-aaa"]')) {
+		if (checkForNode(package_document, xpath.epub10aaa[version])) {
 			conformance_string = 'EPUB Accessibility 1.0 WCAG 2.0 Level AAA';
 			wcag_level = 'AAA';
 		}
@@ -129,7 +365,7 @@ var packageProcessor = (function() {
 		// /opf:package/opf:metadata/opf:meta[@property="dcterms:conformsTo" and matches(normalize-space(), "EPUB Accessibility 1\.1 - WCAG 2\.[0-2] Level [A]+")]
 		// using contains() instead to match most of it
 		
-		var conformance = package_document.evaluate('/opf:package/opf:metadata/opf:meta[@property="dcterms:conformsTo" and contains(normalize-space(), "EPUB Accessibility 1.1 - WCAG 2.")]', package_document, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+		var conformance = package_document.evaluate(xpath.conformance[version], package_document, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
 		
 		if (conformance) {
 			conformance_string = conformance.replace(' - ', ' ');
@@ -138,10 +374,10 @@ var packageProcessor = (function() {
 			wcag_level = conformance.replace(level_re, '');
 		}
 		
-		var certifier = package_document.evaluate('/opf:package/opf:metadata/opf:meta[@property="a11y:certifiedBy"]', package_document, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
-		var certifier_credentials = package_document.evaluate('/opf:package/opf:metadata/opf:meta[@property="a11y:certifierCredential"]', package_document, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
-		var certification_date = package_document.evaluate('/opf:package/opf:metadata/opf:meta[@property="dcterms:date" and @refines=//opf:meta[@property="a11y:certifiedBy"]/@id]', package_document, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
-		var certifier_report = package_document.evaluate('/opf:package/opf:metadata/opf:meta[@property="a11y:certifierReport"]', package_document, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+		var certifier = package_document.evaluate(xpath.certifier[version], package_document, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+		var certifier_credentials = package_document.evaluate(xpath.certifier_credentials[version], package_document, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+		var certification_date = package_document.evaluate(xpath.certification_date[version], package_document, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+		var certifier_report = package_document.evaluate(xpath.certifier_report[version], package_document, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
 		
 		// 4.3.3 Instructions
 		
@@ -150,7 +386,9 @@ var packageProcessor = (function() {
 		result.appendChild(conf_hd);
 		
 		if (!conformance_string) {
-			result.appendChild(document.createTextNode('No information is available.'));
+			var p = document.createElement('p');
+				p.appendChild(document.createTextNode('No information is available.'))
+			result.appendChild(p);
 		}
 		
 		else {
@@ -261,9 +499,9 @@ var packageProcessor = (function() {
 		 */
 		 
 		// 4.4.2 Variables setup
-		var all_content_audio = checkForNode(package_document, '/opf:package/opf:metadata/opf:meta[@property="schema:accessModeSufficient" and normalize-space()="auditory"]');
-		var synchronised_pre_recorded_audio = checkForNode(package_document, '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="sychronizedAudioText"]');
-		var audio_content = checkForNode(package_document, '/opf:package/opf:metadata/opf:meta[@property="schema:accessMode" and normalize-space()="auditory"]');
+		var all_content_audio = checkForNode(package_document, xpath.all_content_audio[version]);
+		var synchronised_pre_recorded_audio = checkForNode(package_document, xpath.synchronised_pre_recorded_audio[version]);
+		var audio_content = checkForNode(package_document, xpath.audio_content[version]);
 		
 		// 4.4.3 Instructions
 		
@@ -300,10 +538,10 @@ var packageProcessor = (function() {
 		 */
 		 
 		// 4.5.2 Variables setup
-		var table_of_contents_navigation = checkForNode(package_document, '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="tableOfContents"]');
-		var index_navigation = checkForNode(package_document, '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="index"]');
-		var page_navigation = checkForNode(package_document, '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="pageNavigation"]');
-		var next_previous_structural_navigation = checkForNode(package_document, '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="structuralNavigation"]');
+		var table_of_contents_navigation = checkForNode(package_document, xpath.table_of_contents_navigation[version]);
+		var index_navigation = checkForNode(package_document, xpath.index_navigation[version]);
+		var page_navigation = checkForNode(package_document, xpath.page_navigation[version]);
+		var next_previous_structural_navigation = checkForNode(package_document, xpath.next_previous_structural_navigation[version]);
 		
 		// 4.5.3 Instructions
 		
@@ -358,17 +596,17 @@ var packageProcessor = (function() {
 		 */
 		 
 		// 4.6.2 Variables setup
-		var contains_charts_diagrams = checkForNode(package_document, '/opf:package/opf:metadata/opf:meta[@property="schema:accessMode" and normalize-space()="chartOnVisual"]');
-		var long_text_descriptions = checkForNode(package_document, '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="longDescriptions"]');
-		var contains_chemical_formula = checkForNode(package_document, '/opf:package/opf:metadata/opf:meta[@property="schema:accessMode" and normalize-space()="chemOnVisual"]');
-		var chemical_formula_as_latex = checkForNode(package_document, '/package/metadata/meta[@property="schema:accessibilityFeature" and normalize-space()="latex-chemistry"]');
-		var chemical_formula_as_mathml = checkForNode(package_document, '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="MathML-chemistry"]');
-		var contains_math_formula = checkForNode(package_document, '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="describedMath"]');
-		var math_formula_as_latex = checkForNode(package_document, '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="latex"]');
-		var math_formula_as_mathml = checkForNode(package_document, '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="MathML"]');
-		var closed_captions = checkForNode(package_document, '/package/metadata/meta[@property="schema:accessibilityFeature" and normalize-space()="closedCaptions"]');
-		var open_captions = checkForNode(package_document, '/package/metadata/meta[@property="schema:accessibilityFeature" and normalize-space()="openCaptions"]');
-		var transcript = checkForNode(package_document, '/package/metadata/meta[@property="schema:accessibilityFeature" and normalize-space()="transcript"]');
+		var contains_charts_diagrams = checkForNode(package_document, xpath.contains_charts_diagrams[version]);
+		var long_text_descriptions = checkForNode(package_document, xpath.long_text_descriptions[version]);
+		var contains_chemical_formula = checkForNode(package_document, xpath.contains_chemical_formula[version]);
+		var chemical_formula_as_latex = checkForNode(package_document, xpath.chemical_formula_as_latex[version]);
+		var chemical_formula_as_mathml = checkForNode(package_document, xpath.chemical_formula_as_mathml[version]);
+		var contains_math_formula = checkForNode(package_document, xpath.contains_math_formula[version]);
+		var math_formula_as_latex = checkForNode(package_document, xpath.math_formula_as_latex[version]);
+		var math_formula_as_mathml = checkForNode(package_document, xpath.math_formula_as_mathml[version]);
+		var closed_captions = checkForNode(package_document, xpath.closed_captions[version]);
+		var open_captions = checkForNode(package_document, xpath.open_captions[version]);
+		var transcript = checkForNode(package_document, xpath.transcript[version]);
 		
 		// 4.6.3 Instructions
 		
@@ -488,14 +726,14 @@ var packageProcessor = (function() {
 		 */
 		 
 		 // 4.7.2 Variables setup
-		var no_hazards_or_warnings_confirmed = checkForNode(package_document, '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityHazard" and normalize-space()="none"]');
-		var flashing_hazard = checkForNode(package_document, '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityHazard" and normalize-space()="flashing"]');
-		var no_flashing_hazards = checkForNode(package_document, '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityHazard" and normalize-space()="noFlashingHazard"]');
-		var motion_simulation_hazard = checkForNode(package_document, '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityHazard" and normalize-space()="motionSimulation"]');
-		var no_motion_hazards = checkForNode(package_document, '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityHazard" and normalize-space()="noMotionSimulation"]');
-		var sound_hazard = checkForNode(package_document, '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityHazard" and normalize-space()="sound"]');
-		var no_sound_hazards = checkForNode(package_document, '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityHazard" and normalize-space()="noSoundHazard"]');
-		var unknown_if_contains_hazards = checkForNode(package_document, '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityHazard" and normalize-space()="unknown"]');
+		var no_hazards_or_warnings_confirmed = checkForNode(package_document, xpath.no_hazards_or_warnings_confirmed[version]);
+		var flashing_hazard = checkForNode(package_document, xpath.flashing_hazard[version]);
+		var no_flashing_hazards = checkForNode(package_document, xpath.no_flashing_hazards[version]);
+		var motion_simulation_hazard = checkForNode(package_document, xpath.motion_simulation_hazard[version]);
+		var no_motion_hazards = checkForNode(package_document, xpath.no_motion_hazards[version]);
+		var sound_hazard = checkForNode(package_document, xpath.sound_hazard[version]);
+		var no_sound_hazards = checkForNode(package_document, xpath.no_sound_hazards[version]);
+		var unknown_if_contains_hazards = checkForNode(package_document, xpath.unknown_if_contains_hazards[version]);
 		
 		// 4.7.3 Instructions
 		
@@ -568,9 +806,9 @@ var packageProcessor = (function() {
 		 */
 		 
 		 // 4.8.2 Variables setup
-		var accessibility_summary =  package_document.evaluate('/opf:package/opf:metadata/opf:meta[@property="schema:accessibilitySummary"][1]', package_document, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
-		var lang_attribute_accessibility_summary = package_document.evaluate('(/opf:package/opf:metadata/opf:meta[@property="schema:accessibilitySummary"][1]/@xml:lang | /opf:package/@xml:lang)[last()]', package_document, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
-		var language_of_text = package_document.evaluate('/opf:package/opf:metadata/dc:language[1]', package_document, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+		var accessibility_summary =  package_document.evaluate(xpath.accessibility_summary[version], package_document, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+		var lang_attribute_accessibility_summary = package_document.evaluate(xpath.lang_attribute_accessibility_summary[version], package_document, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+		var language_of_text = package_document.evaluate(xpath.language_of_text[version], package_document, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
 		
 		// 4.8.3 Instructions
 		
@@ -610,9 +848,9 @@ var packageProcessor = (function() {
 		 */
 		 
 		 // 4.9.2 Variables setup
-		var eaa_exemption_micro_enterprises = checkForNode(package_document, '/opf:package/opf:metadata/opf:meta[@property="a11y:exemption" and normalize-space()="eaa-microenterprise"]');
-		var eaa_exception_disproportionate_burden = checkForNode(package_document, '/opf:package/opf:metadata/opf:meta[@property="a11y:exemption" and normalize-space()="eaa-disproportionate-burden"]');
-		var eaa_exception_fundamental_modification = checkForNode(package_document, '/opf:package/opf:metadata/opf:meta[@property="a11y:exemption" and normalize-space()="eaa-fundamental-alteration"]');
+		var eaa_exemption_micro_enterprises = checkForNode(package_document, xpath.eaa_exemption_micro_enterprises[version]);
+		var eaa_exception_disproportionate_burden = checkForNode(package_document, xpath.eaa_exception_disproportionate_burden[version]);
+		var eaa_exception_fundamental_modification = checkForNode(package_document, xpath.eaa_exception_fundamental_modification[version]);
 		
 		// 4.9.3 Instructions
 		
@@ -648,11 +886,11 @@ var packageProcessor = (function() {
 		
 		// 4.10.1 Adaptation
 		// 4.10.1.2 Variables setup
-		var audio_descriptions = checkForNode(package_document, '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="audioDescription"]');
-		var braille = checkForNode(package_document, '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="braille"]');
-		var tactile_graphic = checkForNode(package_document, '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="tactileGraphic"]');
-		var tactile_object = checkForNode(package_document, '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="tactileObject"]');
-		var sign_language = checkForNode(package_document, '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="signLanguage"]');
+		var audio_descriptions = checkForNode(package_document, xpath.audio_descriptions[version]);
+		var braille = checkForNode(package_document, xpath.braille[version]);
+		var tactile_graphic = checkForNode(package_document, xpath.tactile_graphic[version]);
+		var tactile_object = checkForNode(package_document, xpath.tactile_object[version]);
+		var sign_language = checkForNode(package_document, xpath.sign_language[version]);
 		
 		// 4.10.1.3 Instructions
 		
@@ -688,14 +926,14 @@ var packageProcessor = (function() {
 		
 		// 4.10.2 Clarity
 		// 4.10.2.2 Variables setup
-		var aria = checkForNode(package_document, '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="aria"]');
-		var full_ruby_annotations = checkForNode(package_document, '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="fullRubyAnnotations"]');
-		var text_to_speech_hinting = checkForNode(package_document, '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="ttsMarkup"]');
-		var high_contrast_between_foreground_and_background_audio = checkForNode(package_document, '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="highContrastAudio"]');
-		var high_contrast_between_text_and_background = checkForNode(package_document, '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="highContrastDisplay"]');
-		var large_print = checkForNode(package_document, '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="largePrint"]');
-		var page_break_markers = checkForNode(package_document, '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="pageBreakMarkers"]');
-		var ruby_annotations = checkForNode(package_document, '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="rubyAnnotations"]');
+		var aria = checkForNode(package_document, xpath.aria[version]);
+		var full_ruby_annotations = checkForNode(package_document, xpath.full_ruby_annotations[version]);
+		var text_to_speech_hinting = checkForNode(package_document, xpath.text_to_speech_hinting[version]);
+		var high_contrast_between_foreground_and_background_audio = checkForNode(package_document, xpath.high_contrast_between_foreground_and_background_audio[version]);
+		var high_contrast_between_text_and_background = checkForNode(package_document, xpath.high_contrast_between_text_and_background[version]);
+		var large_print = checkForNode(package_document, xpath.large_print[version]);
+		var page_break_markers = checkForNode(package_document, xpath.page_break_markers[version]);
+		var ruby_annotations = checkForNode(package_document, xpath.ruby_annotations[version]);
 		
 		// 4.10.2.3 Instructions
 		
@@ -791,8 +1029,8 @@ var packageProcessor = (function() {
 	
 	
 	return {
-		processPackageDoc: function(packageDoc) {
-			return processPackageDoc(packageDoc);
+		processPackageDoc: function(packageDoc, version) {
+			return processPackageDoc(packageDoc, version);
 		}
 	}	
 })();
