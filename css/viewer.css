@@ -58,9 +58,7 @@ h2 {
 
 h3 {
 	display: inline-block;
-	font-size: 115%;
-	font-weight: normal;
-	color: rgb(0,0,100);
+	font-size: 94%;
 	margin: 0;
 }
 
@@ -148,6 +146,7 @@ div.grid-hd {
 }
 
 div.grid-body > * {
+	font-size: 98%;
 	padding-top: 0;
 	margin-top: 0;
 }
