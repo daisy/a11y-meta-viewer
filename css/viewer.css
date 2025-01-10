@@ -64,6 +64,10 @@ h3 {
 	margin: 0;
 }
 
+p.sub-hd {
+	font-weight: bold;
+}
+
 /* general links */
 
 h1 a {
