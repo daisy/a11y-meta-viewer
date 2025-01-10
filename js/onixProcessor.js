@@ -207,8 +207,7 @@ var onixProcessor = (function() {
 			conf_group.appendChild(cred_p);
 		}
 		
-		var detconf_hd = document.createElement('p');
-			detconf_hd.classList.add('sub-hd');
+		var detconf_hd = document.createElement('h4');
 			detconf_hd.appendChild(document.createTextNode('Detailed Conformance Information'));
 		conf_group.appendChild(detconf_hd);
 		
