@@ -48,7 +48,22 @@ function processXML() {
 }
 
 
-/* explainer dialog */
+/* common header and explainer dialog */
+
+function makeHeader(str, id) {
+	var hd_block = document.createElement('div');
+		hd_block.classList.add('grid-hd');
+		
+	var hd = document.createElement('h3');
+		hd.appendChild(document.createTextNode(str));
+	hd_block.appendChild(hd);
+	
+	if (id) {
+		hd_block.appendChild(writeExplainerLink(id));
+	}
+	
+	return hd_block;
+}
 
 function writeExplainerLink(id) {
 	var a = document.createElement('a');

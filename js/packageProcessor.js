@@ -239,11 +239,10 @@ var packageProcessor = (function() {
 	};
 
 
-	const hd_type = 'h3';
-	
 	function processPackageDoc(package_document_as_text, version) {
 	
 		var result = document.createElement('div');
+			result.classList.add('grid');
 		
 		/* 
 		 * The specification calls the preprocessing step for every technique but that's
@@ -266,12 +265,12 @@ var packageProcessor = (function() {
 		
 		// 4.1.3 Instructions
 		
-		var vis_hd = document.createElement(hd_type);
-			vis_hd.appendChild(document.createTextNode('Visual adjustments'));
-		result.appendChild(vis_hd);
-			
-		// add explainer
-		result.appendChild(writeExplainerLink('epub-visualAdjustments'));
+		// add header
+		result.appendChild(makeHeader('Visual adjustments', 'epub-visualAdjustments'));
+		
+		// grid grouping element
+		var vis_group = document.createElement('div');
+			vis_group.classList.add('grid-body');
 		
 		var vis_result = document.createElement('p');
 		
@@ -292,7 +291,8 @@ var packageProcessor = (function() {
 		// add punctuation
 		vis_result.appendChild(document.createTextNode('.'));
 		
-		result.appendChild(vis_result);
+		vis_group.appendChild(vis_result);
+		result.appendChild(vis_group);
 		
 		
 		/* 
@@ -306,13 +306,12 @@ var packageProcessor = (function() {
 		
 		// 4.2.3 Instructions
 		
-		var nonvis_hd = document.createElement(hd_type);
-			nonvis_hd.appendChild(document.createTextNode('Supports nonvisual reading'));
-			
-			// add explainer
-			nonvis_hd.appendChild(writeExplainerLink('nonvisualReading'));
+		// add header
+		result.appendChild(makeHeader('Supports nonvisual reading', 'epub-nonvisualReading'));
 		
-		result.appendChild(nonvis_hd);
+		// grid grouping element
+		var nonvis_group = document.createElement('div');
+			nonvis_group.classList.add('grid-body');
 		
 		var nonvis_result = document.createElement('p');
 		
@@ -335,7 +334,8 @@ var packageProcessor = (function() {
 		// add punctuation - not in algorithm
 		nonvis_result.appendChild(document.createTextNode('.'));
 		
-		result.appendChild(nonvis_result);
+		nonvis_group.appendChild(nonvis_result);
+		result.appendChild(nonvis_group);
 		
 		
 		/* 
@@ -381,14 +381,17 @@ var packageProcessor = (function() {
 		
 		// 4.3.3 Instructions
 		
-		var conf_hd = document.createElement(hd_type);
-			conf_hd.appendChild(document.createTextNode('Conformance'));
-		result.appendChild(conf_hd);
+		// add header
+		result.appendChild(makeHeader('Conformance', ''));
+		
+		// grid grouping element
+		var conf_group = document.createElement('div');
+			conf_group.classList.add('grid-body');
 		
 		if (!conformance_string) {
 			var p = document.createElement('p');
 				p.appendChild(document.createTextNode('No information is available.'))
-			result.appendChild(p);
+			conf_group.appendChild(p);
 		}
 		
 		else {
@@ -410,7 +413,7 @@ var packageProcessor = (function() {
 			// add punctuation - not in algorithm
 			conf_p.appendChild(document.createTextNode('.'));
 			
-			result.appendChild(conf_p);
+			conf_group.appendChild(conf_p);
 			
 			
 			if (certifier) {
@@ -422,7 +425,7 @@ var packageProcessor = (function() {
 				// add punctuation - not in algorithm
 				cert_p.appendChild(document.createTextNode('.'));
 				
-				result.appendChild(cert_p);
+				conf_group.appendChild(cert_p);
 			}
 			
 			if (certifier_credentials) {
@@ -445,12 +448,12 @@ var packageProcessor = (function() {
 				// add punctuation - not in algorithm
 				cred_p.appendChild(document.createTextNode('.'));
 				
-				result.appendChild(cred_p);
+				conf_group.appendChild(cred_p);
 			}
 			
-			var detconf_hd = document.createElement(hd_type);
+			var detconf_hd = document.createElement('h3');
 				detconf_hd.appendChild(document.createTextNode('Detailed Conformance Information'));
-			result.appendChild(detconf_hd);
+			conf_group.appendChild(detconf_hd);
 			
 			var conf_p = document.createElement('p');
 				conf_p.appendChild(document.createTextNode('This publication claims to meet '));
@@ -459,7 +462,7 @@ var packageProcessor = (function() {
 				// add punctuation - not in algorithm
 				conf_p.appendChild(document.createTextNode('.'));
 			
-			result.appendChild(conf_p);
+			conf_group.appendChild(conf_p);
 			
 			var cert_p = document.createElement('p');
 			
@@ -475,7 +478,7 @@ var packageProcessor = (function() {
 			// add punctuation - not in algorithm
 			cert_p.appendChild(document.createTextNode('.'));
 			
-			result.appendChild(cert_p);
+			conf_group.appendChild(cert_p);
 			
 			if (certifier_report) {
 				
@@ -489,9 +492,11 @@ var packageProcessor = (function() {
 				// add punctuation - not in algorithm
 				rep_p.appendChild(document.createTextNode('.'));
 				
-				result.appendChild(rep_p);
+				conf_group.appendChild(rep_p);
 			}
 		}
+		
+		result.appendChild(conf_group);
 		
 
 		/* 
@@ -505,9 +510,12 @@ var packageProcessor = (function() {
 		
 		// 4.4.3 Instructions
 		
-		var prerec_hd = document.createElement(hd_type);
-			prerec_hd.appendChild(document.createTextNode('Prerecorded audio'));
-		result.appendChild(prerec_hd);
+		// add header
+		result.appendChild(makeHeader('Prerecorded audio', ''));
+		
+		// grid grouping element
+		var prerec_group = document.createElement('div');
+			prerec_group.classList.add('grid-body');
 		
 		var prerec_result = document.createElement('p');
 		
@@ -530,7 +538,8 @@ var packageProcessor = (function() {
 		// add punctuation - not in algorithm
 		prerec_result.appendChild(document.createTextNode('.'));
 		
-		result.appendChild(prerec_result);
+		prerec_group.appendChild(prerec_result);
+		result.appendChild(prerec_group);
 		
 		
 		/* 
@@ -545,9 +554,12 @@ var packageProcessor = (function() {
 		
 		// 4.5.3 Instructions
 		
-		var nav_hd = document.createElement(hd_type);
-			nav_hd.appendChild(document.createTextNode('Navigation'));
-		result.appendChild(nav_hd);
+		// add header
+		result.appendChild(makeHeader('Navigation', ''));
+		
+		// grid grouping element
+		var nav_group = document.createElement('div');
+			nav_group.classList.add('grid-body');
 		
 		if (table_of_contents_navigation || index_navigation || page_navigation || next_previous_structural_navigation) {
 			
@@ -577,7 +589,7 @@ var packageProcessor = (function() {
 				navigation.appendChild(li);
 			}
 			
-			result.appendChild(navigation);
+			nav_group.appendChild(navigation);
 		}
 		
 		else {
@@ -587,8 +599,10 @@ var packageProcessor = (function() {
 				// add punctuation - not in algorithm
 				p.appendChild(document.createTextNode('.'));
 			
-			result.appendChild(p);
+			nav_group.appendChild(p);
 		}
+		
+		result.appendChild(nav_group);
 		
 		
 		/* 
@@ -610,9 +624,12 @@ var packageProcessor = (function() {
 		
 		// 4.6.3 Instructions
 		
-		var rc_hd = document.createElement(hd_type);
-			rc_hd.appendChild(document.createTextNode('Rich content'));
-		result.appendChild(rc_hd);
+		// add header
+		result.appendChild(makeHeader('Rich content', ''));
+		
+		// grid grouping element
+		var rc_group = document.createElement('div');
+			rc_group.classList.add('grid-body');
 		
 		var richcontent = document.createElement('ul');
 		
@@ -707,7 +724,7 @@ var packageProcessor = (function() {
 		}
 		
 		if (richcontent.childElementCount) {
-			result.appendChild(richcontent);
+			rc_group.appendChild(richcontent);
 		}
 		
 		if (!(math_formula_as_mathml || math_formula_as_latex || (contains_math_formula && long_text_descriptions) || chemical_formula_as_mathml || long_text_descriptions || closed_captions || open_captions || transcript)) {
@@ -717,8 +734,10 @@ var packageProcessor = (function() {
 			// add punctuation - not in algorithm
 			p.appendChild(document.createTextNode('.'));
 			
-			result.appendChild(p);
+			rc_group.appendChild(p);
 		}
+		
+		result.appendChild(rc_group);
 		
 		
 		/* 
@@ -737,14 +756,17 @@ var packageProcessor = (function() {
 		
 		// 4.7.3 Instructions
 		
-		var haz_hd = document.createElement(hd_type);
-			haz_hd.appendChild(document.createTextNode('Hazards'));
-		result.appendChild(haz_hd);
+		// add header
+		result.appendChild(makeHeader('Hazards', ''));
+		
+		// grid grouping element
+		var haz_group = document.createElement('div');
+			haz_group.classList.add('grid-body');
 		
 		if (no_hazards_or_warnings_confirmed || (no_flashing_hazards && no_motion_hazards && no_sound_hazards)) {
 			var p = document.createElement('p');
 				p.appendChild(document.createTextNode('No hazards'));
-			result.appendChild(p);
+			haz_group.appendChild(p);
 		}
 		
 		else if (flashing_hazard || motion_simulation_hazard || sound_hazard) {
@@ -756,7 +778,7 @@ var packageProcessor = (function() {
 				// add punctuation - not in algorithm
 				p.appendChild(document.createTextNode('.'));
 				
-				result.appendChild(p);
+				haz_group.appendChild(p);
 			}
 			
 			if (motion_simulation_hazard) {
@@ -766,7 +788,7 @@ var packageProcessor = (function() {
 				// add punctuation - not in algorithm
 				p.appendChild(document.createTextNode('.'));
 				
-				result.appendChild(p);
+				haz_group.appendChild(p);
 			}
 			
 			if (sound_hazard) {
@@ -776,7 +798,7 @@ var packageProcessor = (function() {
 				// add punctuation - not in algorithm
 				p.appendChild(document.createTextNode('.'));
 				
-				result.appendChild(p);
+				haz_group.appendChild(p);
 			}
 		}
 
@@ -787,7 +809,7 @@ var packageProcessor = (function() {
 			// add punctuation - not in algorithm
 			p.appendChild(document.createTextNode('.'));
 			
-			result.appendChild(p);
+			haz_group.appendChild(p);
 		}
 		
 		else {
@@ -797,8 +819,10 @@ var packageProcessor = (function() {
 			// add punctuation - not in algorithm
 			p.appendChild(document.createTextNode('.'));
 			
-			result.appendChild(p);
+			haz_group.appendChild(p);
 		}
+		
+		result.appendChild(haz_group);
 		
 		
 		/* 
@@ -812,9 +836,12 @@ var packageProcessor = (function() {
 		
 		// 4.8.3 Instructions
 		
-		var sum_hd = document.createElement(hd_type);
-			sum_hd.appendChild(document.createTextNode('Accessibility summary'));
-		result.appendChild(sum_hd);
+		// add header
+		result.appendChild(makeHeader('Accessibility summary', ''));
+		
+		// grid grouping element
+		var sum_group = document.createElement('div');
+			sum_group.classList.add('grid-body');
 		
 		var sum_result = document.createElement('p');
 		
@@ -840,7 +867,8 @@ var packageProcessor = (function() {
 			sum_result.appendChild(document.createTextNode('.'));
 		}
 		
-		result.appendChild(sum_result);
+		sum_group.appendChild(sum_result);
+		result.appendChild(sum_group);
 		
 		
 		/* 
@@ -854,9 +882,12 @@ var packageProcessor = (function() {
 		
 		// 4.9.3 Instructions
 		
-		var legal_hd = document.createElement(hd_type);
-			legal_hd.appendChild(document.createTextNode('Legal considerations'));
-		result.appendChild(legal_hd);
+		// add header
+		result.appendChild(makeHeader('Legal considerations', ''));
+		
+		// grid grouping element
+		var legal_group = document.createElement('div');
+			legal_group.classList.add('grid-body');
 		
 		var legal_result = document.createElement('p');
 		
@@ -871,18 +902,22 @@ var packageProcessor = (function() {
 		// add punctuation - not in algorithm
 		legal_result.appendChild(document.createTextNode('.'));
 		
-		result.appendChild(legal_result);
+		legal_group.appendChild(legal_result);
+		result.appendChild(legal_group);
 		
 		
 		/* 
 		 * 4.10 Additional accessibility information
 		 */
 		 
-		var aai_hd = document.createElement(hd_type);
-			aai_hd.appendChild(document.createTextNode('Additional accessibility information'));
-		result.appendChild(aai_hd);
+		// add header
+		result.appendChild(makeHeader('Additional accessibility information', ''));
 		
 		var aai = document.createElement('ul');
+		
+		// grid grouping element
+		var aai_group = document.createElement('div');
+			aai_group.classList.add('grid-body');
 		
 		// 4.10.1 Adaptation
 		// 4.10.1.2 Variables setup
@@ -985,7 +1020,8 @@ var packageProcessor = (function() {
 			aai.appendChild(li);
 		}
 		
-		result.appendChild(aai);
+		aai_group.appendChild(aai);
+		result.appendChild(aai_group);
 		
 		return result;
 		
@@ -1017,6 +1053,9 @@ var packageProcessor = (function() {
 		var result = package_document.evaluate(path, package_document, nsResolver, XPathResult.BOOLEAN_TYPE, null);
 		return result.booleanValue;
 	}
+	
+	
+	// other functions
 	
 	function nsResolver(prefix) {
 		switch (prefix) {
