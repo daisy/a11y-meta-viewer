@@ -33,7 +33,7 @@ function processXML() {
 	}
 	
 	else if (xml.match('<ONIXMessage ')) {
-		result = onixProcessor.processOnixRecord(xml);
+		result = onixProcessor.processOnixRecord(xml, 'onix');
 	}
 	
 	else {

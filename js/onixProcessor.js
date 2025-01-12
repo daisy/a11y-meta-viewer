@@ -3,7 +3,7 @@
 
 var onixProcessor = (function() {
 
-	function processOnixRecord(onix_record_as_text) {
+	function processOnixRecord(onix_record_as_text, version) {
 	
 		var result = document.createElement('div');
 			result.classList.add('grid');
@@ -24,8 +24,8 @@ var onixProcessor = (function() {
 		 */
 		 
 		// 4.1.2 Variables setup
-		var all_textual_content_can_be_modified = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "36"]');
-		var is_fixed_layout = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormDetail[normalize-space() = "E201"]') && !checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormDetail[normalize-space() = "E200"]');
+		var all_textual_content_can_be_modified = checkForNode(onix, xpath.all_textual_content_can_be_modified[version]);
+		var is_fixed_layout = checkForNode(onix, xpath.is_fixed_layout[version]) && !checkForNode(onix, xpath.is_reflow[version]);
 		
 		// 4.1.3 Instructions
 		
@@ -62,10 +62,10 @@ var onixProcessor = (function() {
 		 */
 		 
 		 // 4.2.2 Variables setup
-		 var all_necessary_content_textual = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "52"]');
-		 var real_text = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail[onix:PrimaryContentType = "10" or onix:ProductContentType = "10"]');
-		 var non_textual_content_images = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail[contains(" 07 18 19 12 49 20 ", onix:PrimaryContentType) or contains(" 07 18 19 12 49 20 ", onix:ProductContentType)]');
-		 var textual_alternative_images = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and (onix:ProductFormFeatureValue = "14" or onix:ProductFormFeatureValue = "15" or onix:ProductFormFeatureValue = "16")]');
+		 var all_necessary_content_textual = checkForNode(onix, xpath.all_necessary_content_textual[version]);
+		 var real_text = checkForNode(onix, xpath.real_text[version]);
+		 var non_textual_content_images = checkForNode(onix, xpath.non_textual_content_images[version]);
+		 var textual_alternative_images = checkForNode(onix, xpath.textual_alternative_images[version]);
 		
 		// 4.2.3 Instructions
 		
@@ -124,19 +124,19 @@ var onixProcessor = (function() {
 		 */
 		 
 		// 4.3.2 Variables setup
-		var epub_accessibility_10 = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "02"]')  || checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "03"]');
-		var epub_accessibility_11 = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "04"]');
-		var wcag_20 = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "80"]') || checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "02"]') || checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "03"]');
-		var wcag_21 = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "81"]');
-		var wcag_22 = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "82"]');
-		var level_a = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "84"]') || checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "02"]');
-		var level_aa = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "85"]') || checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "03"]');
-		var level_aaa = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "86"]');
-		var lia_compliant = checkForNode(onix, '/ONIXMessage/Product/DescriptiveDetail/ProductFormFeature[ProductFormFeatureType = "09" and ProductFormFeatureValue = "01"]');
-		var certifier  = onix.evaluate('/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "90"]/onix:ProductFormFeatureDescription', onix, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
-		var certifier_credentials  = onix.evaluate('/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "93"]/onix:ProductFormFeatureDescription', onix, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
-		var certification_date  = onix.evaluate('/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "91"]/onix:ProductFormFeatureDescription', onix, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
-		var certifier_report  = onix.evaluate('/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "94"]/onix:ProductFormFeatureDescription', onix, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+		var epub_accessibility_10 = checkForNode(onix, xpath.epub_accessibility_10_1[version]) || checkForNode(onix, xpath.epub_accessibility_10_2[version]);
+		var epub_accessibility_11 = checkForNode(onix, xpath.epub_accessibility_11[version]);
+		var wcag_20 = checkForNode(onix, xpath.wcag_20_1[version]) || checkForNode(onix, xpath.wcag_20_2[version]) || checkForNode(onix, xpath.wcag_20_3[version]);
+		var wcag_21 = checkForNode(onix, xpath.wcag_21[version]);
+		var wcag_22 = checkForNode(onix, xpath.wcag_22[version]);
+		var level_a = checkForNode(onix, xpath.level_a_1[version]) || checkForNode(onix, xpath.level_a_2[version]);
+		var level_aa = checkForNode(onix, xpath.level_aa_1[version]) || checkForNode(onix, xpath.level_aa_2[version]);
+		var level_aaa = checkForNode(onix, xpath.level_aaa[version]);
+		var lia_compliant = checkForNode(onix, xpath.lia_compliant[version]);
+		var certifier = onix.evaluate(xpath.certifier[version], onix, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+		var certifier_credentials = onix.evaluate(xpath.certifier_credentials[version], onix, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+		var certification_date = onix.evaluate(xpath.certification_date[version], onix, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+		var certifier_report = onix.evaluate(xpath.certifier_report[version], onix, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
 		
 		// 4.3.3 Instructions
 		
@@ -289,12 +289,12 @@ var onixProcessor = (function() {
 		 */
 		 
 		 // 4.4.2 Variables setup
-		 var audiobook = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail[onix:PrimaryContentType = "81" or onix:ProductContentType = "81"]');
-		 var all_content_audio = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "39"]');
-		 var all_content_pre_recorded = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "51"]');
-		 var synchronised_pre_recorded_audio = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "20"]') && checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormDetail[normalize-space() = "A305"]');
-		 var non_textual_content_audio = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail[contains(" 21 22 ", onix:PrimaryContentType) or contains(" 21 22 ", onix:ProductContentType)]');
-		 var non_textual_content_audio_in_video = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail[contains(" 06 25 26 27 28 29 30 ", onix:PrimaryContentType) or contains(" 06 25 26 27 28 29 30 ", onix:ProductContentType)]');
+		 var audiobook = checkForNode(onix, xpath.audiobook[version]);
+		 var all_content_audio = checkForNode(onix, xpath.all_content_audio[version]);
+		 var all_content_pre_recorded = checkForNode(onix, xpath.all_content_pre_recorded[version]);
+		 var synchronised_pre_recorded_audio = checkForNode(onix, xpath.synchronised_pre_recorded_audio_1[version] && checkForNode(onix, xpath.synchronised_pre_recorded_audio_2[version]));
+		 var non_textual_content_audio = checkForNode(onix, xpath.non_textual_content_audio[version]);
+		 var non_textual_content_audio_in_video = checkForNode(onix, xpath.non_textual_content_audio_in_video[version]);
 		
 		// 4.4.3 Instructions
 		
@@ -335,10 +335,10 @@ var onixProcessor = (function() {
 		 */
 		 
 		// 4.5.2 Variables setup
-		var table_of_contents_navigation = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "11"]');
-		var index_navigation = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "12"]');
-		var print_equivalent_page_numbering = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "19"]');
-		var next_previous_structural_navigation = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "29"]');
+		var table_of_contents_navigation = checkForNode(onix, xpath.table_of_contents_navigation[version]);
+		var index_navigation = checkForNode(onix, xpath.index_navigation[version]);
+		var print_equivalent_page_numbering = checkForNode(onix, xpath.print_equivalent_page_numbering[version]);
+		var next_previous_structural_navigation = checkForNode(onix, xpath.next_previous_structural_navigation[version]);
 		
 		// 4.5.3 Instructions
 		
@@ -398,16 +398,16 @@ var onixProcessor = (function() {
 		 */
 		 
 		 // 4.6.2 Variables setup
-		var charts_diagrams_as_non_graphical_data = checkForNode(onix, '/ONIXMessage/Product/DescriptiveDetail/ProductFormFeature[ProductFormFeatureType = "09" and ProductFormFeatureValue = "16"]');
-		var full_alternative_textual_descriptions = checkForNode(onix, '/ONIXMessage/Product/DescriptiveDetail/ProductFormFeature[ProductFormFeatureType = "09" and ProductFormFeatureValue = "15"]');
-		var chemical_formula_as_mathml = checkForNode(onix, '/ONIXMessage/Product/DescriptiveDetail/ProductFormFeature[ProductFormFeatureType = "09" and ProductFormFeatureValue = "34"]');
-		var math_formula_as_latex = checkForNode(onix, '/ONIXMessage/Product/DescriptiveDetail/ProductFormFeature[ProductFormFeatureType = "09" and ProductFormFeatureValue = "35"]');
-		var math_formula_as_mathml = checkForNode(onix, '/ONIXMessage/Product/DescriptiveDetail/ProductFormFeature[ProductFormFeatureType = "09" and ProductFormFeatureValue = "17"]');
-		var contains_math_formula = checkForNode(onix, '/ONIXMessage/Product/DescriptiveDetail/DescriptiveDetail[PrimaryContentType = "48" or ContentType = "48"]');
-		var short_textual_alternative_images = checkForNode(onix, '/ONIXMessage/Product/DescriptiveDetail/ProductFormFeature[ProductFormFeatureType = "09" and ProductFormFeatureValue = "14"]');
-		var closed_captions = checkForNode(onix, '/ONIXMessage/Product/DescriptiveDetail[ProductFormDetail = "V210"]');
-		var open_captions = checkForNode(onix, '/ONIXMessage/Product/DescriptiveDetail[ProductFormDetail = "V211"]');
-		var transcript = checkForNode(onix, '/ONIXMessage/Product/DescriptiveDetail[ProductFormDetail = "V212"]');
+		var charts_diagrams_as_non_graphical_data = checkForNode(onix, xpath.charts_diagrams_as_non_graphical_data[version]);
+		var full_alternative_textual_descriptions = checkForNode(onix, xpath.full_alternative_textual_descriptions[version]);
+		var chemical_formula_as_mathml = checkForNode(onix, xpath.chemical_formula_as_mathml[version]);
+		var math_formula_as_latex = checkForNode(onix, xpath.math_formula_as_latex[version]);
+		var math_formula_as_mathml = checkForNode(onix, xpath.math_formula_as_mathml[version]);
+		var contains_math_formula = checkForNode(onix, xpath.contains_math_formula[version]);
+		var short_textual_alternative_images = checkForNode(onix, xpath.short_textual_alternative_images[version]);
+		var closed_captions = checkForNode(onix, xpath.closed_captions[version]);
+		var open_captions = checkForNode(onix, xpath.open_captions[version]);
+		var transcript = checkForNode(onix, xpath.transcript[version]);
 		
 		// 4.6.3 Instructions
 		
@@ -522,14 +522,14 @@ var onixProcessor = (function() {
 		 */
 		 
 		 // 4.7.2 Variables setup
-		var no_hazards_or_warnings_confirmed = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "12" and onix:ProductFormFeatureValue = "00"]');
-		var flashing_hazard = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "12" and onix:ProductFormFeatureValue = "13"]');
-		var no_flashing_hazards = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "12" and onix:ProductFormFeatureValue = "14"]');
-		var motion_simulation_hazard = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "12" and onix:ProductFormFeatureValue = "17"]');
-		var no_motion_hazards = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "12" and onix:ProductFormFeatureValue = "18"]');
-		var sound_hazard = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "12" and onix:ProductFormFeatureValue = "15"]');
-		var no_sound_hazards = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "12" and onix:ProductFormFeatureValue = "16"]');
-		var unknown_if_contains_hazards = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "08"]');
+		var no_hazards_or_warnings_confirmed = checkForNode(onix, xpath.no_hazards_or_warnings_confirmed[version]);
+		var flashing_hazard = checkForNode(onix, xpath.flashing_hazard[version]);
+		var no_flashing_hazards = checkForNode(onix, xpath.no_flashing_hazards[version]);
+		var motion_simulation_hazard = checkForNode(onix, xpath.motion_simulation_hazard[version]);
+		var no_motion_hazards = checkForNode(onix, xpath.no_motion_hazards[version]);
+		var sound_hazard = checkForNode(onix, xpath.sound_hazard[version]);
+		var no_sound_hazards = checkForNode(onix,xpath.no_sound_hazards[version]);
+		var unknown_if_contains_hazards = checkForNode(onix, xpath.unknown_if_contains_hazards[version]);
 		
 		// 4.7.3 Instructions
 		
@@ -611,13 +611,13 @@ var onixProcessor = (function() {
 		 // for compatibility with xpath 1.0 processing
 		 
 		 // 4.8.2 Variables setup
-		var accessibility_addendum  = onix.evaluate('/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "92"]/onix:ProductFormFeatureDescription', onix, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
-		var lang_attribute_accessibility_addendum = onix.evaluate('(/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "92"]/onix:ProductFormFeatureDescription/@lang | /onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "92"]/onix:ProductFormFeatureDescription/ancestor::*/@lang)[last()]', onix, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
-		var known_limited_accessibility  = onix.evaluate('/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "09"]/onix:ProductFormFeatureDescription', onix, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
-		var lang_known_limited_accessibility = onix.evaluate('(/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "09"]/onix:ProductFormFeatureDescription/@lang | /onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "09"]/onix:ProductFormFeatureDescription/ancestor::*/@lang)[last()]', onix, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
-		var accessibility_summary  = onix.evaluate('/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "00"]/onix:ProductFormFeatureDescription', onix, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
-		var lang_attribute_accessibility_summary = onix.evaluate('(/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "00"]/onix:ProductFormFeatureDescription/@lang | /onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "00"]/onix:ProductFormFeatureDescription/ancestor::*/@lang)[last()]', onix, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
-		var language_of_text  = onix.evaluate('/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:Language[onix:LanguageRole="01"]/onix:LanguageCode', onix, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+		var accessibility_addendum = onix.evaluate(xpath.accessibility_addendum[version], onix, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+		var lang_attribute_accessibility_addendum = onix.evaluate(xpath.lang_attribute_accessibility_addendum[version], onix, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+		var known_limited_accessibility = onix.evaluate(xpath.known_limited_accessibility[version], onix, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+		var lang_known_limited_accessibility = onix.evaluate(xpath.lang_known_limited_accessibility[version], onix, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+		var accessibility_summary = onix.evaluate(xpath.accessibility_summary[version], onix, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+		var lang_attribute_accessibility_summary = onix.evaluate(xpath.lang_attribute_accessibility_summary[version], onix, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+		var language_of_text = onix.evaluate(xpath.language_of_text[version], onix, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
 		
 		// 4.8.3 Instructions
 		
@@ -695,9 +695,9 @@ var onixProcessor = (function() {
 		 */
 		 
 		 // 4.9.2 Variables setup
-		var eaa_exemption_micro_enterprises = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "75"]');
-		var eaa_exception_disproportionate_burden = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "76"]');
-		var eaa_exception_fundamental_modification = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "77"]');
+		var eaa_exemption_micro_enterprises = checkForNode(onix, xpath.eaa_exemption_micro_enterprises[version]);
+		var eaa_exception_disproportionate_burden = checkForNode(onix, xpath.eaa_exception_disproportionate_burden[version]);
+		var eaa_exception_fundamental_modification = checkForNode(onix, xpath.eaa_exception_fundamental_modification[version]);
 		
 		// 4.9.3 Instructions
 		
@@ -740,8 +740,8 @@ var onixProcessor = (function() {
 		
 		// 4.10.1 Adaptation
 		// 4.10.1.2 Variables setup
-		var dyslexia_readability = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "24"]');
-		var sign_language = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail[onix:ProductFormDetail = "V213"]');
+		var dyslexia_readability = checkForNode(onix, xpath.dyslexia_readability[version]);
+		var sign_language = checkForNode(onix, xpath.sign_language[version]);
 		
 		// 4.10.1.3 Instructions
 		
@@ -760,13 +760,13 @@ var onixProcessor = (function() {
 		
 		// 4.10.2 Clarity
 		// 4.10.2.2 Variables setup
-		var text_to_speech_hinting = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "21"]');
-		var color_not_sole_means_of_conveying_information = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "25"]');
-		var high_contrast_between_text_and_background = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "26"]');
-		var ultra_high_contrast_between_text_and_background = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "37"]');
-		var visible_page_numbering = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail[onix:ProductFormDetail = "E205"]');
-		var high_contrast_between_foreground_and_background_audio = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "27"]');
-		var without_background_sounds = checkForNode(onix, '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail[onix:ProductFormDetail = "A312"]');
+		var text_to_speech_hinting = checkForNode(onix, xpath.text_to_speech_hinting[version]);
+		var color_not_sole_means_of_conveying_information = checkForNode(onix, xpath.color_not_sole_means_of_conveying_information[version]);
+		var high_contrast_between_text_and_background = checkForNode(onix, xpath.high_contrast_between_text_and_background[version]);
+		var ultra_high_contrast_between_text_and_background = checkForNode(onix, xpath.ultra_high_contrast_between_text_and_background[version]);
+		var visible_page_numbering = checkForNode(onix, xpath.visible_page_numbering[version]);
+		var high_contrast_between_foreground_and_background_audio = checkForNode(onix, xpath.high_contrast_between_foreground_and_background_audio[version]);
+		var without_background_sounds = checkForNode(onix, xpath.without_background_sounds[version]);
 
 		// 4.10.2.3 Instructions
 		
@@ -857,8 +857,8 @@ var onixProcessor = (function() {
 	}	
 	
 	return {
-		processOnixRecord: function(onixRecord) {
-			return processOnixRecord(onixRecord);
+		processOnixRecord: function(onixRecord, version) {
+			return processOnixRecord(onixRecord, version);
 		}
 	}
 
