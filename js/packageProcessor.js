@@ -169,7 +169,10 @@ var packageProcessor = (function() {
 		var conformance = package_document.evaluate(xpath.conformance[version], package_document, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
 		
 		if (conformance) {
-			conformance_string = conformance.replace(' - ', ' ');
+		
+			conformance = conformance.trim();
+			
+			conformance_string = conformance.replace(' - ', ' ').trim();
 			
 			var level_re = new RegExp('EPUB Accessibility 1\\.1 - WCAG 2\\.[0-2] Level ');
 			wcag_level = conformance.replace(level_re, '');

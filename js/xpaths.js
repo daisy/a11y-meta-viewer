@@ -243,7 +243,7 @@ var xpath = {
 		onix: '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "12" and onix:ProductFormFeatureValue = "17"]'
 	},
 	no_motion_hazards: {
-		epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityHazard" and normalize-space()="noMotionSimulation"]',
+		epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityHazard" and normalize-space()="noMotionSimulationHazard"]',
 		epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessibilityHazard" and @content="noMotionSimulation"]',
 		onix: '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "12" and onix:ProductFormFeatureValue = "18"]'
 	},
