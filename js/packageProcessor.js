@@ -3,7 +3,7 @@
 
 var packageProcessor = (function() {
 	
-	function processPackageDoc(package_document_as_text, version) {
+	function processPackageDoc(package_document_as_text, version, vocab, style) {
 	
 		var result = document.createElement('div');
 			result.classList.add('grid');
@@ -20,93 +20,130 @@ var packageProcessor = (function() {
 		}
 		
 		/* 
-		 * 4.1 Visual adjustments
+		 * 4.1 Ways of reading
+		 */
+		
+		// add header
+		result.appendChild(makeHeader(vocab['ways-of-reading']['ways-of-reading-title'], ''));
+		
+		// grid grouping element
+		var wor_group = document.createElement('div');
+			wor_group.classList.add('grid-body');
+		
+		/* 
+		 * 4.1.1 Visual adjustments
 		 */
 		 
-		// 4.1.2 Variables setup
+		// 4.1.1.2 Variables setup
 		var all_textual_content_can_be_modified = checkForNode(package_document, xpath.all_textual_content_can_be_modified[version]);
 		var is_fixed_layout = checkForNode(package_document, xpath.is_fixed_layout[version]);
 		
-		// 4.1.3 Instructions
-		
-		// add header
-		result.appendChild(makeHeader('Visual adjustments', 'epub-visualAdjustments'));
-		
-		// grid grouping element
-		var vis_group = document.createElement('div');
-			vis_group.classList.add('grid-body');
+		// 4.1.1.3 Instructions
 		
 		var vis_result = document.createElement('p');
 		
 		if (is_fixed_layout) {
-			vis_result.appendChild(document.createTextNode('Appearance cannot be modified'));
+			vis_result.appendChild(document.createTextNode(vocab['visual-adjustments']['visual-adjustments-unmodifiable'][style]));
 		}
 		
 		else if (all_textual_content_can_be_modified) {
-			vis_result.appendChild(document.createTextNode('Appearance can be modified'));
+			vis_result.appendChild(document.createTextNode(vocab['visual-adjustments']['visual-adjustments-modifiable'][style]));
 		}
 		
 		else {
-			vis_result.appendChild(document.createTextNode('Appearance modifiability not known'));
+			vis_result.appendChild(document.createTextNode(vocab['visual-adjustments']['visual-adjustments-unknown'][style]));
 		}
 		
 		// Following additions are not in the algorithm
 		
-		// add punctuation
-		vis_result.appendChild(document.createTextNode('.'));
+		// add punctuation - not in algorithm
+		vis_result.appendChild(getPunctuation());
 		
-		vis_group.appendChild(vis_result);
-		result.appendChild(vis_group);
+		wor_group.appendChild(vis_result);
 		
 		
 		/* 
-		 * 4.2 Supports nonvisual reading
+		 * 4.1.2 Supports nonvisual reading
 		 */
 		 
-		// 4.2.2 Variables setup
+		// 4.1.2.2 Variables setup
 		var all_necessary_content_textual = checkForNode(package_document, xpath.all_necessary_content_textual[version]);
 		var non_textual_content_images = checkForNode(package_document, xpath.non_textual_content_images[version]);
 		var textual_alternative_images = checkForNode(package_document, xpath.textual_alternative_images[version]);
 		
-		// 4.2.3 Instructions
+		// 4.1.2.3 Instructions
 		
-		// add header
-		result.appendChild(makeHeader('Supports nonvisual reading', 'epub-nonvisualReading'));
+		if (textual_alternative_images) {
+			var p = document.createElement('p');
+				p.appendChild(document.createTextNode(vocab['nonvisual-reading']['nonvisual-reading-alt-text'][style]));
 		
-		// grid grouping element
-		var nonvis_group = document.createElement('div');
-			nonvis_group.classList.add('grid-body');
+			// add punctuation - not in algorithm
+			p.appendChild(getPunctuation());
+			
+			wor_group.appendChild(p);
+		}
 		
 		var nonvis_result = document.createElement('p');
 		
-		if (textual_alternative_images) {
-			nonvis_result.appendChild(document.createTextNode('Has alt text'));
-		}
-		
 		if (all_necessary_content_textual) {
-			nonvis_result.appendChild(document.createTextNode('Readable in read aloud or dynamic braille'));
+			nonvis_result.appendChild(document.createTextNode(vocab['nonvisual-reading']['nonvisual-reading-readable'][style]));
 		}
 		
 		else if (non_textual_content_images && !textual_alternative_images) {
-			nonvis_result.appendChild(document.createTextNode('Not fully readable in read aloud or dynamic braille'));
+			nonvis_result.appendChild(document.createTextNode(vocab['nonvisual-reading']['nonvisual-reading-not-fully'][style]));
 		}
 		
 		else {
-			nonvis_result.appendChild(document.createTextNode('May not be fully readable in read aloud or dynamic braille'));
+			nonvis_result.appendChild(document.createTextNode(vocab['nonvisual-reading']['nonvisual-reading-may-not-fully'][style]));
 		}
 		
 		// add punctuation - not in algorithm
-		nonvis_result.appendChild(document.createTextNode('.'));
+		nonvis_result.appendChild(getPunctuation());
 		
-		nonvis_group.appendChild(nonvis_result);
-		result.appendChild(nonvis_group);
+		wor_group.appendChild(nonvis_result);
 		
 		
 		/* 
-		 * 4.3 Conformance
+		 * 4.1.3 Prerecorded audio
 		 */
 		 
-		// 4.3.2 Variables setup
+		// 4.1.3.2 Variables setup
+		var all_content_audio = checkForNode(package_document, xpath.all_content_audio[version]);
+		var synchronised_pre_recorded_audio = checkForNode(package_document, xpath.synchronised_pre_recorded_audio[version]);
+		var audio_content = checkForNode(package_document, xpath.audio_content[version]);
+		
+		// 4.1.3.3 Instructions
+		
+		var prerec_result = document.createElement('p');
+		
+		if (all_content_audio) {
+			prerec_result.appendChild(document.createTextNode('Prerecorded audio only'));
+		}
+		
+		else if (synchronised_pre_recorded_audio) {
+			prerec_result.appendChild(document.createTextNode('Prerecorded audio synchronized with text'));
+		}
+		
+		else if (audio_content) {
+			prerec_result.appendChild(document.createTextNode('Complementary audio and text'));
+		}
+		
+		else {
+			prerec_result.appendChild(document.createTextNode('No information is available about prerecorded audio'));
+		}
+		
+		// add punctuation - not in algorithm
+		prerec_result.appendChild(getPunctuation());
+		
+		wor_group.appendChild(prerec_result);
+		result.appendChild(wor_group);
+		
+		
+		/* 
+		 * 4.2 Conformance
+		 */
+		 
+		// 4.2.2 Variables setup
 		var conformance_string = '';
 		var wcag_level = '';
 		
@@ -143,7 +180,7 @@ var packageProcessor = (function() {
 		var certification_date = package_document.evaluate(xpath.certification_date[version], package_document, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
 		var certifier_report = package_document.evaluate(xpath.certifier_report[version], package_document, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
 		
-		// 4.3.3 Instructions
+		// 4.2.3 Instructions
 		
 		// add header
 		result.appendChild(makeHeader('Conformance', ''));
@@ -175,7 +212,7 @@ var packageProcessor = (function() {
 			}
 			
 			// add punctuation - not in algorithm
-			conf_p.appendChild(document.createTextNode('.'));
+			conf_p.appendChild(getPunctuation());
 			
 			conf_group.appendChild(conf_p);
 			
@@ -187,7 +224,7 @@ var packageProcessor = (function() {
 				cert_p.appendChild(document.createTextNode(certifier));
 				
 				// add punctuation - not in algorithm
-				cert_p.appendChild(document.createTextNode('.'));
+				cert_p.appendChild(getPunctuation());
 				
 				conf_group.appendChild(cert_p);
 			}
@@ -210,7 +247,7 @@ var packageProcessor = (function() {
 				}
 				
 				// add punctuation - not in algorithm
-				cred_p.appendChild(document.createTextNode('.'));
+				cred_p.appendChild(getPunctuation());
 				
 				conf_group.appendChild(cred_p);
 			}
@@ -223,8 +260,8 @@ var packageProcessor = (function() {
 				conf_p.appendChild(document.createTextNode('This publication claims to meet '));
 				conf_p.appendChild(document.createTextNode(conformance_string));
 				
-				// add punctuation - not in algorithm
-				conf_p.appendChild(document.createTextNode('.'));
+			// add punctuation - not in algorithm
+			conf_p.appendChild(getPunctuation());
 			
 			conf_group.appendChild(conf_p);
 			
@@ -240,7 +277,7 @@ var packageProcessor = (function() {
 			}
 			
 			// add punctuation - not in algorithm
-			cert_p.appendChild(document.createTextNode('.'));
+			cert_p.appendChild(getPunctuation());
 			
 			conf_group.appendChild(cert_p);
 			
@@ -254,7 +291,7 @@ var packageProcessor = (function() {
 				rep_p.appendChild(rep_link);
 				
 				// add punctuation - not in algorithm
-				rep_p.appendChild(document.createTextNode('.'));
+				rep_p.appendChild(getPunctuation());
 				
 				conf_group.appendChild(rep_p);
 			}
@@ -264,59 +301,16 @@ var packageProcessor = (function() {
 		
 
 		/* 
-		 * 4.4 Prerecorded audio
+		 * 4.3 Navigation
 		 */
 		 
-		// 4.4.2 Variables setup
-		var all_content_audio = checkForNode(package_document, xpath.all_content_audio[version]);
-		var synchronised_pre_recorded_audio = checkForNode(package_document, xpath.synchronised_pre_recorded_audio[version]);
-		var audio_content = checkForNode(package_document, xpath.audio_content[version]);
-		
-		// 4.4.3 Instructions
-		
-		// add header
-		result.appendChild(makeHeader('Prerecorded audio', ''));
-		
-		// grid grouping element
-		var prerec_group = document.createElement('div');
-			prerec_group.classList.add('grid-body');
-		
-		var prerec_result = document.createElement('p');
-		
-		if (all_content_audio) {
-			prerec_result.appendChild(document.createTextNode('Audio only'));
-		}
-		
-		else if (synchronised_pre_recorded_audio) {
-			prerec_result.appendChild(document.createTextNode('Synchronized audio and text'));
-		}
-		
-		else if (audio_content) {
-			prerec_result.appendChild(document.createTextNode('Complementary audio and text'));
-		}
-		
-		else {
-			prerec_result.appendChild(document.createTextNode('No information is available'));
-		}
-		
-		// add punctuation - not in algorithm
-		prerec_result.appendChild(document.createTextNode('.'));
-		
-		prerec_group.appendChild(prerec_result);
-		result.appendChild(prerec_group);
-		
-		
-		/* 
-		 * 4.5 Navigation
-		 */
-		 
-		// 4.5.2 Variables setup
+		// 4.3.2 Variables setup
 		var table_of_contents_navigation = checkForNode(package_document, xpath.table_of_contents_navigation[version]);
 		var index_navigation = checkForNode(package_document, xpath.index_navigation[version]);
 		var page_navigation = checkForNode(package_document, xpath.page_navigation[version]);
 		var next_previous_structural_navigation = checkForNode(package_document, xpath.next_previous_structural_navigation[version]);
 		
-		// 4.5.3 Instructions
+		// 4.3.3 Instructions
 		
 		// add header
 		result.appendChild(makeHeader('Navigation', ''));
@@ -361,7 +355,7 @@ var packageProcessor = (function() {
 				p.appendChild(document.createTextNode('No information is available'));
 				
 				// add punctuation - not in algorithm
-				p.appendChild(document.createTextNode('.'));
+				p.appendChild(getPunctuation());
 			
 			nav_group.appendChild(p);
 		}
@@ -370,10 +364,10 @@ var packageProcessor = (function() {
 		
 		
 		/* 
-		 * 4.6 Rich content
+		 * 4.4 Rich content
 		 */
 		 
-		// 4.6.2 Variables setup
+		// 4.4.2 Variables setup
 		var contains_charts_diagrams = checkForNode(package_document, xpath.contains_charts_diagrams[version]);
 		var long_text_descriptions = checkForNode(package_document, xpath.long_text_descriptions[version]);
 		var contains_chemical_formula = checkForNode(package_document, xpath.contains_chemical_formula[version]);
@@ -386,7 +380,7 @@ var packageProcessor = (function() {
 		var open_captions = checkForNode(package_document, xpath.open_captions[version]);
 		var transcript = checkForNode(package_document, xpath.transcript[version]);
 		
-		// 4.6.3 Instructions
+		// 4.4.3 Instructions
 		
 		// add header
 		result.appendChild(makeHeader('Rich content', ''));
@@ -402,7 +396,7 @@ var packageProcessor = (function() {
 				li.appendChild(document.createTextNode('Math as MathML'));
 			
 			// add punctuation - not in algorithm
-			li.appendChild(document.createTextNode('.'));
+			li.appendChild(getPunctuation());
 			
 			richcontent.appendChild(li);
 		}
@@ -412,7 +406,7 @@ var packageProcessor = (function() {
 				li.appendChild(document.createTextNode('Math as LaTeX'));
 			
 			// add punctuation - not in algorithm
-			li.appendChild(document.createTextNode('.'));
+			li.appendChild(getPunctuation());
 			
 			richcontent.appendChild(li);
 		}
@@ -422,7 +416,7 @@ var packageProcessor = (function() {
 				li.appendChild(document.createTextNode('Math as images with text description'));
 			
 			// add punctuation - not in algorithm
-			li.appendChild(document.createTextNode('.'));
+			li.appendChild(getPunctuation());
 			
 			richcontent.appendChild(li);
 		}
@@ -432,7 +426,7 @@ var packageProcessor = (function() {
 				li.appendChild(document.createTextNode('Chemical formulas in MathML'));
 			
 			// add punctuation - not in algorithm
-			li.appendChild(document.createTextNode('.'));
+			li.appendChild(getPunctuation());
 			
 			richcontent.appendChild(li);
 		}
@@ -442,7 +436,7 @@ var packageProcessor = (function() {
 				li.appendChild(document.createTextNode('Chemical formulas in LaTex'));
 			
 			// add punctuation - not in algorithm
-			li.appendChild(document.createTextNode('.'));
+			li.appendChild(getPunctuation());
 			
 			richcontent.appendChild(li);
 		}
@@ -452,7 +446,7 @@ var packageProcessor = (function() {
 				li.appendChild(document.createTextNode('Information-rich images are described by extended descriptions'));
 			
 			// add punctuation - not in algorithm
-			li.appendChild(document.createTextNode('.'));
+			li.appendChild(getPunctuation());
 			
 			richcontent.appendChild(li);
 		}
@@ -462,7 +456,7 @@ var packageProcessor = (function() {
 				li.appendChild(document.createTextNode('Videos have closed captions'));
 			
 			// add punctuation - not in algorithm
-			li.appendChild(document.createTextNode('.'));
+			li.appendChild(getPunctuation());
 			
 			richcontent.appendChild(li);
 		}
@@ -472,7 +466,7 @@ var packageProcessor = (function() {
 				li.appendChild(document.createTextNode('Videos have open captions'));
 			
 			// add punctuation - not in algorithm
-			li.appendChild(document.createTextNode('.'));
+			li.appendChild(getPunctuation());
 			
 			richcontent.appendChild(li);
 		}
@@ -482,7 +476,7 @@ var packageProcessor = (function() {
 				li.appendChild(document.createTextNode('Has transcript'));
 			
 			// add punctuation - not in algorithm
-			li.appendChild(document.createTextNode('.'));
+			li.appendChild(getPunctuation());
 			
 			richcontent.appendChild(li);
 		}
@@ -496,7 +490,7 @@ var packageProcessor = (function() {
 				p.appendChild(document.createTextNode('No information is available'));
 			
 			// add punctuation - not in algorithm
-			p.appendChild(document.createTextNode('.'));
+			p.appendChild(getPunctuation());
 			
 			rc_group.appendChild(p);
 		}
@@ -505,10 +499,10 @@ var packageProcessor = (function() {
 		
 		
 		/* 
-		 * 4.7 Hazards
+		 * 4.5 Hazards
 		 */
 		 
-		 // 4.7.2 Variables setup
+		// 4.5.2 Variables setup
 		var no_hazards_or_warnings_confirmed = checkForNode(package_document, xpath.no_hazards_or_warnings_confirmed[version]);
 		var flashing_hazard = checkForNode(package_document, xpath.flashing_hazard[version]);
 		var no_flashing_hazards = checkForNode(package_document, xpath.no_flashing_hazards[version]);
@@ -518,7 +512,7 @@ var packageProcessor = (function() {
 		var no_sound_hazards = checkForNode(package_document, xpath.no_sound_hazards[version]);
 		var unknown_if_contains_hazards = checkForNode(package_document, xpath.unknown_if_contains_hazards[version]);
 		
-		// 4.7.3 Instructions
+		// 4.5.3 Instructions
 		
 		// add header
 		result.appendChild(makeHeader('Hazards', ''));
@@ -540,7 +534,7 @@ var packageProcessor = (function() {
 					p.appendChild(document.createTextNode('Flashing'));
 			
 				// add punctuation - not in algorithm
-				p.appendChild(document.createTextNode('.'));
+				p.appendChild(getPunctuation());
 				
 				haz_group.appendChild(p);
 			}
@@ -550,7 +544,7 @@ var packageProcessor = (function() {
 					p.appendChild(document.createTextNode('Motion simulation'));
 			
 				// add punctuation - not in algorithm
-				p.appendChild(document.createTextNode('.'));
+				p.appendChild(getPunctuation());
 				
 				haz_group.appendChild(p);
 			}
@@ -560,7 +554,7 @@ var packageProcessor = (function() {
 					p.appendChild(document.createTextNode('Loud sounds'));
 			
 				// add punctuation - not in algorithm
-				p.appendChild(document.createTextNode('.'));
+				p.appendChild(getPunctuation());
 				
 				haz_group.appendChild(p);
 			}
@@ -571,7 +565,7 @@ var packageProcessor = (function() {
 				p.appendChild(document.createTextNode('The presence of hazards is unknown'));
 		
 			// add punctuation - not in algorithm
-			p.appendChild(document.createTextNode('.'));
+			p.appendChild(getPunctuation());
 			
 			haz_group.appendChild(p);
 		}
@@ -581,7 +575,7 @@ var packageProcessor = (function() {
 				p.appendChild(document.createTextNode('No information is available'));
 		
 			// add punctuation - not in algorithm
-			p.appendChild(document.createTextNode('.'));
+			p.appendChild(getPunctuation());
 			
 			haz_group.appendChild(p);
 		}
@@ -590,15 +584,15 @@ var packageProcessor = (function() {
 		
 		
 		/* 
-		 * 4.8 Accessibility summary
+		 * 4.6 Accessibility summary
 		 */
 		 
-		 // 4.8.2 Variables setup
+		// 4.6.2 Variables setup
 		var accessibility_summary =  package_document.evaluate(xpath.accessibility_summary[version], package_document, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
 		var lang_attribute_accessibility_summary = package_document.evaluate(xpath.lang_attribute_accessibility_summary[version], package_document, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
 		var language_of_text = package_document.evaluate(xpath.language_of_text[version], package_document, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
 		
-		// 4.8.3 Instructions
+		// 4.6.3 Instructions
 		
 		// add header
 		result.appendChild(makeHeader('Accessibility summary', ''));
@@ -628,7 +622,7 @@ var packageProcessor = (function() {
 			sum_result.appendChild(document.createTextNode('No information is available'));
 			
 			// add punctuation - not in algorithm
-			sum_result.appendChild(document.createTextNode('.'));
+			sum_result.appendChild(getPunctuation());
 		}
 		
 		sum_group.appendChild(sum_result);
@@ -636,15 +630,15 @@ var packageProcessor = (function() {
 		
 		
 		/* 
-		 * 4.9 Legal considerations
+		 * 4.7 Legal considerations
 		 */
 		 
-		 // 4.9.2 Variables setup
+		// 4.7.2 Variables setup
 		var eaa_exemption_micro_enterprises = checkForNode(package_document, xpath.eaa_exemption_micro_enterprises[version]);
 		var eaa_exception_disproportionate_burden = checkForNode(package_document, xpath.eaa_exception_disproportionate_burden[version]);
 		var eaa_exception_fundamental_modification = checkForNode(package_document, xpath.eaa_exception_fundamental_modification[version]);
 		
-		// 4.9.3 Instructions
+		// 4.7.3 Instructions
 		
 		// add header
 		result.appendChild(makeHeader('Legal considerations', ''));
@@ -664,14 +658,14 @@ var packageProcessor = (function() {
 		}
 		
 		// add punctuation - not in algorithm
-		legal_result.appendChild(document.createTextNode('.'));
+		legal_result.appendChild(getPunctuation());
 		
 		legal_group.appendChild(legal_result);
 		result.appendChild(legal_group);
 		
 		
 		/* 
-		 * 4.10 Additional accessibility information
+		 * 4.8 Additional accessibility information
 		 */
 		 
 		// add header
@@ -683,15 +677,15 @@ var packageProcessor = (function() {
 		var aai_group = document.createElement('div');
 			aai_group.classList.add('grid-body');
 		
-		// 4.10.1 Adaptation
-		// 4.10.1.2 Variables setup
+		// 4.8.1 Adaptation
+		// 4.8.1.2 Variables setup
 		var audio_descriptions = checkForNode(package_document, xpath.audio_descriptions[version]);
 		var braille = checkForNode(package_document, xpath.braille[version]);
 		var tactile_graphic = checkForNode(package_document, xpath.tactile_graphic[version]);
 		var tactile_object = checkForNode(package_document, xpath.tactile_object[version]);
 		var sign_language = checkForNode(package_document, xpath.sign_language[version]);
 		
-		// 4.10.1.3 Instructions
+		// 4.8.1.3 Instructions
 		
 		if (audio_descriptions) {
 			var li = document.createElement('li');
@@ -723,8 +717,8 @@ var packageProcessor = (function() {
 			aai.appendChild(li);
 		}
 		
-		// 4.10.2 Clarity
-		// 4.10.2.2 Variables setup
+		// 4.8.2 Clarity
+		// 4.8.2.2 Variables setup
 		var aria = checkForNode(package_document, xpath.aria[version]);
 		var full_ruby_annotations = checkForNode(package_document, xpath.full_ruby_annotations[version]);
 		var text_to_speech_hinting = checkForNode(package_document, xpath.text_to_speech_hinting[version]);
@@ -734,7 +728,7 @@ var packageProcessor = (function() {
 		var page_break_markers = checkForNode(package_document, xpath.page_break_markers[version]);
 		var ruby_annotations = checkForNode(package_document, xpath.ruby_annotations[version]);
 		
-		// 4.10.2.3 Instructions
+		// 4.8.2.3 Instructions
 		
 		if (aria) {
 			var li = document.createElement('li');
@@ -832,8 +826,8 @@ var packageProcessor = (function() {
 	
 	
 	return {
-		processPackageDoc: function(packageDoc, version) {
-			return processPackageDoc(packageDoc, version);
+		processPackageDoc: function(packageDoc, version, vocab, style) {
+			return processPackageDoc(packageDoc, version, vocab, style);
 		}
 	}	
 })();

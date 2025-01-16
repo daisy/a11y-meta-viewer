@@ -25,15 +25,22 @@ function processXML() {
 	
 	console.clear();
 	
+	// to be replaced with select box option later
+	var lang = 'en-us'; // document.getElementById('lang').value;
+	
+	var vocab = getVocab(lang);
+	var style = 'compact'; // document.querySelector('input[name='msgtype']:checked').value;
+	var punctuation = getPunctuation(lang);
+	
 	var result;
 	
 	if (xml.match('<package ')) {
 		var version = xml.match('version="2.0"') ? 'epub2' : 'epub3';
-		result = packageProcessor.processPackageDoc(xml, version);
+		result = packageProcessor.processPackageDoc(xml, version, vocab, style);
 	}
 	
 	else if (xml.match('<ONIXMessage ')) {
-		result = onixProcessor.processOnixRecord(xml, 'onix');
+		result = onixProcessor.processOnixRecord(xml, 'onix', vocab, style);
 	}
 	
 	else {
@@ -46,6 +53,42 @@ function processXML() {
 		result_dialog.showModal();
 	}
 }
+
+
+
+
+/* return the vocabulary strings in the preferred locale */
+
+function getVocab(lang) {
+
+	var vocab;
+	
+	switch (lang) {
+		default:
+			vocab = en_us;
+	}
+	
+	return vocab;
+	
+}
+
+
+
+
+/* language-specific punctuation */
+
+function getPunctuation(lang) {
+	var punctuation;
+	
+	switch (lang) {
+		default:
+			punctuation = document.createTextNode('.');
+	}
+	
+	return punctuation;
+}
+
+
 
 
 /* common header and explainer dialog */
