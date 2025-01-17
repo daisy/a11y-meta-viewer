@@ -268,21 +268,17 @@ var packageProcessor = (function() {
 			
 			conf_group.appendChild(conf_p);
 			
-			var cert_p = document.createElement('p');
-			
-			if (certification_date || certifier || certifier_credentials) {
-				cert_p.appendChild(document.createTextNode('The publication was certified '));
-			}
-			
 			if (certification_date) {
-				cert_p.appendChild(document.createTextNode(' on '));
-				cert_p.appendChild(document.createTextNode(certification_date));
+			
+				var cert_p = document.createElement('p');
+					cert_p.appendChild(document.createTextNode('The publication was certified on '));
+					cert_p.appendChild(document.createTextNode(certification_date));
+				
+				// add punctuation - not in algorithm
+				cert_p.appendChild(getPunctuation());
+				
+				conf_group.appendChild(cert_p);
 			}
-			
-			// add punctuation - not in algorithm
-			cert_p.appendChild(getPunctuation());
-			
-			conf_group.appendChild(cert_p);
 			
 			if (certifier_report) {
 				
