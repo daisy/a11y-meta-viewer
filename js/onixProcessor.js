@@ -249,39 +249,39 @@ var onixProcessor = (function() {
 		var conf_p = document.createElement('p');
 		
 		if (epub_accessibility_10 || epub_accessibility_11 || wcag_20 || wcag_21 || wcag_22 || level_aaa || level_aa || level_a) {
-			conf_p.appendChild(document.createTextNode('This publication claims to meet '));
+			conf_p.appendChild(document.createTextNode('This publication claims to meet'));
 		}
 		
 		if (epub_accessibility_10) {
-			conf_p.appendChild(document.createTextNode('EPUB Accessibility 1.0 '));
+			conf_p.appendChild(document.createTextNode(' EPUB Accessibility 1.0'));
 		}
 		
 		else if (epub_accessibility_11) {
-			conf_p.appendChild(document.createTextNode('EPUB Accessibility 1.1 '));
+			conf_p.appendChild(document.createTextNode(' EPUB Accessibility 1.1'));
 		}
 		
 		if (wcag_22) {
-			conf_p.appendChild(document.createTextNode('WCAG 2.2 '));
+			conf_p.appendChild(document.createTextNode(' WCAG 2.2'));
 		}
 		
 		else if (wcag_21) {
-			conf_p.appendChild(document.createTextNode('WCAG 2.1 '));
+			conf_p.appendChild(document.createTextNode(' WCAG 2.1'));
 		}
 		
 		else if (wcag_20) {
-			conf_p.appendChild(document.createTextNode('WCAG 2.0 '));
+			conf_p.appendChild(document.createTextNode(' WCAG 2.0'));
 		}
 		
 		if (level_aaa) {
-			conf_p.appendChild(document.createTextNode('Level AAA'));
+			conf_p.appendChild(document.createTextNode(' Level AAA'));
 		}
 			
 		else if (level_aa) {
-			conf_p.appendChild(document.createTextNode('Level AA'));
+			conf_p.appendChild(document.createTextNode(' Level AA'));
 		}
 		
 		else if (level_a) {
-			conf_p.appendChild(document.createTextNode('Level A'));
+			conf_p.appendChild(document.createTextNode(' Level A'));
 		}
 		
 		// add punctuation - not in algorithm

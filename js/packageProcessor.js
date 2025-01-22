@@ -145,20 +145,25 @@ var packageProcessor = (function() {
 		 
 		// 4.2.2 Variables setup
 		var conformance_string = '';
+		var epub_version = '';
+		var wcag_version = '';
 		var wcag_level = '';
 		
 		if (checkForNode(package_document, xpath.epub10a[version])) {
-			conformance_string = 'EPUB Accessibility 1.0 WCAG 2.0 Level A';
+			epub_version = '1.0';
+			wcag_version = '2.0';
 			wcag_level = 'A';
 		}
 		
 		if (checkForNode(package_document, xpath.epub10aa[version])) {
-			conformance_string = 'EPUB Accessibility 1.0 WCAG 2.0 Level AA';
+			epub_version = '1.0';
+			wcag_version = '2.0';
 			wcag_level = 'AA';
 		}
 		
 		if (checkForNode(package_document, xpath.epub10aaa[version])) {
-			conformance_string = 'EPUB Accessibility 1.0 WCAG 2.0 Level AAA';
+			epub_version = '1.0';
+			wcag_version = '2.0';
 			wcag_level = 'AAA';
 		}
 		
@@ -172,8 +177,11 @@ var packageProcessor = (function() {
 		
 			conformance = conformance.trim();
 			
-			conformance_string = conformance.replace(' - ', ' ').trim();
-			
+			epub_version = '1.1';
+
+			var version_re = new RegExp('EPUB Accessibility 1\\.1 - WCAG (2\\.[0-2]) Level [A]+');
+			wcag_version = conformance.replace(version_re, '$1');
+
 			var level_re = new RegExp('EPUB Accessibility 1\\.1 - WCAG 2\\.[0-2] Level ');
 			wcag_level = conformance.replace(level_re, '');
 		}
@@ -192,7 +200,7 @@ var packageProcessor = (function() {
 		var conf_group = document.createElement('div');
 			conf_group.classList.add('grid-body');
 		
-		if (!conformance_string) {
+		if (!epub_version && !wcag_version) {
 			var p = document.createElement('p');
 				p.appendChild(document.createTextNode('No information is available.'))
 			conf_group.appendChild(p);
@@ -260,9 +268,43 @@ var packageProcessor = (function() {
 			conf_group.appendChild(detconf_hd);
 			
 			var conf_p = document.createElement('p');
-				conf_p.appendChild(document.createTextNode('This publication claims to meet '));
-				conf_p.appendChild(document.createTextNode(conformance_string));
-				
+				conf_p.appendChild(document.createTextNode('This publication claims to meet'));
+			
+			/* epub accessibility version */
+			if (epub_version === '1.0') {
+				conf_p.appendChild(document.createTextNode(' EPUB Accessibility 1.0'));
+			}
+			
+			else if (epub_version === '1.1') {
+				conf_p.appendChild(document.createTextNode(' EPUB Accessibility 1.1'));
+			}
+			
+			/* wcag version */
+			if (wcag_version === '2.2') {
+				conf_p.appendChild(document.createTextNode(' WCAG 2.2'));
+			}
+			
+			else if (wcag_version === '2.1') {
+				conf_p.appendChild(document.createTextNode(' WCAG 2.1'));
+			}
+			
+			else if (wcag_version === '2.0') {
+				conf_p.appendChild(document.createTextNode(' WCAG 2.0'));
+			}
+			
+			/* wcag level */
+			if (wcag_level === 'AAA') {
+				conf_p.appendChild(document.createTextNode(' Level AAA'));
+			}
+			
+			else if (wcag_level === 'AA') {
+				conf_p.appendChild(document.createTextNode(' Level AA'));
+			}
+			
+			else if (wcag_level === 'A') {
+				conf_p.appendChild(document.createTextNode(' Level A'));
+			}
+
 			// add punctuation - not in algorithm
 			conf_p.appendChild(getPunctuation());
 			
