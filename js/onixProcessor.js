@@ -432,60 +432,36 @@ var onixProcessor = (function() {
 		if (contains_math_formula) {
 			var li = document.createElement('li');
 				li.appendChild(document.createTextNode('Math as images with text description'));
-			
-			// add punctuation - not in algorithm
-			li.appendChild(getPunctuation());
-			
 			richcontent.appendChild(li);
 		}
 		
 		if (chemical_formula_as_mathml) {
 			var li = document.createElement('li');
 				li.appendChild(document.createTextNode('Chemical formulas in MathML'));
-			
-			// add punctuation - not in algorithm
-			li.appendChild(getPunctuation());
-			
 			richcontent.appendChild(li);
 		}
 		
 		if (charts_diagrams_as_non_graphical_data || full_alternative_textual_descriptions) {
 			var li = document.createElement('li');
 				li.appendChild(document.createTextNode('Information-rich images are described by extended descriptions'));
-			
-			// add punctuation - not in algorithm
-			li.appendChild(getPunctuation());
-			
 			richcontent.appendChild(li);
 		}
 		
 		if (closed_captions) {
 			var li = document.createElement('li');
 				li.appendChild(document.createTextNode('Videos have closed captions'));
-			
-			// add punctuation - not in algorithm
-			li.appendChild(getPunctuation());
-			
 			richcontent.appendChild(li);
 		}
 		
 		if (open_captions) {
 			var li = document.createElement('li');
 				li.appendChild(document.createTextNode('Videos have open captions'));
-			
-			// add punctuation - not in algorithm
-			li.appendChild(getPunctuation());
-			
 			richcontent.appendChild(li);
 		}
 		
 		if (transcript) {
 			var li = document.createElement('li');
 				li.appendChild(document.createTextNode('Has transcript'));
-			
-			// add punctuation - not in algorithm
-			li.appendChild(getPunctuation());
-			
 			richcontent.appendChild(li);
 		}
 		
