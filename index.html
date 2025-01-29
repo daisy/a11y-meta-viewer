@@ -16,19 +16,19 @@
 			<p>This application converts the accessibility metadata in an EPUB package document or ONIX record into display
 				statements in accordance with the <a
 					href="https://w3c.github.io/publ-a11y/a11y-meta-display-guide/2.0/guidelines/">W3C Accessibility
-					Metadata Display Guide for Digial Publications 2.0</a>.</p>
+					Metadata Display Guide for Digital Publications 2.0</a>.</p>
 			
-			<p>To begin, type or paste a package document or onix record in the following field.</p>
+			<p>To begin, type or paste an EPUB package document or ONIX record in the following field.</p>
 			
 			<textarea id="input_packagedoc" rows="15" autocomplete="off"></textarea>
 			
-			<!-- to be developed
 			<fieldset>
 				<legend>Message type:</legend>
-				<label><input name="msgtype" id="msg-compact" type="radio" checked="" disabled=""/> Compact</label>
-				<label><input name="msgtype" id="msg-descriptive" type="radio" disabled=""/> Descriptive</label>
+				<label><input name="mode" id="mode-compact" type="radio" value="compact" checked=""> Compact</label>
+				<label><input name="mode" id="mode-descriptive" type="radio" value="descriptive"> Descriptive</label>
 			</fieldset>
-			
+				
+			<!-- to be developed
 			<fieldset>
 				<legend>Language:</legend>
 				<select id="lang" disabled="">
@@ -104,7 +104,7 @@
 				<div class="footer-list">
 					<div>Feedback</div>
 					<ul>
-						<li><a href="https://github.com/DAISY/a11y-meta-viewer/commits/main/">Report Bugs</a></li>
+						<li><a href="https://github.com/DAISY/a11y-meta-viewer/issues/">Report Bugs</a></li>
 						<li><a href="https://github.com/DAISY/a11y-meta-viewer/commits/main/">Revision History</a></li>
 					</ul>
 				</div>

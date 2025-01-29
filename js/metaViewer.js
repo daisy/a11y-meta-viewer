@@ -29,18 +29,18 @@ function processXML() {
 	var lang = 'en-us'; // document.getElementById('lang').value;
 	
 	var vocab = getVocab(lang);
-	var style = 'compact'; // document.querySelector('input[name='msgtype']:checked').value;
+	var mode = document.querySelector('input[name="mode"]:checked').value;
 	var punctuation = getPunctuation(lang);
 	
 	var result;
 	
 	if (xml.match('<package ')) {
 		var version = xml.match('version="2.0"') ? 'epub2' : 'epub3';
-		result = packageProcessor.processPackageDoc(xml, version, vocab, style);
+		result = packageProcessor.processPackageDoc(xml, version, vocab, mode);
 	}
 	
 	else if (xml.match('<ONIXMessage ')) {
-		result = onixProcessor.processOnixRecord(xml, 'onix', vocab, style);
+		result = onixProcessor.processOnixRecord(xml, 'onix', vocab, mode);
 	}
 	
 	else {
