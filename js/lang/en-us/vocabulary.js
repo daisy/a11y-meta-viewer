@@ -8,13 +8,21 @@ var en_us = {
     },
     "ways-of-reading": {
         "ways-of-reading-title": "Ways of reading",
+        "ways-of-reading-nonvisual-reading-no-metadata": {
+            "compact": "No information about nonvisual reading is available",
+            "descriptive": "No information about nonvisual reading is available"
+        },
         "ways-of-reading-nonvisual-reading-alt-text": {
             "compact": "Has alternative text",
             "descriptive": "Has alternative text descriptions for images"
         },
-        "ways-of-reading-nonvisual-reading-may-not-fully": {
-            "compact": "May not be fully readable in read aloud or dynamic braille",
-            "descriptive": "Portions of the content may not be readable as read aloud speech or dynamic braille"
+        "ways-of-reading-nonvisual-reading-braille-only": {
+            "compact": "Readable in dynamic braille",
+            "descriptive": "Readable in dynamic braille"
+        },
+        "ways-of-reading-nonvisual-reading-not-readable": {
+            "compact": "Not readable in read aloud or dynamic braille",
+            "descriptive": "Not readable in read aloud or dynamic braille"
         },
         "ways-of-reading-nonvisual-reading-not-fully": {
             "compact": "Not fully readable in read aloud or dynamic braille",

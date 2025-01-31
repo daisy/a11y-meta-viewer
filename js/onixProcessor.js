@@ -20,7 +20,7 @@ var onixProcessor = (function() {
 		}
 		
 		/* 
-		 * 4.1 Ways of reading
+		 * 3.1 Ways of reading
 		 */
 		
 		// add header
@@ -31,14 +31,14 @@ var onixProcessor = (function() {
 			wor_group.classList.add('grid-body');
 		
 		/* 
-		 * 4.1.1 Visual adjustments
+		 * 3.1.1 Visual adjustments
 		 */
 		 
-		// 4.1.1.2 Variables setup
+		// 3.1.1.2 Variables setup
 		var all_textual_content_can_be_modified = checkForNode(onix, xpath.ways_of_reading.all_textual_content_can_be_modified[version]);
 		var is_fixed_layout = checkForNode(onix, xpath.ways_of_reading.is_fixed_layout[version]) && !checkForNode(onix, xpath.ways_of_reading.is_reflow[version]);
 		
-		// 4.1.1.3 Instructions
+		// 3.1.1.3 Instructions
 		
 		var vis_result = document.createElement('p');
 		
@@ -61,7 +61,7 @@ var onixProcessor = (function() {
 		
 		
 		/* 
-		 * 4.1.2 Supports nonvisual reading
+		 * 3.1.2 Supports nonvisual reading
 		 */
 		 
 		 // 4.1.2.2 Variables setup
@@ -70,56 +70,42 @@ var onixProcessor = (function() {
 		 var real_text = checkForNode(onix, xpath.ways_of_reading.real_text[version]);
 		 var textual_alternative_images = checkForNode(onix, xpath.ways_of_reading.textual_alternative_images[version]);
 		
-		// 4.1.2.3 Instructions
+		// 3.1.2.3 Instructions
 		
-		// add header
+		var nonvis_result = document.createElement('p');
 		
 		if (all_necessary_content_textual) {
-			var p = document.createElement('p');
-				p.appendChild(document.createTextNode(vocab['ways-of-reading']['ways-of-reading-nonvisual-reading-readable'][mode]));
-				
-			// add punctuation - not in algorithm
-			p.appendChild(getPunctuation());
-			
-			wor_group.appendChild(p);
-			
-			if (textual_alternative_images) {
-				var p2 = document.createElement('p');
-					p2.appendChild(document.createTextNode(vocab['ways-of-reading']['ways-of-reading-nonvisual-reading-alt-text'][mode]));
-					
-				// add punctuation - not in algorithm
-				p2.appendChild(getPunctuation());
-				
-				wor_group.appendChild(p2);
-			}
+			nonvis_result.appendChild(document.createTextNode(vocab['ways-of-reading']['ways-of-reading-nonvisual-reading-readable'][mode]));
 		}
 		
 		else if (real_text && non_textual_content_images && !textual_alternative_images) {
-			var p = document.createElement('p');
-				p.appendChild(document.createTextNode(vocab['ways-of-reading']['ways-of-reading-nonvisual-reading-not-fully'][mode]));
-			
-			// add punctuation - not in algorithm
-			p.appendChild(getPunctuation());
-			
-			wor_group.appendChild(p);
+			nonvis_result.appendChild(document.createTextNode(vocab['ways-of-reading']['ways-of-reading-nonvisual-reading-not-fully'][mode]));
 		}
 		
 		else {
-			var p = document.createElement('p');
-				p.appendChild(document.createTextNode(vocab['ways-of-reading']['ways-of-reading-nonvisual-reading-may-not-fully'][mode]));
-			
-			// add punctuation - not in algorithm
-			p.appendChild(getPunctuation());
-			
-			wor_group.appendChild(p);
+			nonvis_result.appendChild(document.createTextNode(vocab['ways-of-reading']['ways-of-reading-nonvisual-reading-may-not-fully'][mode]));
 		}
 		
+		// add punctuation - not in algorithm
+		nonvis_result.appendChild(getPunctuation());
+		
+		wor_group.appendChild(nonvis_result);
+		
+		if (textual_alternative_images) {
+			var p2 = document.createElement('p');
+				p2.appendChild(document.createTextNode(vocab['ways-of-reading']['ways-of-reading-nonvisual-reading-alt-text'][mode]));
+				
+			// add punctuation - not in algorithm
+			p2.appendChild(getPunctuation());
+			
+			wor_group.appendChild(p2);
+		}
 		
 		/* 
-		 * 4.1.3 Pre-recorded audio
+		 * 3.1.3 Pre-recorded audio
 		 */
 		 
-		 // 4.1.3.2 Variables setup
+		 // 3.1.3.2 Variables setup
 		 var all_content_audio = checkForNode(onix, xpath.ways_of_reading.all_content_audio[version]);
 		 var all_content_pre_recorded = checkForNode(onix, xpath.ways_of_reading.all_content_pre_recorded[version]);
 		 var audiobook = checkForNode(onix, xpath.ways_of_reading.audiobook[version]);
@@ -155,10 +141,10 @@ var onixProcessor = (function() {
 		
 		
 		/* 
-		 * 4.2 Conformance
+		 * 3.2 Conformance
 		 */
 		 
-		// 4.2.2 Variables setup
+		// 3.2.2 Variables setup
 		var certifier = onix.evaluate(xpath.conformance.certifier[version], onix, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
 		var certifier_credentials = onix.evaluate(xpath.conformance.certifier_credentials[version], onix, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
 		var certification_date = onix.evaluate(xpath.conformance.certification_date[version], onix, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
@@ -173,7 +159,7 @@ var onixProcessor = (function() {
 		var wcag_21 = checkForNode(onix, xpath.conformance.wcag_21[version]);
 		var wcag_22 = checkForNode(onix, xpath.conformance.wcag_22[version]);
 		
-		// 4.2.3 Instructions
+		// 3.2.3 Instructions
 		
 		// add header
 		result.appendChild(makeHeader(vocab.conformance['conformance-title'], ''));

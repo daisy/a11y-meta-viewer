@@ -15,22 +15,42 @@ var xpath = {
 			onix: '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormDetail[normalize-space() = "E200"]'
 		},
 		all_necessary_content_textual: {
-			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessModeSufficient" and normalize-space()="textual"]',
-			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessModeSufficient" and @content="textual"]',
+			epub3: '/opf:package/opf:metadata/opf:meta[(@property="schema:accessMode" and normalize-space()="textual" and count(//opf:meta[@property="schema:accessMode"]) = 1) or (@property="schema:accessModeSufficient" and normalize-space()="textual")]',
+			epub2: '/opf:package/opf:metadata/opf:meta[(@name="schema:accessMode" and @content="textual" and count(//opf:meta[@name="schema:accessMode"]) = 1) or (@name="schema:accessModeSufficient" and normalize-space()="textual")]',
 			onix: '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "52"]'
+		},
+		audio_only_content: {
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessMode" and normalize-space() = "auditory" and count(//opf:meta[@property="schema:accessMode"]) = 1]',
+			epub2: '',
+			onix: ''
+		},
+		braille_only_content: {
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessMode" and normalize-space() = "tactile" and count(//opf:meta[@property="schema:accessMode"]) = 1]',
+			epub2: '',
+			onix: ''
 		},
 		real_text: {
 			onix: '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail[onix:PrimaryContentType = "10" or onix:ProductContentType = "10"]'
 		},
-		non_textual_content_images: {
-			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessMode" and contains(" chartOnVisual chemOnVisual diagramOnVisual mathOnVisual musicOnVisual textOnVisual ", normalize-space())]',
-			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessMode" and contains(" chartOnVisual chemOnVisual diagramOnVisual mathOnVisual musicOnVisual textOnVisual ", @content)]',
-			onix: '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail[contains(" 07 18 19 12 49 20 ", onix:PrimaryContentType) or contains(" 07 18 19 12 49 20 ", onix:ProductContentType)]'
+		non_textual_content: {
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessMode" and not(normalize-space() = "textual")]',
+			epub2: '',
+			onix: ''
 		},
-		textual_alternative_images: {
-			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and contains(" longDescription alternativeText describedMath ", normalize-space())]',
-			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessibilityFeature" and contains(" longDescription alternativeText describedMath ", @content)]',
-			onix: '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and (onix:ProductFormFeatureValue = "14" or onix:ProductFormFeatureValue = "15" or onix:ProductFormFeatureValue = "16")]'
+		some_sufficient_text: {
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessMode" and contains(normalize-space(), "textual")] or /opf:package/opf:metadata/opf:meta[@property="schema:accessModeSufficient" and contains(normalize-space(), "textual") and string-length(normalize-space()) > 7]',
+			epub2: '',
+			onix: ''
+		},
+		textual_alternatives: {
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and contains(" longDescription alternativeText describedMath transcript ", normalize-space())]',
+			epub2: '',
+			onix: ''
+		},
+		visual_only_content: {
+			epub3: '/opf:package/opf:metadata/opf:meta[(@property="schema:accessMode" and normalize-space() = "visual" and count(//opf:meta[@property="schema:accessMode"]) = 1) and not(@property="schema:accessModeSufficient" and contains(normalize-space(), "textual"))]',
+			epub2: '',
+			onix: ''
 		},
 		all_content_audio: {
 			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessModeSufficient" and normalize-space()="auditory"]',

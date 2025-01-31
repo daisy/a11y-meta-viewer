@@ -20,7 +20,7 @@ var packageProcessor = (function() {
 		}
 		
 		/* 
-		 * 4.1 Ways of reading
+		 * 3.1 Ways of reading
 		 */
 		
 		// add header
@@ -31,23 +31,23 @@ var packageProcessor = (function() {
 			wor_group.classList.add('grid-body');
 		
 		/* 
-		 * 4.1.1 Visual adjustments
+		 * 3.1.1 Visual adjustments
 		 */
 		 
-		// 4.1.1.2 Variables setup
+		// 3.1.1.2 Variables setup
 		var all_textual_content_can_be_modified = checkForNode(package_document, xpath.ways_of_reading.all_textual_content_can_be_modified[version]);
 		var is_fixed_layout = checkForNode(package_document, xpath.ways_of_reading.is_fixed_layout[version]);
 		
-		// 4.1.1.3 Instructions
+		// 3.1.1.3 Instructions
 		
 		var vis_result = document.createElement('p');
 		
-		if (is_fixed_layout) {
-			vis_result.appendChild(document.createTextNode(vocab['ways-of-reading']['ways-of-reading-visual-adjustments-unmodifiable'][mode]));
+		if (all_textual_content_can_be_modified) {
+			vis_result.appendChild(document.createTextNode(vocab['ways-of-reading']['ways-of-reading-visual-adjustments-modifiable'][mode]));
 		}
 		
-		else if (all_textual_content_can_be_modified) {
-			vis_result.appendChild(document.createTextNode(vocab['ways-of-reading']['ways-of-reading-visual-adjustments-modifiable'][mode]));
+		else if (is_fixed_layout) {
+			vis_result.appendChild(document.createTextNode(vocab['ways-of-reading']['ways-of-reading-visual-adjustments-unmodifiable'][mode]));
 		}
 		
 		else {
@@ -63,17 +63,48 @@ var packageProcessor = (function() {
 		
 		
 		/* 
-		 * 4.1.2 Supports nonvisual reading
+		 * 3.1.2 Supports nonvisual reading
 		 */
 		 
-		// 4.1.2.2 Variables setup
-		var all_necessary_content_textual = checkForNode(package_document, xpath.ways_of_reading.all_necessary_content_textual[version]);
-		var non_textual_content_images = checkForNode(package_document, xpath.ways_of_reading.non_textual_content_images[version]);
-		var textual_alternative_images = checkForNode(package_document, xpath.ways_of_reading.textual_alternative_images[version]);
+		// 3.1.2.2 Variables setup
+		var all_necessary_content_textual = checkForNode(package_document, xpath.ways_of_reading.all_necessary_content_textual[version]); 
+		var audio_only_content = checkForNode(package_document, xpath.ways_of_reading.audio_only_content[version]);
+		var braille_only_content = checkForNode(package_document, xpath.ways_of_reading.braille_only_content[version]);
+		var non_textual_content = checkForNode(package_document, xpath.ways_of_reading.non_textual_content[version]);
+		var some_sufficient_text = checkForNode(package_document, xpath.ways_of_reading.some_sufficient_text[version]);
+		var textual_alternatives = checkForNode(package_document, xpath.ways_of_reading.textual_alternatives[version]);
+		var visual_only_content = checkForNode(package_document, xpath.ways_of_reading.visual_only_content[version]);
 		
-		// 4.1.2.3 Instructions
+		// 3.1.2.3 Instructions
 		
-		if (textual_alternative_images) {
+		var nonvis_result = document.createElement('p');
+		
+		if (all_necessary_content_textual) {
+			nonvis_result.appendChild(document.createTextNode(vocab['ways-of-reading']['ways-of-reading-nonvisual-reading-readable'][mode]));
+		}
+		
+		else if (audio_only_content || visual_only_content) {
+			nonvis_result.appendChild(document.createTextNode(vocab['ways-of-reading']['ways-of-reading-nonvisual-reading-not-readable'][mode]));
+		}
+		
+		else if (braille_only_content) {
+			nonvis_result.appendChild(document.createTextNode(vocab['ways-of-reading']['ways-of-reading-nonvisual-reading-braille-only'][mode]));
+		}
+		
+		else if (non_textual_content && (some_sufficient_text || textual_alternatives)) {
+			nonvis_result.appendChild(document.createTextNode(vocab['ways-of-reading']['ways-of-reading-nonvisual-reading-not-fully'][mode]));
+		}
+		
+		else {
+			nonvis_result.appendChild(document.createTextNode(vocab['ways-of-reading']['ways-of-reading-nonvisual-reading-no-metadata'][mode]));
+		}
+		
+		// add punctuation - not in algorithm
+		nonvis_result.appendChild(getPunctuation());
+		
+		wor_group.appendChild(nonvis_result);
+		
+		if (textual_alternatives) {
 			var p = document.createElement('p');
 				p.appendChild(document.createTextNode(vocab['ways-of-reading']['ways-of-reading-nonvisual-reading-alt-text'][mode]));
 		
@@ -83,36 +114,17 @@ var packageProcessor = (function() {
 			wor_group.appendChild(p);
 		}
 		
-		var nonvis_result = document.createElement('p');
-		
-		if (all_necessary_content_textual) {
-			nonvis_result.appendChild(document.createTextNode(vocab['ways-of-reading']['ways-of-reading-nonvisual-reading-readable'][mode]));
-		}
-		
-		else if (non_textual_content_images && !textual_alternative_images) {
-			nonvis_result.appendChild(document.createTextNode(vocab['ways-of-reading']['ways-of-reading-nonvisual-reading-not-fully'][mode]));
-		}
-		
-		else {
-			nonvis_result.appendChild(document.createTextNode(vocab['ways-of-reading']['ways-of-reading-nonvisual-reading-may-not-fully'][mode]));
-		}
-		
-		// add punctuation - not in algorithm
-		nonvis_result.appendChild(getPunctuation());
-		
-		wor_group.appendChild(nonvis_result);
-		
 		
 		/* 
-		 * 4.1.3 Prerecorded audio
+		 * 3.1.3 Prerecorded audio
 		 */
 		 
-		// 4.1.3.2 Variables setup
+		// 3.1.3.2 Variables setup
 		var all_content_audio = checkForNode(package_document, xpath.ways_of_reading.all_content_audio[version]);
 		var audio_content = checkForNode(package_document, xpath.ways_of_reading.audio_content[version]);
 		var synchronised_pre_recorded_audio = checkForNode(package_document, xpath.ways_of_reading.synchronised_pre_recorded_audio[version]);
 		
-		// 4.1.3.3 Instructions
+		// 3.1.3.3 Instructions
 		
 		var prerec_result = document.createElement('p');
 		
@@ -140,10 +152,10 @@ var packageProcessor = (function() {
 		
 		
 		/* 
-		 * 4.2 Conformance
+		 * 3.2 Conformance
 		 */
 		 
-		// 4.2.2 Variables setup
+		// 3.2.2 Variables setup
 		var conformance_string = '';
 		var epub_version = '';
 		var wcag_version = '';
