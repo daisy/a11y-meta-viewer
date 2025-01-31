@@ -38,7 +38,7 @@ var xpath = {
 			onix: ''
 		},
 		some_sufficient_text: {
-			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessMode" and contains(normalize-space(), "textual")] or /opf:package/opf:metadata/opf:meta[@property="schema:accessModeSufficient" and contains(normalize-space(), "textual") and string-length(normalize-space()) > 7]',
+			epub3: '/opf:package/opf:metadata/opf:meta[(@property="schema:accessMode" and contains(normalize-space(), "textual")) or (/opf:package/opf:metadata/opf:meta[@property="schema:accessModeSufficient" and contains(normalize-space(), "textual") and string-length(normalize-space()) > 7)]',
 			epub2: '',
 			onix: ''
 		},
