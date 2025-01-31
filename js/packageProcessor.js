@@ -83,16 +83,16 @@ var packageProcessor = (function() {
 			nonvis_result.appendChild(document.createTextNode(vocab['ways-of-reading']['ways-of-reading-nonvisual-reading-readable'][mode]));
 		}
 		
-		else if (audio_only_content || visual_only_content) {
-			nonvis_result.appendChild(document.createTextNode(vocab['ways-of-reading']['ways-of-reading-nonvisual-reading-not-readable'][mode]));
-		}
-		
 		else if (braille_only_content) {
 			nonvis_result.appendChild(document.createTextNode(vocab['ways-of-reading']['ways-of-reading-nonvisual-reading-braille-only'][mode]));
 		}
 		
 		else if (non_textual_content && (some_sufficient_text || textual_alternatives)) {
 			nonvis_result.appendChild(document.createTextNode(vocab['ways-of-reading']['ways-of-reading-nonvisual-reading-not-fully'][mode]));
+		}
+		
+		else if (audio_only_content || visual_only_content) {
+			nonvis_result.appendChild(document.createTextNode(vocab['ways-of-reading']['ways-of-reading-nonvisual-reading-not-readable'][mode]));
 		}
 		
 		else {
