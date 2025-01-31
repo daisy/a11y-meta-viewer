@@ -38,7 +38,7 @@ var xpath = {
 			onix: ''
 		},
 		some_sufficient_text: {
-			epub3: '/opf:package/opf:metadata/opf:meta[(@property="schema:accessMode" and contains(normalize-space(), "textual")) or (/opf:package/opf:metadata/opf:meta[@property="schema:accessModeSufficient" and contains(normalize-space(), "textual") and string-length(normalize-space()) > 7)]',
+			epub3: '/opf:package/opf:metadata/opf:meta[(@property="schema:accessMode" and contains(normalize-space(), "textual")) or (@property="schema:accessModeSufficient" and contains(normalize-space(), "textual") and string-length(normalize-space()) > 7)]',
 			epub2: '',
 			onix: ''
 		},
@@ -48,7 +48,7 @@ var xpath = {
 			onix: ''
 		},
 		visual_only_content: {
-			epub3: '/opf:package/opf:metadata/opf:meta[(@property="schema:accessMode" and normalize-space() = "visual" and count(//opf:meta[@property="schema:accessMode"]) = 1) and not(@property="schema:accessModeSufficient" and contains(normalize-space(), "textual"))]',
+			epub3: '/opf:package/opf:metadata/opf:meta[(@property="schema:accessMode" and normalize-space() = "visual" and count(//opf:meta[@property="schema:accessMode"]) = 1) and not(//opf:meta[@property="schema:accessModeSufficient" and contains(normalize-space(), "textual")])]',
 			epub2: '',
 			onix: ''
 		},
