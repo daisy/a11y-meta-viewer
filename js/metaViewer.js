@@ -17,7 +17,7 @@ result_close_img.addEventListener("click", () => {
 
 function processXML() {
 
-	var xml = document.getElementById('input_packagedoc').value;
+	var xml = document.getElementById('input_record').value;
 	
 	// reest the result pane
 	var result_field = document.getElementById('result-body');
@@ -32,21 +32,40 @@ function processXML() {
 	var mode = document.querySelector('input[name="mode"]:checked').value;
 	var punctuation = getPunctuation(lang);
 	
-	var result;
+	var format;
 	
 	if (xml.match('<package ')) {
-		var version = xml.match('version="2.0"') ? 'epub2' : 'epub3';
-		result = packageProcessor.processPackageDoc(xml, version, vocab, mode);
+		format = xml.match('version="2.0"') ? 'epub2' : 'epub3';
 	}
 	
 	else if (xml.match('<ONIXMessage ')) {
-		result = onixProcessor.processOnixRecord(xml, 'onix', vocab, mode);
+		format = 'onix';
 	}
 	
 	else {
 		alert('Invalid xml document - package or onix root element not found');
 		return;
 	}
+	
+	if (!metaDisplayProcessor.initialize({
+			record_as_text: xml,
+			format: format,
+			vocab: vocab, 
+			mode: mode
+		})) {
+		return;
+	}
+	
+	metaDisplayProcessor.processWaysOfReading();
+	metaDisplayProcessor.processConformance();
+	metaDisplayProcessor.processNavigation();
+	metaDisplayProcessor.processRichContent();
+	metaDisplayProcessor.processHazards();
+	metaDisplayProcessor.processAccessibilitySummary();
+	metaDisplayProcessor.processLegal();
+	metaDisplayProcessor.processAdditionalA11yInfo();
+	
+	var result = metaDisplayProcessor.getDisplay();
 	
 	if (result) {
 		result_field.appendChild(result);
