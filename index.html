@@ -13,14 +13,9 @@
 			<h1><img class="logo" src="graphics/daisy_high.jpg" alt="DAISY"> Accessibility Metadata Viewer</h1>
 		</header>
 		<main>
-			<p>This application converts the accessibility metadata in an EPUB package document or ONIX record into display
-				statements in accordance with the <a
-					href="https://w3c.github.io/publ-a11y/a11y-meta-display-guide/2.0/guidelines/">W3C Accessibility
-					Metadata Display Guide for Digital Publications 2.0</a>.</p>
+			<p>Paste an EPUB package document or ONIX record to begin.</p>
 			
-			<p>To begin, type or paste an EPUB package document or ONIX record in the following field.</p>
-			
-			<textarea id="input_packagedoc" rows="15" autocomplete="off"></textarea>
+			<textarea id="input_record" rows="15" autocomplete="off"></textarea>
 			
 			<fieldset>
 				<legend>Message type:</legend>
@@ -96,21 +91,28 @@
 			</section>
 			
 			<script src="js/metaViewer.js"></script>
-			<script src="js/packageProcessor.js"></script>
-			<script src="js/onixProcessor.js"></script>
+			<script src="js/metaDisplayProcessor.js"></script>
 		</main>
 		<footer>
 			<div class="footer-lists">
 				<div class="footer-list">
-					<div>Feedback</div>
-					<ul>
+					<div id="nav-site">Site</div>
+					<ul aria-labelledby="nav-site">
+						<li><a href="/">Metadata viewer</a></li>
+						<li><a href="about.html">About</a></li>
+						<li><a href="https://daisy.org/">Sponsor</a></li>
+					</ul>
+				</div>
+				<div class="footer-list">
+					<div id="nav-feedback">Feedback</div>
+					<ul aria-labelledby="nav-feedback">
 						<li><a href="https://github.com/DAISY/a11y-meta-viewer/issues/">Report Bugs</a></li>
 						<li><a href="https://github.com/DAISY/a11y-meta-viewer/commits/main/">Revision History</a></li>
 					</ul>
 				</div>
 				<div class="footer-list">
-					<div>Specifications</div>
-					<ul>
+					<div id="nav-specs">Specifications</div>
+					<ul aria-labelledby="nav-specs">
 						<li><a href="https://w3c.github.io/publ-a11y/a11y-meta-display-guide/2.0/guidelines/">Accessibility Metadata Display Guide</a></li>
 						<li><a href="https://w3c.github.io/publ-a11y/a11y-meta-display-guide/2.0/techniques/epub-metadata/">EPUB Metadata Techniques</a></li>
 						<li><a href="https://w3c.github.io/publ-a11y/a11y-meta-display-guide/2.0/techniques/onix-metadata/">ONIX Metadata Techniques</a></li>
