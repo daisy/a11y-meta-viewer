@@ -8,21 +8,17 @@ var en_us = {
     },
     "ways-of-reading": {
         "ways-of-reading-title": "Ways of reading",
-        "ways-of-reading-nonvisual-reading-no-metadata": {
-            "compact": "No information about nonvisual reading is available",
-            "descriptive": "No information about nonvisual reading is available"
-        },
         "ways-of-reading-nonvisual-reading-alt-text": {
             "compact": "Has alternative text",
             "descriptive": "Has alternative text descriptions for images"
         },
-        "ways-of-reading-nonvisual-reading-braille-only": {
-            "compact": "Readable in dynamic braille",
-            "descriptive": "Readable in dynamic braille"
+        "ways-of-reading-nonvisual-reading-no-metadata": {
+            "compact": "No information about nonvisual reading is available",
+            "descriptive": "No information about nonvisual reading is available"
         },
-        "ways-of-reading-nonvisual-reading-not-readable": {
+        "ways-of-reading-nonvisual-reading-none": {
             "compact": "Not readable in read aloud or dynamic braille",
-            "descriptive": "Not readable in read aloud or dynamic braille"
+            "descriptive": "The content is not readable as read aloud speech or dynamic braille"
         },
         "ways-of-reading-nonvisual-reading-not-fully": {
             "compact": "Not fully readable in read aloud or dynamic braille",
@@ -33,16 +29,16 @@ var en_us = {
             "descriptive": "All content can be read as read aloud speech or dynamic braille"
         },
         "ways-of-reading-prerecorded-audio-complementary": {
-            "compact": "Complementary audio and text",
-            "descriptive": "Portions of prerecorded audio are available"
+            "compact": "Prerecorded audio clips",
+            "descriptive": "Prerecorded audio clips are embedded in the content"
         },
         "ways-of-reading-prerecorded-audio-no-metadata": {
-            "compact": "No information about prerecorded audio is available",
-            "descriptive": "No information about prerecorded audio is available"
+            "compact": " No information about prerecorded audio is available",
+            "descriptive": " No information about prerecorded audio is available"
         },
         "ways-of-reading-prerecorded-audio-only": {
             "compact": "Prerecorded audio only",
-            "descriptive": "Audiobook with no text alternative"
+            "descriptive": " Audiobook with no text alternative"
         },
         "ways-of-reading-prerecorded-audio-synchronized": {
             "compact": "Prerecorded audio synchronized with text",
@@ -50,11 +46,11 @@ var en_us = {
         },
         "ways-of-reading-visual-adjustments-modifiable": {
             "compact": "Appearance can be modified",
-            "descriptive": "Appearance of the text and page layout can be modified according to the capabilities of the reading system (font family and font size, spaces between paragraphs, sentences, words, and letters, as well as color of background and text)"
+            "descriptive": " Appearance of the text and page layout can be modified according to the capabilities of the reading system (font family and font size, spaces between paragraphs, sentences, words, and letters, as well as color of background and text)"
         },
         "ways-of-reading-visual-adjustments-unknown": {
             "compact": "No information about appearance modifiability is available",
-            "descriptive": "No information about appearance modifiability is available"
+            "descriptive": " No information about appearance modifiability is available"
         },
         "ways-of-reading-visual-adjustments-unmodifiable": {
             "compact": "Appearance cannot be modified",
@@ -63,6 +59,7 @@ var en_us = {
     },
     "conformance": {
         "conformance-title": "Conformance",
+        "conformance-details-title": "Detailed conformance information",
         "conformance-a": {
             "compact": "This publication meets minimum accessibility standards",
             "descriptive": "The publication contains a conformance statement that it meets the EPUB Accessibility and WCAG 2 Level A standard"
@@ -80,7 +77,7 @@ var en_us = {
             "descriptive": "The publication was certified on "
         },
         "conformance-certifier": {
-            "compact": "The publication was certified by ",
+            "compact": "The publication was certified by",
             "descriptive": "The publication was certified by "
         },
         "conformance-certifier-credentials": {
@@ -95,7 +92,6 @@ var en_us = {
             "compact": "This publication claims to meet",
             "descriptive": "This publication claims to meet"
         },
-        "conformance-details": "Detailed conformance information",
         "conformance-epub-accessibility-1-0": {
             "compact": " EPUB Accessibility 1.0",
             "descriptive": " EPUB Accessibility 1.0"
@@ -126,15 +122,15 @@ var en_us = {
         },
         "conformance-wcag-2-0": {
             "compact": " WCAG 2.0",
-            "descriptive": " Web Accessibility Content Guidelines (WCAG) 2.0"
+            "descriptive": "Web Content Accessibility Guidelines (WCAG ) 2.0"
         },
         "conformance-wcag-2-1": {
             "compact": " WCAG 2.1",
-            "descriptive": " Web Accessibility Content Guidelines (WCAG) 2.1"
+            "descriptive": "Web Content Accessibility Guidelines (WCAG ) 2.1"
         },
         "conformance-wcag-2-2": {
             "compact": " WCAG 2.2",
-            "descriptive": " Web Content Accessibility Guidelines (WCAG) 2.2"
+            "descriptive": "Web Content Accessibility Guidelines (WCAG ) 2.2"
         }
     },
     "navigation": {
@@ -183,16 +179,16 @@ var en_us = {
             "descriptive": "Text descriptions of math are provided"
         },
         "rich-content-closed-captions": {
-            "compact": "Videos have closed captions",
-            "descriptive": "Videos included in publications have closed captions"
+            "compact": " Videos have closed captions",
+            "descriptive": " Videos included in publications have closed captions"
         },
         "rich-content-extended": {
             "compact": "Information-rich images are described by extended descriptions",
             "descriptive": "Information-rich images are described by extended descriptions"
         },
         "rich-content-open-captions": {
-            "compact": "Videos have open captions",
-            "descriptive": "Videos included in publications have open captions"
+            "compact": " Videos have open captions",
+            "descriptive": " Videos included in publications have open captions"
         },
         "rich-content-transcript": {
             "compact": "Transcript(s) provided",
@@ -250,75 +246,75 @@ var en_us = {
     },
     "additional-accessibility-information": {
         "additional-accessibility-information-title": "Additional accessibility information",
-        "additional-accessibility-information-adaptation-audio-descriptions": {
+        "additional-accessibility-information-aria": {
+            "compact": "ARIA roles included",
+            "descriptive": "Content is enhanced with ARIA roles to optimize organization and facilitate navigation"
+        },
+        "additional-accessibility-information-audio-descriptions": {
             "compact": "Audio descriptions",
             "descriptive": "Audio descriptions"
         },
-        "additional-accessibility-information-adaptation-braille": {
+        "additional-accessibility-information-braille": {
             "compact": "Braille",
             "descriptive": "Braille"
         },
-        "additional-accessibility-information-adaptation-dyslexia-readability": {
-            "compact": "Dyslexia readability",
-            "descriptive": "Dyslexia readability"
-        },
-        "additional-accessibility-information-adaptation-sign-language": {
-            "compact": "Sign language",
-            "descriptive": "Sign language"
-        },
-        "additional-accessibility-information-adaptation-tactile-graphics": {
-            "compact": "Tactile graphics",
-            "descriptive": "Tactile graphics"
-        },
-        "additional-accessibility-information-adaptation-tactile-objects": {
-            "compact": "Tactile 3D objects",
-            "descriptive": "Tactile 3D objects"
-        },
-        "additional-accessibility-information-clarity-aria": {
-            "compact": "ARIA",
-            "descriptive": "ARIA"
-        },
-        "additional-accessibility-information-clarity-color-not-sole-means-of-conveying-information": {
+        "additional-accessibility-information-color-not-sole-means-of-conveying-information": {
             "compact": "Color is not the sole means of conveying information",
             "descriptive": "Color is not the sole means of conveying information"
         },
-        "additional-accessibility-information-clarity-full-ruby-annotations": {
+        "additional-accessibility-information-dyslexia-readability": {
+            "compact": "Dyslexia readability",
+            "descriptive": "Dyslexia readability"
+        },
+        "additional-accessibility-information-full-ruby-annotations": {
             "compact": "Full ruby annotations",
             "descriptive": "Full ruby annotations"
         },
-        "additional-accessibility-information-clarity-high-contrast-between-foreground-and-background-audio": {
+        "additional-accessibility-information-high-contrast-between-foreground-and-background-audio": {
             "compact": "High contrast between foreground and background audio",
             "descriptive": "High contrast between foreground and background audio"
         },
-        "additional-accessibility-information-clarity-high-contrast-between-text-and-background": {
+        "additional-accessibility-information-high-contrast-between-text-and-background": {
             "compact": "High contrast between foreground text and background",
             "descriptive": "High contrast between foreground text and background"
         },
-        "additional-accessibility-information-clarity-large-print": {
+        "additional-accessibility-information-large-print": {
             "compact": "Large print",
             "descriptive": "Large print"
         },
-        "additional-accessibility-information-clarity-page-breaks": {
-            "compact": "Visible page breaks",
-            "descriptive": "Visible page breaks"
+        "additional-accessibility-information-page-breaks": {
+            "compact": "Page breaks included",
+            "descriptive": "Page breaks included from the original print source"
         },
-        "additional-accessibility-information-clarity-ruby-annotations": {
+        "additional-accessibility-information-ruby-annotations": {
             "compact": "Some Ruby annotations",
             "descriptive": "Some Ruby annotations"
         },
-        "additional-accessibility-information-clarity-text-to-speech-hinting": {
+        "additional-accessibility-information-sign-language": {
+            "compact": "Sign language",
+            "descriptive": "Sign language"
+        },
+        "additional-accessibility-information-tactile-graphics": {
+            "compact": "Tactile graphics included",
+            "descriptive": "Tactile graphics have been integrated to facilitate access to visual elements for blind people"
+        },
+        "additional-accessibility-information-tactile-objects": {
+            "compact": "Tactile 3D objects",
+            "descriptive": "Tactile 3D objects"
+        },
+        "additional-accessibility-information-text-to-speech-hinting": {
             "compact": "Text-to-speech hinting provided",
             "descriptive": "Text-to-speech hinting provided"
         },
-        "additional-accessibility-information-clarity-ultra-high-contrast-between-text-and-background": {
+        "additional-accessibility-information-ultra-high-contrast-between-text-and-background": {
             "compact": "Ultra high contrast between text and background",
             "descriptive": "Ultra high contrast between text and background"
         },
-        "additional-accessibility-information-clarity-visible-page-numbering": {
-            "compact": "Visible page numbering",
-            "descriptive": "Visible page numbering"
+        "additional-accessibility-information-visible-page-numbering": {
+            "compact": "Visible page numbering ",
+            "descriptive": "Visible page numbering "
         },
-        "additional-accessibility-information-clarity-without-background-sounds": {
+        "additional-accessibility-information-without-background-sounds": {
             "compact": "Without background sounds",
             "descriptive": "Without background sounds"
         }

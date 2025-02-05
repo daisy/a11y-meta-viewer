@@ -25,12 +25,16 @@ function processXML() {
 	
 	console.clear();
 	
-	// to be replaced with select box option later
-	var lang = 'en-us'; // document.getElementById('lang').value;
-	
+	// language-specific control settings
+	var lang = document.getElementById('lang').value;
 	var vocab = getVocab(lang);
-	var mode = document.querySelector('input[name="mode"]:checked').value;
 	var punctuation = getPunctuation(lang);
+	
+	// whether to use the compact or descriptive strings
+	var mode = document.querySelector('input[name="mode"]:checked').value;
+	
+	// whether to show or hide display fields with no information
+	var suppressNoInfo = document.querySelector('input[name="no-info"]:checked').value == 'hide' ? true : false;
 	
 	var format;
 	
@@ -56,16 +60,122 @@ function processXML() {
 		return;
 	}
 	
-	metaDisplayProcessor.processWaysOfReading();
-	metaDisplayProcessor.processConformance();
-	metaDisplayProcessor.processNavigation();
-	metaDisplayProcessor.processRichContent();
-	metaDisplayProcessor.processHazards();
-	metaDisplayProcessor.processAccessibilitySummary();
-	metaDisplayProcessor.processLegal();
-	metaDisplayProcessor.processAdditionalA11yInfo();
+	var result = document.createElement('div');
+		result.classList.add('grid');
 	
-	var result = metaDisplayProcessor.getDisplay();
+	// 3.1 Ways of reading
+	
+	var ways_result = metaDisplayProcessor.processWaysOfReading();
+	
+	if (ways_result.hasMetadata || !suppressNoInfo) {
+	
+		result.appendChild(makeHeader('ways-of-reading'));
+		
+		// add grid styling to returned div
+		ways_result.displayHTML.classList.add('grid-body');
+
+		result.appendChild(ways_result.displayHTML);
+	}
+	
+	// 3.2 Conformance
+	
+	var conf_result = metaDisplayProcessor.processConformance();
+	
+	if (conf_result.hasMetadata || !suppressNoInfo) {
+	
+		result.appendChild(makeHeader('conformance'));
+		
+		// add grid styling to returned div
+		conf_result.displayHTML.classList.add('grid-body');
+
+		result.appendChild(conf_result.displayHTML);
+	}
+	
+	// 3.3 Navigation
+	
+	var nav_result = metaDisplayProcessor.processNavigation();
+	
+	if (nav_result.hasMetadata || !suppressNoInfo) {
+	
+		result.appendChild(makeHeader('navigation'));
+		
+		// add grid styling to returned div
+		nav_result.displayHTML.classList.add('grid-body');
+
+		result.appendChild(nav_result.displayHTML);
+	}
+	
+	// 3.4 Rich content
+	
+	var rc_result = metaDisplayProcessor.processRichContent();
+	
+	if (rc_result.hasMetadata || !suppressNoInfo) {
+	
+		result.appendChild(makeHeader('rich-content'));
+		
+		// add grid styling to returned div
+		rc_result.displayHTML.classList.add('grid-body');
+
+		result.appendChild(rc_result.displayHTML);
+	}
+	
+	// 3.5 Hazards
+	
+	var hazard_result = metaDisplayProcessor.processHazards();
+	
+	if (hazard_result.hasMetadata || !suppressNoInfo) {
+	
+		result.appendChild(makeHeader('hazards'));
+		
+		// add grid styling to returned div
+		hazard_result.displayHTML.classList.add('grid-body');
+
+		result.appendChild(hazard_result.displayHTML);
+	}
+	
+	// 3.6 Accessibility summary
+	
+	var sum_result = metaDisplayProcessor.processAccessibilitySummary();
+	
+	if (sum_result.hasMetadata || !suppressNoInfo) {
+	
+		result.appendChild(makeHeader('accessibility-summary'));
+		
+		// add grid styling to returned div
+		sum_result.displayHTML.classList.add('grid-body');
+
+		result.appendChild(sum_result.displayHTML);
+	}
+	
+	// 3.7 Legal considerations
+	
+	var legal_result = metaDisplayProcessor.processLegal();
+	
+	if (legal_result.hasMetadata || !suppressNoInfo) {
+	
+		result.appendChild(makeHeader('legal-considerations'));
+		
+		// add grid styling to returned div
+		legal_result.displayHTML.classList.add('grid-body');
+
+		result.appendChild(legal_result.displayHTML);
+	}
+	
+	// 3.8 Additional accessibility information
+	
+	var aai_result = metaDisplayProcessor.processAdditionalA11yInfo();
+	
+	// additional information is never shown if there is nothing to display - it doesn't have a no information available string
+	if (aai_result.hasMetadata) {
+	
+		result.appendChild(makeHeader('additional-accessibility-information'));
+		
+		// add grid styling to returned div
+		aai_result.displayHTML.classList.add('grid-body');
+
+		result.appendChild(aai_result.displayHTML);
+	}
+	
 	
 	if (result) {
 		result_field.appendChild(result);
@@ -112,16 +222,19 @@ function getPunctuation(lang) {
 
 /* common header and explainer dialog */
 
-function makeHeader(str, id) {
+function makeHeader(id, expl_id) {
+
 	var hd_block = document.createElement('div');
 		hd_block.classList.add('grid-hd');
-		
+	
+	var hd_str = metaDisplayProcessor.getHeader(id, '');
+	
 	var hd = document.createElement('h3');
-		hd.appendChild(document.createTextNode(str));
+		hd.appendChild(document.createTextNode(hd_str));
 	hd_block.appendChild(hd);
 	
-	if (id) {
-		hd_block.appendChild(writeExplainerLink(id));
+	if (expl_id) {
+		hd_block.appendChild(writeExplainerLink(expl_id));
 	}
 	
 	return hd_block;

@@ -8,7 +8,6 @@ var metaDisplayProcessor = (function() {
 	var _isONIX = false;
 	var _vocab = null;
 	var _mode = null;
-	var _result = null;
 	
 	function initialize(param) {
 	
@@ -63,16 +62,11 @@ var metaDisplayProcessor = (function() {
 		
 		_mode = param.mode;
 		
-		// create the result container div
-		_result = document.createElement('div');
-		_result.classList.add('grid');
-		
 		return true;
 	}
 	
 	
 	function resetProcessing() {
-		_result = null;
 		_record = null;
 		_format = null;
 		_isONIX = false;
@@ -87,12 +81,10 @@ var metaDisplayProcessor = (function() {
 	
 	function waysOfReading() {
 	
-		// add header
-		_result.appendChild(makeHeader(_vocab['ways-of-reading']['ways-of-reading-title'], ''));
-		
-		// grid grouping element
-		var wor_group = document.createElement('div');
-			wor_group.classList.add('grid-body');
+		// return values
+		var result = {};
+			result.hasMetadata = true; // this value is never changed to false as this field always displays
+			result.displayHTML = document.createElement('div'); // container div for the results
 		
 		/* 
 		 * 3.1.1 Visual adjustments
@@ -125,7 +117,7 @@ var metaDisplayProcessor = (function() {
 		// add punctuation - not in algorithm
 		vis_result.appendChild(getPunctuation());
 		
-		wor_group.appendChild(vis_result);
+		result.displayHTML.appendChild(vis_result);
 		
 		
 		/* 
@@ -180,7 +172,7 @@ var metaDisplayProcessor = (function() {
 		// add punctuation - not in algorithm
 		nonvis_result.appendChild(getPunctuation());
 		
-		wor_group.appendChild(nonvis_result);
+		result.displayHTML.appendChild(nonvis_result);
 		
 		if (textual_alternatives) {
 			var p = document.createElement('p');
@@ -189,7 +181,7 @@ var metaDisplayProcessor = (function() {
 			// add punctuation - not in algorithm
 			p.appendChild(getPunctuation());
 			
-			wor_group.appendChild(p);
+			result.displayHTML.appendChild(p);
 		}
 		
 		
@@ -266,9 +258,9 @@ var metaDisplayProcessor = (function() {
 		// add punctuation - not in algorithm
 		prerec_result.appendChild(getPunctuation());
 		
-		wor_group.appendChild(prerec_result);
-		_result.appendChild(wor_group);
+		result.displayHTML.appendChild(prerec_result);
 		
+		return result;
 	}
 	
 	
@@ -278,6 +270,11 @@ var metaDisplayProcessor = (function() {
 	 */
 	 
 	function conformance() {
+		
+		// return values
+		var result = {};
+			result.hasMetadata = true; // this value is never changed to false as this field always displays
+			result.displayHTML = document.createElement('div'); // container div for the results
 		
 		// 3.2.2 Variables setup
 		
@@ -289,19 +286,12 @@ var metaDisplayProcessor = (function() {
 		
 		// 4.2.3 Instructions
 		
-		// add header
-		_result.appendChild(makeHeader(_vocab.conformance['conformance-title'], ''));
-		
-		// grid grouping element
-		var conf_group = document.createElement('div');
-			conf_group.classList.add('grid-body');
-		
 		var conf_metadata = !_isONIX ? (conf_info.epub_version || conf_info.wcag_version) : (conf_info.epub_accessibility_10 || conf_info.epub_accessibility_11 || conf_info.wcag_20 || conf_info.wcag_21 || conf_info.wcag_22);
 		
 		if (!conf_metadata) {
 			var p = document.createElement('p');
 				p.appendChild(document.createTextNode(_vocab.conformance['conformance-no'][_mode]))
-			conf_group.appendChild(p);
+			result.displayHTML.appendChild(p);
 		}
 		
 		else {
@@ -323,7 +313,7 @@ var metaDisplayProcessor = (function() {
 			// add punctuation - not in algorithm
 			conf_p.appendChild(getPunctuation());
 			
-			conf_group.appendChild(conf_p);
+			result.displayHTML.appendChild(conf_p);
 			
 			
 			if (conf_info.certifier) {
@@ -335,7 +325,7 @@ var metaDisplayProcessor = (function() {
 				// add punctuation - not in algorithm
 				cert_p.appendChild(getPunctuation());
 				
-				conf_group.appendChild(cert_p);
+				result.displayHTML.appendChild(cert_p);
 			}
 			
 			if (conf_info.certifier_credentials) {
@@ -358,12 +348,12 @@ var metaDisplayProcessor = (function() {
 				// add punctuation - not in algorithm
 				cred_p.appendChild(getPunctuation());
 				
-				conf_group.appendChild(cred_p);
+				result.displayHTML.appendChild(cred_p);
 			}
 			
 			var detconf_hd = document.createElement('h4');
-				detconf_hd.appendChild(document.createTextNode(_vocab.conformance['conformance-details']));
-			conf_group.appendChild(detconf_hd);
+				detconf_hd.appendChild(document.createTextNode(_vocab.conformance['conformance-details-title']));
+			result.displayHTML.appendChild(detconf_hd);
 			
 			var conf_p = document.createElement('p');
 				conf_p.appendChild(document.createTextNode(_vocab.conformance['conformance-claim'][_mode]));
@@ -406,7 +396,7 @@ var metaDisplayProcessor = (function() {
 			// add punctuation - not in algorithm
 			conf_p.appendChild(getPunctuation());
 			
-			conf_group.appendChild(conf_p);
+			result.displayHTML.appendChild(conf_p);
 			
 			if (conf_info.certification_date) {
 			
@@ -417,7 +407,7 @@ var metaDisplayProcessor = (function() {
 				// add punctuation - not in algorithm
 				cert_p.appendChild(getPunctuation());
 				
-				conf_group.appendChild(cert_p);
+				result.displayHTML.appendChild(cert_p);
 			}
 			
 			if (conf_info.certifier_report) {
@@ -432,11 +422,11 @@ var metaDisplayProcessor = (function() {
 				// add punctuation - not in algorithm
 				rep_p.appendChild(getPunctuation());
 				
-				conf_group.appendChild(rep_p);
+				result.displayHTML.appendChild(rep_p);
 			}
 		}
 		
-		_result.appendChild(conf_group);
+		return result;
 	}
 	
 	
@@ -529,6 +519,11 @@ var metaDisplayProcessor = (function() {
 	
 	function navigation() {
 	
+		// return values
+		var result = {};
+			result.hasMetadata = true;
+			result.displayHTML = document.createElement('div'); // container div for the results
+		
 		// 4.3.2 Variables setup
 		
 		var index_navigation = checkForNode(xpath.navigation.index_navigation[_format]);
@@ -540,13 +535,6 @@ var metaDisplayProcessor = (function() {
 		var table_of_contents_navigation = checkForNode(xpath.navigation.table_of_contents_navigation[_format]);
 		
 		// 4.3.3 Instructions
-		
-		// add header
-		_result.appendChild(makeHeader(_vocab.navigation['navigation-title'], ''));
-		
-		// grid grouping element
-		var nav_group = document.createElement('div');
-			nav_group.classList.add('grid-body');
 		
 		if (table_of_contents_navigation || index_navigation || page_navigation || next_previous_structural_navigation) {
 			
@@ -576,7 +564,7 @@ var metaDisplayProcessor = (function() {
 				navigation.appendChild(li);
 			}
 			
-			nav_group.appendChild(navigation);
+			result.displayHTML.appendChild(navigation);
 		}
 		
 		else {
@@ -586,10 +574,12 @@ var metaDisplayProcessor = (function() {
 				// add punctuation - not in algorithm
 				p.appendChild(getPunctuation());
 			
-			nav_group.appendChild(p);
+			result.displayHTML.appendChild(p);
+			
+			result.hasMetadata = false;
 		}
 		
-		_result.appendChild(nav_group);
+		return result;
 	}
 	
 	
@@ -599,6 +589,11 @@ var metaDisplayProcessor = (function() {
 	 
 	 function richContent() {
 	 
+		// return values
+		var result = {};
+			result.hasMetadata = true;
+			result.displayHTML = document.createElement('div'); // container div for the results
+		
 		// 4.4.2 Variables setup
 		
 		// onix algorithm only
@@ -634,13 +629,6 @@ var metaDisplayProcessor = (function() {
 
 
 		// 4.4.3 Instructions
-		
-		// add header
-		_result.appendChild(makeHeader(_vocab['rich-content']['rich-content-title'], ''));
-		
-		// grid grouping element
-		var rc_group = document.createElement('div');
-			rc_group.classList.add('grid-body');
 		
 		var richcontent = document.createElement('ul');
 		
@@ -705,7 +693,7 @@ var metaDisplayProcessor = (function() {
 		}
 		
 		if (richcontent.childElementCount) {
-			rc_group.appendChild(richcontent);
+			result.displayHTML.appendChild(richcontent);
 		}
 		
 		var unknown_rich_content = 
@@ -720,10 +708,12 @@ var metaDisplayProcessor = (function() {
 			// add punctuation - not in algorithm
 			p.appendChild(getPunctuation());
 			
-			rc_group.appendChild(p);
+			result.displayHTML.appendChild(p);
+			
+			result.hasMetadata = false;
 		}
 		
-		_result.appendChild(rc_group);
+		return result;
 	}	
 	
 	
@@ -733,6 +723,11 @@ var metaDisplayProcessor = (function() {
 	
 	function hazards() {
 	
+		// return values
+		var result = {};
+			result.hasMetadata = true;
+			result.displayHTML = document.createElement('div'); // container div for the results
+		
 		// 4.5.2 Variables setup
 		
 		var flashing_hazard = checkForNode(xpath.hazards.flashing_hazard[_format]);
@@ -753,17 +748,10 @@ var metaDisplayProcessor = (function() {
 		
 		// 4.5.3 Instructions
 		
-		// add header
-		_result.appendChild(makeHeader(_vocab['hazards']['hazards-title'], ''));
-		
-		// grid grouping element
-		var haz_group = document.createElement('div');
-			haz_group.classList.add('grid-body');
-		
 		if (no_hazards_or_warnings_confirmed || (no_flashing_hazards && no_motion_hazards && no_sound_hazards)) {
 			var p = document.createElement('p');
 				p.appendChild(document.createTextNode(_vocab['hazards']['hazards-none'][_mode]));
-			haz_group.appendChild(p);
+			result.displayHTML.appendChild(p);
 		}
 		
 		else if (flashing_hazard || motion_simulation_hazard || sound_hazard) {
@@ -775,7 +763,7 @@ var metaDisplayProcessor = (function() {
 				// add punctuation - not in algorithm
 				p.appendChild(getPunctuation());
 				
-				haz_group.appendChild(p);
+				result.displayHTML.appendChild(p);
 			}
 			
 			if (motion_simulation_hazard) {
@@ -785,7 +773,7 @@ var metaDisplayProcessor = (function() {
 				// add punctuation - not in algorithm
 				p.appendChild(getPunctuation());
 				
-				haz_group.appendChild(p);
+				result.displayHTML.appendChild(p);
 			}
 			
 			if (sound_hazard) {
@@ -795,7 +783,7 @@ var metaDisplayProcessor = (function() {
 				// add punctuation - not in algorithm
 				p.appendChild(getPunctuation());
 				
-				haz_group.appendChild(p);
+				result.displayHTML.appendChild(p);
 			}
 		}
 
@@ -806,7 +794,7 @@ var metaDisplayProcessor = (function() {
 			// add punctuation - not in algorithm
 			p.appendChild(getPunctuation());
 			
-			haz_group.appendChild(p);
+			result.displayHTML.appendChild(p);
 		}
 		
 		else {
@@ -816,10 +804,13 @@ var metaDisplayProcessor = (function() {
 			// add punctuation - not in algorithm
 			p.appendChild(getPunctuation());
 			
-			haz_group.appendChild(p);
+			result.displayHTML.appendChild(p);
+			
+			result.hasMetadata = false;
 		}
 		
-		_result.appendChild(haz_group);
+		
+		return result;
 	}
 	
 	
@@ -829,6 +820,11 @@ var metaDisplayProcessor = (function() {
 	 
 	 function accessibilitySummary() {
 	 
+		// return values
+		var result = {};
+			result.hasMetadata = true;
+			result.displayHTML = document.createElement('div'); // container div for the results
+		
 		// 4.6.2 Variables setup
 		
 		// onix algorithm only
@@ -851,13 +847,6 @@ var metaDisplayProcessor = (function() {
 
 
 		// 4.6.3 Instructions
-		
-		// add header
-		_result.appendChild(makeHeader(_vocab['accessibility-summary']['accessibility-summary-title'], ''));
-		
-		// grid grouping element
-		var sum_group = document.createElement('div');
-			sum_group.classList.add('grid-body');
 		
 		var sum_result = document.createElement('p');
 		
@@ -895,14 +884,14 @@ var metaDisplayProcessor = (function() {
 			var p = document.createElement('p');
 				p.appendChild(document.createTextNode(known_limited_accessibility));
 				p.lang = language_known_limited_accessibility;
-			sum_group.appendChild(p);
+			result.displayHTML.appendChild(p);
 		}
 		
 		if (accessibility_addendum) {
 			var p = document.createElement('p');
 				P.appendChild(document.createTextNode(accessibility_addendum));
 				P.lang = language_accessibility_addendum;
-			sum_group.appendChild(p);
+			result.displayHTML.appendChild(p);
 		}
 		
 		else if (accessibility_summary) {
@@ -915,10 +904,13 @@ var metaDisplayProcessor = (function() {
 			
 			// add punctuation - not in algorithm
 			sum_result.appendChild(getPunctuation());
+			
+			result.hasMetadata = false;
 		}
 		
-		sum_group.appendChild(sum_result);
-		_result.appendChild(sum_group);
+		result.displayHTML.appendChild(sum_result);
+		
+		return result;
 	}
 	
 	
@@ -928,17 +920,15 @@ var metaDisplayProcessor = (function() {
 	
 	function legal() {
 	
+		// return values
+		var result = {};
+			result.hasMetadata = true;
+			result.displayHTML = document.createElement('div'); // container div for the results
+		
 		// 4.7.2 Variables setup
 		var exemption = checkForNode(xpath.legal.exemption[_format]);
 		
 		// 4.7.3 Instructions
-		
-		// add header
-		_result.appendChild(makeHeader(_vocab['legal-considerations']['legal-considerations-title'], ''));
-		
-		// grid grouping element
-		var legal_group = document.createElement('div');
-			legal_group.classList.add('grid-body');
 		
 		var legal_result = document.createElement('p');
 		
@@ -948,13 +938,16 @@ var metaDisplayProcessor = (function() {
 		
 		else {
 			legal_result.appendChild(document.createTextNode(_vocab['legal-considerations']['legal-considerations-no-metadata'][_mode]));
+			
+			result.hasMetadata = false;
 		}
 		
 		// add punctuation - not in algorithm
 		legal_result.appendChild(getPunctuation());
 		
-		legal_group.appendChild(legal_result);
-		_result.appendChild(legal_group);
+		result.displayHTML.appendChild(legal_result);
+		
+		return result;
 	}
 	
 	
@@ -964,14 +957,12 @@ var metaDisplayProcessor = (function() {
 	 
 	 function additionalA11yInfo() {
 	 
-		// add header
-		_result.appendChild(makeHeader(_vocab['additional-accessibility-information']['additional-accessibility-information-title'], ''));
+		// return values
+		var result = {};
+			result.hasMetadata = false; // assume no metadata and flip as testing
+			result.displayHTML = document.createElement('div'); // container div for the results
 		
 		var aai = document.createElement('ul');
-		
-		// grid grouping element
-		var aai_group = document.createElement('div');
-			aai_group.classList.add('grid-body');
 		
 		// 4.8.1 Adaptation
 		// 4.8.1.2 Variables setup
@@ -997,38 +988,44 @@ var metaDisplayProcessor = (function() {
 		
 		if (audio_descriptions) {
 			var li = document.createElement('li');
-				li.appendChild(document.createTextNode(_vocab['additional-accessibility-information']['additional-accessibility-information-adaptation-audio-descriptions'][_mode]));
+				li.appendChild(document.createTextNode(_vocab['additional-accessibility-information']['additional-accessibility-information-audio-descriptions'][_mode]));
 			aai.appendChild(li);
+			result.hasMetadata = true;
 		}
 		
 		if (braille) {
 			var li = document.createElement('li');
-				li.appendChild(document.createTextNode(_vocab['additional-accessibility-information']['additional-accessibility-information-adaptation-braille'][_mode]));
+				li.appendChild(document.createTextNode(_vocab['additional-accessibility-information']['additional-accessibility-information-braille'][_mode]));
 			aai.appendChild(li);
+			result.hasMetadata = true;
 		}
 		
 		if (dyslexia_readability) {
 			var li = document.createElement('li');
-				li.appendChild(document.createTextNode(_vocab['additional-accessibility-information']['additional-accessibility-information-adaptation-dyslexia-readability'][_mode]));
+				li.appendChild(document.createTextNode(_vocab['additional-accessibility-information']['additional-accessibility-information-dyslexia-readability'][_mode]));
 			aai.appendChild(li);
+			result.hasMetadata = true;
 		}
 		
 		if (tactile_graphic) {
 			var li = document.createElement('li');
-				li.appendChild(document.createTextNode(_vocab['additional-accessibility-information']['additional-accessibility-information-adaptation-tactile-graphics'][_mode]));
+				li.appendChild(document.createTextNode(_vocab['additional-accessibility-information']['additional-accessibility-information-tactile-graphics'][_mode]));
 			aai.appendChild(li);
+			result.hasMetadata = true;
 		}
 		
 		if (tactile_object) {
 			var li = document.createElement('li');
-				li.appendChild(document.createTextNode(_vocab['additional-accessibility-information']['additional-accessibility-information-adaptation-tactile-objects'][_mode]));
+				li.appendChild(document.createTextNode(_vocab['additional-accessibility-information']['additional-accessibility-information-tactile-objects'][_mode]));
 			aai.appendChild(li);
+			result.hasMetadata = true;
 		}
 		
 		if (sign_language) {
 			var li = document.createElement('li');
-				li.appendChild(document.createTextNode(_vocab['additional-accessibility-information']['additional-accessibility-information-adaptation-sign-language'][_mode]));
+				li.appendChild(document.createTextNode(_vocab['additional-accessibility-information']['additional-accessibility-information-sign-language'][_mode]));
 			aai.appendChild(li);
+			result.hasMetadata = true;
 		}
 		
 		// 4.8.2 Clarity
@@ -1071,79 +1068,91 @@ var metaDisplayProcessor = (function() {
 		
 		if (aria) {
 			var li = document.createElement('li');
-				li.appendChild(document.createTextNode(_vocab['additional-accessibility-information']['additional-accessibility-information-clarity-aria'][_mode]));
+				li.appendChild(document.createTextNode(_vocab['additional-accessibility-information']['additional-accessibility-information-aria'][_mode]));
 			aai.appendChild(li);
+			result.hasMetadata = true;
 		}
 		
 		if (color_not_sole_means_of_conveying_information) {
 			var li = document.createElement('li');
-				li.appendChild(document.createTextNode(_vocab['additional-accessibility-information']['additional-accessibility-information-clarity-color-not-sole-means-of-conveying-information'][_mode]));
+				li.appendChild(document.createTextNode(_vocab['additional-accessibility-information']['additional-accessibility-information-color-not-sole-means-of-conveying-information'][_mode]));
 			aai.appendChild(li);
+			result.hasMetadata = true;
 		}
 		
 		if (full_ruby_annotations) {
 			var li = document.createElement('li');
-				li.appendChild(document.createTextNode(_vocab['additional-accessibility-information']['additional-accessibility-information-clarity-full-ruby-annotations'][_mode]));
+				li.appendChild(document.createTextNode(_vocab['additional-accessibility-information']['additional-accessibility-information-full-ruby-annotations'][_mode]));
 			aai.appendChild(li);
+			result.hasMetadata = true;
 		}
 		
 		if (text_to_speech_hinting) {
 			var li = document.createElement('li');
-				li.appendChild(document.createTextNode(_vocab['additional-accessibility-information']['additional-accessibility-information-clarity-text-to-speech-hinting'][_mode]));
+				li.appendChild(document.createTextNode(_vocab['additional-accessibility-information']['additional-accessibility-information-text-to-speech-hinting'][_mode]));
 			aai.appendChild(li);
+			result.hasMetadata = true;
 		}
 		
 		if (high_contrast_between_foreground_and_background_audio) {
 			var li = document.createElement('li');
-				li.appendChild(document.createTextNode(_vocab['additional-accessibility-information']['additional-accessibility-information-clarity-high-contrast-between-foreground-and-background-audio'][_mode]));
+				li.appendChild(document.createTextNode(_vocab['additional-accessibility-information']['additional-accessibility-information-high-contrast-between-foreground-and-background-audio'][_mode]));
 			aai.appendChild(li);
+			result.hasMetadata = true;
 		}
 		
 		if (high_contrast_between_text_and_background) {
 			var li = document.createElement('li');
-				li.appendChild(document.createTextNode(_vocab['additional-accessibility-information']['additional-accessibility-information-clarity-high-contrast-between-text-and-background'][_mode]));
+				li.appendChild(document.createTextNode(_vocab['additional-accessibility-information']['additional-accessibility-information-high-contrast-between-text-and-background'][_mode]));
 			aai.appendChild(li);
+			result.hasMetadata = true;
 		}
 		
 		if (large_print) {
 			var li = document.createElement('li');
-				li.appendChild(document.createTextNode(_vocab['additional-accessibility-information']['additional-accessibility-information-clarity-large-print'][_mode]));
+				li.appendChild(document.createTextNode(_vocab['additional-accessibility-information']['additional-accessibility-information-large-print'][_mode]));
 			aai.appendChild(li);
+			result.hasMetadata = true;
 		}
 		
 		if (page_break_markers) {
 			var li = document.createElement('li');
-				li.appendChild(document.createTextNode(_vocab['additional-accessibility-information']['additional-accessibility-information-clarity-page-breaks'][_mode]));
+				li.appendChild(document.createTextNode(_vocab['additional-accessibility-information']['additional-accessibility-information-page-breaks'][_mode]));
 			aai.appendChild(li);
+			result.hasMetadata = true;
 		}
 		
 		if (visible_page_numbering) {
 			var li = document.createElement('li');
-				li.appendChild(document.createTextNode(_vocab['additional-accessibility-information']['additional-accessibility-information-clarity-visible-page-numbering'][_mode]));
+				li.appendChild(document.createTextNode(_vocab['additional-accessibility-information']['additional-accessibility-information-visible-page-numbering'][_mode]));
 			aai.appendChild(li);
+			result.hasMetadata = true;
 		}
 		
 		if (ruby_annotations) {
 			var li = document.createElement('li');
-				li.appendChild(document.createTextNode(_vocab['additional-accessibility-information']['additional-accessibility-information-clarity-ruby-annotations'][_mode]));
+				li.appendChild(document.createTextNode(_vocab['additional-accessibility-information']['additional-accessibility-information-ruby-annotations'][_mode]));
 			aai.appendChild(li);
+			result.hasMetadata = true;
 		}
 		
 		if (ultra_high_contrast_between_text_and_background) {
 			var li = document.createElement('li');
-				li.appendChild(document.createTextNode(_vocab['additional-accessibility-information']['additional-accessibility-information-clarity-ultra-high-contrast-between-text-and-background'][_mode]));
+				li.appendChild(document.createTextNode(_vocab['additional-accessibility-information']['additional-accessibility-information-ultra-high-contrast-between-text-and-background'][_mode]));
 			aai.appendChild(li);
+			result.hasMetadata = true;
 		}
 		
 		if (without_background_sounds) {
 			var li = document.createElement('li');
-				li.appendChild(document.createTextNode(_vocab['additional-accessibility-information']['additional-accessibility-information-clarity-without-background-sounds'][_mode]));
+				li.appendChild(document.createTextNode(_vocab['additional-accessibility-information']['additional-accessibility-information-without-background-sounds'][_mode]));
 			aai.appendChild(li);
+			result.hasMetadata = true;
 		}
 		
-		aai_group.appendChild(aai);
-		_result.appendChild(aai_group);
+		result.displayHTML.appendChild(aai);
 		
+		return result;
 	}
 	
 	
@@ -1177,6 +1186,18 @@ var metaDisplayProcessor = (function() {
 	
 	// other functions
 	
+	// get the heading for a section or subsection
+	function getHeader(id, sub_hd) {
+		var title_id = id + (sub_hd ? '-' + sub_hd : '-title');
+		if (id && _vocab.hasOwnProperty(id) && _vocab[id].hasOwnProperty(title_id)) {
+			return _vocab[id][title_id];
+		}
+		else {
+			return '';
+		}
+	}
+	
+	// namespace resolver for the JS xpath processor
 	function nsResolver(prefix) {
 		switch (prefix) {
 			case 'xml':
@@ -1232,6 +1253,10 @@ var metaDisplayProcessor = (function() {
 		
 		getDisplay: function() {
 			return _result;
+		},
+		
+		getHeader: function(id, sub_hd) {
+			return getHeader(id, sub_hd);
 		}
 	}
 })();

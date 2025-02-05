@@ -23,14 +23,18 @@
 				<label><input name="mode" id="mode-descriptive" type="radio" value="descriptive"> Descriptive</label>
 			</fieldset>
 				
-			<!-- to be developed
 			<fieldset>
 				<legend>Language:</legend>
-				<select id="lang" disabled="">
+				<select id="lang">
 					<option id="en">English</option>
 				</select>
 			</fieldset>
-			-->
+			
+			<fieldset>
+				<legend>Fields with no information available:</legend>
+				<label><input name="no-info" id="no-info-show" type="radio" value="show" checked=""> Show</label>
+				<label><input name="no-info" id="no-info-hide" type="radio" value="hide"> Hide</label>
+			</fieldset>
 			
 			<div><button onclick="processXML()">Preview</button></div>
 			
