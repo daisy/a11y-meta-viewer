@@ -259,6 +259,22 @@ select {
 	width: 20rem;
 }
 
+
+/* options */
+
+div.options {
+	margin: -2rem 4rem 2rem -2rem;
+	width: 103.8%;
+	background-color: aliceblue;
+}
+
+fieldset {
+	display: inline-block;
+	margin-right: 5rem;
+	border: 0;
+	font-size: 90%;
+}
+
 /* config dialog */
 
 .ui-dialog {

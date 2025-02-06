@@ -17,33 +17,42 @@
 			
 			<textarea id="input_record" rows="15" autocomplete="off"></textarea>
 			
-			<fieldset>
-				<legend>Message type:</legend>
-				<label><input name="mode" id="mode-compact" type="radio" value="compact" checked=""> Compact</label>
-				<label><input name="mode" id="mode-descriptive" type="radio" value="descriptive"> Descriptive</label>
-			</fieldset>
-				
-			<fieldset>
-				<legend>Language:</legend>
-				<select id="lang">
-					<option id="en">English</option>
-				</select>
-			</fieldset>
-			
-			<fieldset>
-				<legend>Fields with no information available:</legend>
-				<label><input name="no-info" id="no-info-show" type="radio" value="show" checked=""> Show</label>
-				<label><input name="no-info" id="no-info-hide" type="radio" value="hide"> Hide</label>
-			</fieldset>
-			
 			<div><button onclick="processXML()">Preview</button></div>
 			
 			<dialog id="result">
 				<div class="dialog-hd">
 					<h2>Accessibility Statements</h2>
+					
 					<a href="#result-close" id="result-close-img" class="close" title="Close"><img src="graphics/close-icon.png" alt="Close"></a>
+					
+					<div class="options">
+						<fieldset>
+							<legend>Message type:</legend>
+							<select id="mode" onchange="processXML()">
+								<option value="compact">Compact</option>
+								<option value="descriptive">Descriptive</option>
+							</select>
+						</fieldset>
+						
+						<fieldset>
+							<legend>Language:</legend>
+							<select id="lang" onchange="processXML()">
+								<option id="en">English</option>
+							</select>
+						</fieldset>
+						
+						<fieldset>
+							<legend>Fields with no information available:</legend>
+							<select id="no-info" onchange="processXML()">
+								<option value="show">Show</option>
+								<option value="hide">Hide</option>
+							</select>
+						</fieldset>
+					</div>
 				</div>
+				
 				<div id="result-body"></div>
+				
 				<button id="result-close-button">Close</button>
 			</dialog>
 			

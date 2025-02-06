@@ -31,10 +31,10 @@ function processXML() {
 	var punctuation = getPunctuation(lang);
 	
 	// whether to use the compact or descriptive strings
-	var mode = document.querySelector('input[name="mode"]:checked').value;
+	var mode = document.getElementById('mode').value;
 	
 	// whether to show or hide display fields with no information
-	var suppressNoInfo = document.querySelector('input[name="no-info"]:checked').value == 'hide' ? true : false;
+	var suppressNoInfo = document.getElementById('no-info').value == 'hide' ? true : false;
 	
 	var format;
 	
