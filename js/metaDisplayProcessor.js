@@ -1,4 +1,13 @@
 
+/* 
+ * This code implements the display algorithms defined in
+ * - https://w3c.github.io/publ-a11y/a11y-meta-display-guide/2.0/draft/techniques/epub-metadata/
+ * - https://w3c.github.io/publ-a11y/a11y-meta-display-guide/2.0/draft/techniques/onix-metadata/
+ *
+ * It merges the algorithms to avoid duplicating code.
+ * Differences between the epub and onix techniques' variables and outputs are noted throughout.
+ */
+
 'use strict';
 
 var metaDisplayProcessor = (function() {
@@ -284,7 +293,7 @@ var metaDisplayProcessor = (function() {
 			conf_info.certification_date = _record.evaluate(xpath.conformance.certification_date[_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
 			conf_info.certifier_report = _record.evaluate(xpath.conformance.certifier_report[_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
 		
-		// 4.2.3 Instructions
+		// 3.2.3 Instructions
 		
 		var conf_metadata = !_isONIX ? (conf_info.epub_version || conf_info.wcag_version) : (conf_info.epub_accessibility_10 || conf_info.epub_accessibility_11 || conf_info.wcag_20 || conf_info.wcag_21 || conf_info.wcag_22);
 		
@@ -514,7 +523,7 @@ var metaDisplayProcessor = (function() {
 	
 	
 	/* 
-	 * 4.3 Navigation
+	 * 3.3 Navigation
 	 */
 	
 	function navigation() {
@@ -524,7 +533,7 @@ var metaDisplayProcessor = (function() {
 			result.hasMetadata = true;
 			result.displayHTML = document.createElement('div'); // container div for the results
 		
-		// 4.3.2 Variables setup
+		// 3.3.2 Variables setup
 		
 		var index_navigation = checkForNode(xpath.navigation.index_navigation[_format]);
 		
@@ -534,7 +543,7 @@ var metaDisplayProcessor = (function() {
 		
 		var table_of_contents_navigation = checkForNode(xpath.navigation.table_of_contents_navigation[_format]);
 		
-		// 4.3.3 Instructions
+		// 3.3.3 Instructions
 		
 		if (table_of_contents_navigation || index_navigation || page_navigation || next_previous_structural_navigation) {
 			
@@ -584,7 +593,7 @@ var metaDisplayProcessor = (function() {
 	
 	
 	/* 
-	 * 4.4 Rich content
+	 * 3.4 Rich content
 	 */
 	 
 	 function richContent() {
@@ -594,7 +603,7 @@ var metaDisplayProcessor = (function() {
 			result.hasMetadata = true;
 			result.displayHTML = document.createElement('div'); // container div for the results
 		
-		// 4.4.2 Variables setup
+		// 3.4.2 Variables setup
 		
 		// onix algorithm only
 		var charts_diagrams_as_non_graphical_data = _isONIX ? checkForNode(xpath.rich_content.charts_diagrams_as_non_graphical_data[_format]) : false;
@@ -628,7 +637,7 @@ var metaDisplayProcessor = (function() {
 		var short_textual_alternative_images = _isONIX ? checkForNode(xpath.rich_content.short_textual_alternative_images[_format]) : false;
 
 
-		// 4.4.3 Instructions
+		// 3.4.3 Instructions
 		
 		var richcontent = document.createElement('ul');
 		
@@ -718,7 +727,7 @@ var metaDisplayProcessor = (function() {
 	
 	
 	/* 
-	 * 4.5 Hazards
+	 * 3.5 Hazards
 	 */
 	
 	function hazards() {
@@ -728,7 +737,7 @@ var metaDisplayProcessor = (function() {
 			result.hasMetadata = true;
 			result.displayHTML = document.createElement('div'); // container div for the results
 		
-		// 4.5.2 Variables setup
+		// 3.5.2 Variables setup
 		
 		var flashing_hazard = checkForNode(xpath.hazards.flashing_hazard[_format]);
 		
@@ -746,7 +755,7 @@ var metaDisplayProcessor = (function() {
 		
 		var unknown_if_contains_hazards = checkForNode(xpath.hazards.unknown_if_contains_hazards[_format]);
 		
-		// 4.5.3 Instructions
+		// 3.5.3 Instructions
 		
 		if (no_hazards_or_warnings_confirmed || (no_flashing_hazards && no_motion_hazards && no_sound_hazards)) {
 			var p = document.createElement('p');
@@ -815,7 +824,7 @@ var metaDisplayProcessor = (function() {
 	
 	
 	/* 
-	 * 4.6 Accessibility summary
+	 * 3.6 Accessibility summary
 	 */
 	 
 	 function accessibilitySummary() {
@@ -825,7 +834,7 @@ var metaDisplayProcessor = (function() {
 			result.hasMetadata = true;
 			result.displayHTML = document.createElement('div'); // container div for the results
 		
-		// 4.6.2 Variables setup
+		// 3.6.2 Variables setup
 		
 		// onix algorithm only
 		var accessibility_addendum = _isONIX ? _record.evaluate(xpath.summary.accessibility_addendum[_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue : '';
@@ -846,7 +855,7 @@ var metaDisplayProcessor = (function() {
 		var language_of_text = _record.evaluate(xpath.summary.language_of_text[_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
 
 
-		// 4.6.3 Instructions
+		// 3.6.3 Instructions
 		
 		var sum_result = document.createElement('p');
 		
@@ -915,7 +924,7 @@ var metaDisplayProcessor = (function() {
 	
 	
 	/* 
-	 * 4.7 Legal considerations
+	 * 3.7 Legal considerations
 	 */
 	
 	function legal() {
@@ -925,10 +934,10 @@ var metaDisplayProcessor = (function() {
 			result.hasMetadata = true;
 			result.displayHTML = document.createElement('div'); // container div for the results
 		
-		// 4.7.2 Variables setup
+		// 3.7.2 Variables setup
 		var exemption = checkForNode(xpath.legal.exemption[_format]);
 		
-		// 4.7.3 Instructions
+		// 3.7.3 Instructions
 		
 		var legal_result = document.createElement('p');
 		
