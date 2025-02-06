@@ -952,7 +952,7 @@ var metaDisplayProcessor = (function() {
 	
 	
 	/* 
-	 * 4.8 Additional accessibility information
+	 * 3.8 Additional accessibility information
 	 */
 	 
 	 function additionalA11yInfo() {
@@ -962,81 +962,23 @@ var metaDisplayProcessor = (function() {
 			result.hasMetadata = false; // assume no metadata and flip as testing
 			result.displayHTML = document.createElement('div'); // container div for the results
 		
-		var aai = document.createElement('ul');
-		
-		// 4.8.1 Adaptation
-		// 4.8.1.2 Variables setup
-		
-		// epub algorithm only
-		var audio_descriptions = !_isONIX ? checkForNode(xpath.add_info.audio_descriptions[_format]) : false;
-		
-		// onix algorithm only
-		var dyslexia_readability = _isONIX ? checkForNode(xpath.add_info.dyslexia_readability[_format]) : false;
-
-		// epub algorithm only
-		var braille = !_isONIX ? checkForNode(xpath.add_info.braille[_format]) : false;
-		
-		var sign_language = checkForNode(xpath.add_info.sign_language[_format]);
-		
-		// epub algorithm only
-		var tactile_graphic = !_isONIX ? checkForNode(xpath.add_info.tactile_graphic[_format]) : false;
-		
-		// epub algorithm only
-		var tactile_object = !_isONIX ? checkForNode(xpath.add_info.tactile_object[_format]) : false;
-		
-		// 4.8.1.3 Instructions
-		
-		if (audio_descriptions) {
-			var li = document.createElement('li');
-				li.appendChild(document.createTextNode(_vocab['additional-accessibility-information']['additional-accessibility-information-audio-descriptions'][_mode]));
-			aai.appendChild(li);
-			result.hasMetadata = true;
-		}
-		
-		if (braille) {
-			var li = document.createElement('li');
-				li.appendChild(document.createTextNode(_vocab['additional-accessibility-information']['additional-accessibility-information-braille'][_mode]));
-			aai.appendChild(li);
-			result.hasMetadata = true;
-		}
-		
-		if (dyslexia_readability) {
-			var li = document.createElement('li');
-				li.appendChild(document.createTextNode(_vocab['additional-accessibility-information']['additional-accessibility-information-dyslexia-readability'][_mode]));
-			aai.appendChild(li);
-			result.hasMetadata = true;
-		}
-		
-		if (tactile_graphic) {
-			var li = document.createElement('li');
-				li.appendChild(document.createTextNode(_vocab['additional-accessibility-information']['additional-accessibility-information-tactile-graphics'][_mode]));
-			aai.appendChild(li);
-			result.hasMetadata = true;
-		}
-		
-		if (tactile_object) {
-			var li = document.createElement('li');
-				li.appendChild(document.createTextNode(_vocab['additional-accessibility-information']['additional-accessibility-information-tactile-objects'][_mode]));
-			aai.appendChild(li);
-			result.hasMetadata = true;
-		}
-		
-		if (sign_language) {
-			var li = document.createElement('li');
-				li.appendChild(document.createTextNode(_vocab['additional-accessibility-information']['additional-accessibility-information-sign-language'][_mode]));
-			aai.appendChild(li);
-			result.hasMetadata = true;
-		}
-		
-		// 4.8.2 Clarity
-		// 4.8.2.2 Variables setup
+		// 3.8.2 Variables setup
 		
 		// epub algorithm only
 		var aria = _format == !_isONIX ? checkForNode(xpath.add_info.aria[_format]) : false;
 		
+		// epub algorithm only
+		var audio_descriptions = !_isONIX ? checkForNode(xpath.add_info.audio_descriptions[_format]) : false;
+		
+		// epub algorithm only
+		var braille = !_isONIX ? checkForNode(xpath.add_info.braille[_format]) : false;
+		
 		// onix algorithm only
 		var color_not_sole_means_of_conveying_information = _isONIX ? checkForNode(xpath.add_info.color_not_sole_means_of_conveying_information[_format]) : false;
 		
+		// onix algorithm only
+		var dyslexia_readability = _isONIX ? checkForNode(xpath.add_info.dyslexia_readability[_format]) : false;
+
 		// epub algorithm only
 		var full_ruby_annotations = !_isONIX ? checkForNode(xpath.add_info.full_ruby_annotations[_format]) : false;
 		
@@ -1050,11 +992,16 @@ var metaDisplayProcessor = (function() {
 		// epub algorithm only
 		var page_break_markers = !_isONIX ? checkForNode(xpath.add_info.page_break_markers[_format]) : false;
 		
-		// onix algorithm only
-		var visible_page_numbering = _isONIX ? checkForNode(xpath.add_info.page_break_markers[_format]) : false;
-		
 		// epub algorithm only
 		var ruby_annotations = !_isONIX ? checkForNode(xpath.add_info.ruby_annotations[_format]) : false;
+		
+		var sign_language = checkForNode(xpath.add_info.sign_language[_format]);
+		
+		// epub algorithm only
+		var tactile_graphic = !_isONIX ? checkForNode(xpath.add_info.tactile_graphic[_format]) : false;
+		
+		// epub algorithm only
+		var tactile_object = !_isONIX ? checkForNode(xpath.add_info.tactile_object[_format]) : false;
 		
 		var text_to_speech_hinting = checkForNode(xpath.add_info.text_to_speech_hinting[_format]);
 
@@ -1062,93 +1009,96 @@ var metaDisplayProcessor = (function() {
 		var ultra_high_contrast_between_text_and_background = _isONIX ? checkForNode(xpath.add_info.ultra_high_contrast_between_text_and_background[_format]) : false;
 		
 		// onix algorithm only
+		var visible_page_numbering = _isONIX ? checkForNode(xpath.add_info.page_break_markers[_format]) : false;
+		
+		// onix algorithm only
 		var without_background_sounds = _isONIX ? checkForNode(xpath.add_info.without_background_sounds[_format]) : false;
-
-		// 4.8.2.3 Instructions
+		
+		
+		// 3.8.3 Instructions
+		
+		var add_info = [];
 		
 		if (aria) {
-			var li = document.createElement('li');
-				li.appendChild(document.createTextNode(_vocab['additional-accessibility-information']['additional-accessibility-information-aria'][_mode]));
-			aai.appendChild(li);
-			result.hasMetadata = true;
+			add_info.push(_vocab['additional-accessibility-information']['additional-accessibility-information-aria'][_mode]);
+		}
+		
+		if (audio_descriptions) {
+			add_info.push(_vocab['additional-accessibility-information']['additional-accessibility-information-audio-descriptions'][_mode]);
+		}
+		
+		if (braille) {
+			add_info.push(_vocab['additional-accessibility-information']['additional-accessibility-information-braille'][_mode]);
 		}
 		
 		if (color_not_sole_means_of_conveying_information) {
-			var li = document.createElement('li');
-				li.appendChild(document.createTextNode(_vocab['additional-accessibility-information']['additional-accessibility-information-color-not-sole-means-of-conveying-information'][_mode]));
-			aai.appendChild(li);
-			result.hasMetadata = true;
+			add_info.push(_vocab['additional-accessibility-information']['additional-accessibility-information-color-not-sole-means-of-conveying-information'][_mode]);
+		}
+		
+		if (dyslexia_readability) {
+			add_info.push(_vocab['additional-accessibility-information']['additional-accessibility-information-dyslexia-readability'][_mode]);
 		}
 		
 		if (full_ruby_annotations) {
-			var li = document.createElement('li');
-				li.appendChild(document.createTextNode(_vocab['additional-accessibility-information']['additional-accessibility-information-full-ruby-annotations'][_mode]));
-			aai.appendChild(li);
-			result.hasMetadata = true;
-		}
-		
-		if (text_to_speech_hinting) {
-			var li = document.createElement('li');
-				li.appendChild(document.createTextNode(_vocab['additional-accessibility-information']['additional-accessibility-information-text-to-speech-hinting'][_mode]));
-			aai.appendChild(li);
-			result.hasMetadata = true;
+			add_info.push(_vocab['additional-accessibility-information']['additional-accessibility-information-full-ruby-annotations'][_mode]);
 		}
 		
 		if (high_contrast_between_foreground_and_background_audio) {
-			var li = document.createElement('li');
-				li.appendChild(document.createTextNode(_vocab['additional-accessibility-information']['additional-accessibility-information-high-contrast-between-foreground-and-background-audio'][_mode]));
-			aai.appendChild(li);
-			result.hasMetadata = true;
+			add_info.push(_vocab['additional-accessibility-information']['additional-accessibility-information-high-contrast-between-foreground-and-background-audio'][_mode]);
 		}
 		
 		if (high_contrast_between_text_and_background) {
-			var li = document.createElement('li');
-				li.appendChild(document.createTextNode(_vocab['additional-accessibility-information']['additional-accessibility-information-high-contrast-between-text-and-background'][_mode]));
-			aai.appendChild(li);
-			result.hasMetadata = true;
+			add_info.push(_vocab['additional-accessibility-information']['additional-accessibility-information-high-contrast-between-text-and-background'][_mode]);
 		}
 		
 		if (large_print) {
-			var li = document.createElement('li');
-				li.appendChild(document.createTextNode(_vocab['additional-accessibility-information']['additional-accessibility-information-large-print'][_mode]));
-			aai.appendChild(li);
-			result.hasMetadata = true;
+			add_info.push(_vocab['additional-accessibility-information']['additional-accessibility-information-large-print'][_mode]);
 		}
 		
 		if (page_break_markers) {
-			var li = document.createElement('li');
-				li.appendChild(document.createTextNode(_vocab['additional-accessibility-information']['additional-accessibility-information-page-breaks'][_mode]));
-			aai.appendChild(li);
-			result.hasMetadata = true;
+			add_info.push(_vocab['additional-accessibility-information']['additional-accessibility-information-page-breaks'][_mode]);
 		}
 		
-		if (visible_page_numbering) {
-			var li = document.createElement('li');
-				li.appendChild(document.createTextNode(_vocab['additional-accessibility-information']['additional-accessibility-information-visible-page-numbering'][_mode]));
-			aai.appendChild(li);
-			result.hasMetadata = true;
+		if (sign_language) {
+			add_info.push(_vocab['additional-accessibility-information']['additional-accessibility-information-sign-language'][_mode]);
 		}
 		
 		if (ruby_annotations) {
-			var li = document.createElement('li');
-				li.appendChild(document.createTextNode(_vocab['additional-accessibility-information']['additional-accessibility-information-ruby-annotations'][_mode]));
-			aai.appendChild(li);
-			result.hasMetadata = true;
+			add_info.push(_vocab['additional-accessibility-information']['additional-accessibility-information-ruby-annotations'][_mode]);
+		}
+		
+		if (tactile_object) {
+			add_info.push(_vocab['additional-accessibility-information']['additional-accessibility-information-tactile-objects'][_mode]);
+		}
+		
+		if (tactile_graphic) {
+			add_info.push(_vocab['additional-accessibility-information']['additional-accessibility-information-tactile-graphics'][_mode]);
+		}
+		
+		if (text_to_speech_hinting) {
+			add_info.push(_vocab['additional-accessibility-information']['additional-accessibility-information-text-to-speech-hinting'][_mode]);
 		}
 		
 		if (ultra_high_contrast_between_text_and_background) {
-			var li = document.createElement('li');
-				li.appendChild(document.createTextNode(_vocab['additional-accessibility-information']['additional-accessibility-information-ultra-high-contrast-between-text-and-background'][_mode]));
-			aai.appendChild(li);
-			result.hasMetadata = true;
+			add_info.push(_vocab['additional-accessibility-information']['additional-accessibility-information-ultra-high-contrast-between-text-and-background'][_mode]);
+		}
+		
+		if (visible_page_numbering) {
+			add_info.push(_vocab['additional-accessibility-information']['additional-accessibility-information-visible-page-numbering'][_mode]);
 		}
 		
 		if (without_background_sounds) {
+			add_info.push(_vocab['additional-accessibility-information']['additional-accessibility-information-without-background-sounds'][_mode]);
+		}
+		
+		var aai = document.createElement('ul');
+		
+		add_info.sort().forEach((info) => {
 			var li = document.createElement('li');
-				li.appendChild(document.createTextNode(_vocab['additional-accessibility-information']['additional-accessibility-information-without-background-sounds'][_mode]));
+				li.appendChild(document.createTextNode(info));
 			aai.appendChild(li);
 			result.hasMetadata = true;
-		}
+		});
 		
 		result.displayHTML.appendChild(aai);
 		
