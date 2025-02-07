@@ -267,8 +267,10 @@ var metaDisplayProcessor = (function() {
 		// onix algorithm only
 		var non_textual_content_audio_in_video = _isONIX ? checkForNode(xpath.ways_of_reading.non_textual_content_audio_in_video[_format]) : false;
 		
-		var synchronised_pre_recorded_audio = checkForNode(xpath.ways_of_reading.synchronised_pre_recorded_audio[_format]);
-
+		var synchronised_pre_recorded_audio = !isONIX ?
+											checkForNode(xpath.ways_of_reading.synchronised_pre_recorded_audio[_format]) :
+											(checkForNode(xpath.ways_of_reading.synchronised_pre_recorded_audio_1[_format])
+												&& checkForNode(xpath.ways_of_reading.synchronised_pre_recorded_audio_2[_format]));
 		
 		
 		// 3.1.3.3 Instructions
