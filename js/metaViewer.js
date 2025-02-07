@@ -31,20 +31,17 @@ function processRecord() {
 function reprocessRecord() {
 
 	var lang = document.getElementById('lang').value;
-	var vocab = getVocab(lang);
-	var punctuation = getPunctuation(lang);
 	
 	var mode = document.getElementById('mode').value;
 	
-	var suppressNoInfo = document.getElementById('no-info').value == 'hide' ? true : false;
-	
 	if (!metaDisplayProcessor.reinitialize({
-			vocab: vocab,
-			punctuation: punctuation,
+			lang: lang,
 			mode: mode
 		})) {
 		return;
 	}
+	
+	var suppressNoInfo = document.getElementById('no-info').value == 'hide' ? true : false;
 	
 	showDisplayMetadata(suppressNoInfo);
 }

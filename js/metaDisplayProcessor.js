@@ -94,23 +94,8 @@ var metaDisplayProcessor = (function() {
 	
 	function reinitialize(param) {
 	
-		// check that the language-specific strings have been provided
-		
-		if (!param.hasOwnProperty('vocab') || !param.vocab) {
-			alert('Display strings not loaded.');
-			return false;
-		}
-		
-		_vocab = param.vocab;
-		
-		if (!param.hasOwnProperty('punctuation')) {
-			alert('Display punctuation not specified.');
-			return false;
-		}
-		
-		_punctuation = param.punctuation;
-		
-		// check that the the display mode - compact or descriptive - is set
+		_vocab = getVocab(param.lang);
+		_punctuation = getPunctuation(param.lang);
 		
 		if (!param.hasOwnProperty('mode') || !param.mode) {
 			alert('Display output mode not specified.');
@@ -268,7 +253,7 @@ var metaDisplayProcessor = (function() {
 		var non_textual_content_audio_in_video = _isONIX ? checkForNode(xpath.ways_of_reading.non_textual_content_audio_in_video[_format]) : false;
 		
 		// onix has to check two variables for media overlays
-		var synchronised_pre_recorded_audio = !isONIX ?
+		var synchronised_pre_recorded_audio = !_isONIX ?
 											checkForNode(xpath.ways_of_reading.synchronised_pre_recorded_audio[_format]) :
 											(checkForNode(xpath.ways_of_reading.synchronised_pre_recorded_audio[_format])
 												&& checkForNode(xpath.ways_of_reading.synchronised_pre_recorded_audio_2[_format]));
