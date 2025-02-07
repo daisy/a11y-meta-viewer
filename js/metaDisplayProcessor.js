@@ -267,9 +267,10 @@ var metaDisplayProcessor = (function() {
 		// onix algorithm only
 		var non_textual_content_audio_in_video = _isONIX ? checkForNode(xpath.ways_of_reading.non_textual_content_audio_in_video[_format]) : false;
 		
+		// onix has to check two variables for media overlays
 		var synchronised_pre_recorded_audio = !isONIX ?
 											checkForNode(xpath.ways_of_reading.synchronised_pre_recorded_audio[_format]) :
-											(checkForNode(xpath.ways_of_reading.synchronised_pre_recorded_audio_1[_format])
+											(checkForNode(xpath.ways_of_reading.synchronised_pre_recorded_audio[_format])
 												&& checkForNode(xpath.ways_of_reading.synchronised_pre_recorded_audio_2[_format]));
 		
 		

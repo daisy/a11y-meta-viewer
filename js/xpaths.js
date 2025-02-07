@@ -55,9 +55,7 @@ var xpath = {
 		},
 		synchronised_pre_recorded_audio: {
 			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="synchronizedAudioText"]',
-			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessibilityFeature" and normalize-space(@content)="synchronizedAudioText"]'
-		},
-		synchronised_pre_recorded_audio_1: {
+			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessibilityFeature" and normalize-space(@content)="synchronizedAudioText"]',
 			onix: '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "20"]'
 		},
 		synchronised_pre_recorded_audio_2: {
