@@ -54,8 +54,8 @@ var xpath = {
 			onix: '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "51"]'
 		},
 		synchronised_pre_recorded_audio: {
-			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="sychronizedAudioText"]',
-			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessibilityFeature" and normalize-space(@content)="sychronizedAudioText"]'
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="synchronizedAudioText"]',
+			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessibilityFeature" and normalize-space(@content)="synchronizedAudioText"]'
 		},
 		synchronised_pre_recorded_audio_1: {
 			onix: '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "20"]'

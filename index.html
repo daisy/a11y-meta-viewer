@@ -17,7 +17,7 @@
 			
 			<textarea id="input_record" rows="15" autocomplete="off"></textarea>
 			
-			<div><button onclick="processXML()">Preview</button></div>
+			<div><button onclick="processRecord()">Preview</button></div>
 			
 			<dialog id="result">
 				<div class="dialog-hd">
@@ -28,7 +28,7 @@
 					<div class="options">
 						<fieldset>
 							<legend>Message type:</legend>
-							<select id="mode" onchange="processXML()">
+							<select id="mode" onchange="reprocessRecord()">
 								<option value="compact">Compact</option>
 								<option value="descriptive">Descriptive</option>
 							</select>
@@ -36,14 +36,14 @@
 						
 						<fieldset>
 							<legend>Language:</legend>
-							<select id="lang" onchange="processXML()">
+							<select id="lang" onchange="reprocessRecord()">
 								<option id="en">English</option>
 							</select>
 						</fieldset>
 						
 						<fieldset>
 							<legend>Fields with no information available:</legend>
-							<select id="no-info" onchange="processXML()">
+							<select id="no-info" onchange="reprocessRecord()">
 								<option value="show">Show</option>
 								<option value="hide">Hide</option>
 							</select>

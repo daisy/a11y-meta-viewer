@@ -15,50 +15,47 @@ result_close_img.addEventListener("click", () => {
 
 /* process input metadata */
 
-function processXML() {
+function processRecord() {
 
 	var xml = document.getElementById('input_record').value;
 	
+	if (!metaDisplayProcessor.initialize({
+			record_as_text: xml
+		})) {
+		return;
+	}
+	
+	showDisplayMetadata(false);
+}
+
+function reprocessRecord() {
+
+	var lang = document.getElementById('lang').value;
+	var vocab = getVocab(lang);
+	var punctuation = getPunctuation(lang);
+	
+	var mode = document.getElementById('mode').value;
+	
+	var suppressNoInfo = document.getElementById('no-info').value == 'hide' ? true : false;
+	
+	if (!metaDisplayProcessor.reinitialize({
+			vocab: vocab,
+			punctuation: punctuation,
+			mode: mode
+		})) {
+		return;
+	}
+	
+	showDisplayMetadata(suppressNoInfo);
+}
+
+function showDisplayMetadata(suppressNoInfo) {
+
 	// reest the result pane
 	var result_field = document.getElementById('result-body');
 		result_field.textContent = '';
 	
 	console.clear();
-	
-	// language-specific control settings
-	var lang = document.getElementById('lang').value;
-	var vocab = getVocab(lang);
-	var punctuation = getPunctuation(lang);
-	
-	// whether to use the compact or descriptive strings
-	var mode = document.getElementById('mode').value;
-	
-	// whether to show or hide display fields with no information
-	var suppressNoInfo = document.getElementById('no-info').value == 'hide' ? true : false;
-	
-	var format;
-	
-	if (xml.match('<package ')) {
-		format = xml.match('version="2.0"') ? 'epub2' : 'epub3';
-	}
-	
-	else if (xml.match('<ONIXMessage ')) {
-		format = 'onix';
-	}
-	
-	else {
-		alert('Invalid xml document - package or onix root element not found');
-		return;
-	}
-	
-	if (!metaDisplayProcessor.initialize({
-			record_as_text: xml,
-			format: format,
-			vocab: vocab, 
-			mode: mode
-		})) {
-		return;
-	}
 	
 	var result = document.createElement('div');
 		result.classList.add('grid');
@@ -182,41 +179,6 @@ function processXML() {
 		result_dialog.showModal();
 	}
 }
-
-
-
-
-/* return the vocabulary strings in the preferred locale */
-
-function getVocab(lang) {
-
-	var vocab;
-	
-	switch (lang) {
-		default:
-			vocab = en_us;
-	}
-	
-	return vocab;
-	
-}
-
-
-
-
-/* language-specific punctuation */
-
-function getPunctuation(lang) {
-	var punctuation;
-	
-	switch (lang) {
-		default:
-			punctuation = document.createTextNode('.');
-	}
-	
-	return punctuation;
-}
-
 
 
 
