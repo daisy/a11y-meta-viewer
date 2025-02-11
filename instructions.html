@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>DAISY Accessibility Metadata Viewer</title>
+		<link rel="stylesheet" type="text/css" href="css/viewer.css" />
+		<style>
+			main {
+				margin-top: 5rem;
+			}
+			main > * {
+				margin-left: 4rem;
+			}
+			h2 {
+				background-color: unset;
+				color: rgb(32,53,139);
+				margin-left: 2rem;
+				font-size: 2.4rem;
+			}
+		</style>
+		<script src="js/addCopyright.js" defer="defer"></script>
+	</head>
+	
+	<body>
+		<header>
+			<h1><a href="index.html"><img class="logo" src="graphics/daisy_high.jpg" alt="DAISY"> Accessibility Metadata Viewer</a></h1>
+		</header>
+		<main>
+			<h2>How to use</h2>
+			<p>This application converts the accessibility metadata in an EPUB package document or ONIX record into display
+				statements in accordance with the <a
+					href="https://w3c.github.io/publ-a11y/a11y-meta-display-guide/2.0/guidelines/">W3C Accessibility
+					Metadata Display Guide for Digital Publications 2.0</a>.</p>
+		</main>
+		<footer>
+			<div class="footer-lists">
+				<div class="footer-list">
+					<div id="nav-site">Site</div>
+					<ul aria-labelledby="nav-site">
+						<li><a href="/">Metadata viewer</a></li>
+						<li><a href="instructions.html">How to use</a></li>
+						<li><a href="https://daisy.org/">Sponsor</a></li>
+					</ul>
+				</div>
+				<div class="footer-list">
+					<div id="nav-feedback">Feedback</div>
+					<ul aria-labelledby="nav-feedback">
+						<li><a href="https://github.com/DAISY/a11y-meta-viewer/issues/">Report Bugs</a></li>
+						<li><a href="https://github.com/DAISY/a11y-meta-viewer/commits/main/">Revision History</a></li>
+					</ul>
+				</div>
+				<div class="footer-list">
+					<div id="nav-specs">Specifications</div>
+					<ul aria-labelledby="nav-specs">
+						<li><a href="https://w3c.github.io/publ-a11y/a11y-meta-display-guide/2.0/guidelines/">Accessibility Metadata Display Guide</a></li>
+						<li><a href="https://w3c.github.io/publ-a11y/a11y-meta-display-guide/2.0/techniques/epub-metadata/">EPUB Metadata Techniques</a></li>
+						<li><a href="https://w3c.github.io/publ-a11y/a11y-meta-display-guide/2.0/techniques/onix-metadata/">ONIX Metadata Techniques</a></li>
+					</ul>
+				</div>
+			</div>
+			<p class="copy">© <span id="copy-yr"></span> The DAISY Consortium&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="http://www.daisy.org/terms-use">Terms of Use&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</a><a href="https://daisy.org/about-us/terms-and-conditions/privacy/">Privacy Policy</a></p>
+		</footer>
+	</body>
+</html>
