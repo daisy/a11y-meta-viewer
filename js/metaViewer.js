@@ -17,6 +17,8 @@ result_close_img.addEventListener("click", () => {
 
 function processRecord() {
 
+	console.clear();
+	
 	var xml = document.getElementById('input_record').value;
 	
 	if (!metaDisplayProcessor.initialize({
@@ -30,6 +32,8 @@ function processRecord() {
 
 function reprocessRecord() {
 
+	console.clear();
+	
 	var lang = document.getElementById('lang').value;
 	
 	var mode = document.getElementById('mode').value;
@@ -51,8 +55,6 @@ function showDisplayMetadata(suppressNoInfo) {
 	// reest the result pane
 	var result_field = document.getElementById('result-body');
 		result_field.textContent = '';
-	
-	console.clear();
 	
 	var result = document.createElement('div');
 		result.classList.add('grid');
