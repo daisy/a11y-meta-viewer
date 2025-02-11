@@ -15,8 +15,8 @@ var metaDisplayProcessor = (function() {
 	var _record = null;
 	var _format = null;
 	var _isONIX = false;
+	var _lang = 'en-us';
 	var _vocab = null;
-	var _punctuation = '';
 	var _mode = 'compact';
 	
 	function initialize(param) {
@@ -43,19 +43,17 @@ var metaDisplayProcessor = (function() {
 		
 		var root = _record.documentElement;
 		
-		var lang;
-		
 		if (root.nodeName == 'package') {
 			_format = root.getAttribute('version') == '2.0' ? 'epub2' : 'epub3';
 			
 			if (_format == 'epub3') {
-				lang = root.getAttribute('xml:lang');
-				lang = lang ? lang : 'en-us';
+				var lang = root.getAttribute('xml:lang');
+				_lang = lang ? lang : 'en-us';
 			}
 			
 			else {
-				lang = _record.evaluate('//opf:meta/@xml:lang', _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
-				lang = lang ? lang : 'en-us';
+				var lang = _record.evaluate('//opf:meta/@xml:lang', _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+				_lang = lang ? lang : 'en-us';
 			}
 		}
 		
@@ -66,15 +64,15 @@ var metaDisplayProcessor = (function() {
 			var lang = _record.evaluate('//onix:ONIXRecord/onix:Product/onix:Language/onixLanguageCode', _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
 			
 			if (!lang) {
-				lang = 'en-us';
+				_lang = 'en-us';
 			}
 			
 			else {
 				switch (lang) {
 					case 'eng':
-						lang = 'en-us';
+						_lang = 'en-us';
 					default:
-						lang = 'en-us';
+						_lang = 'en-us';
 				}
 			}
 		}
@@ -85,8 +83,7 @@ var metaDisplayProcessor = (function() {
 		}
 		
 		// language-specific control settings
-		_vocab = getVocab(lang);
-		_punctuation = getPunctuation(lang);
+		_vocab = getVocab(_lang);
 		
 		return true;
 	}
@@ -94,8 +91,8 @@ var metaDisplayProcessor = (function() {
 	
 	function reinitialize(param) {
 	
-		_vocab = getVocab(param.lang);
-		_punctuation = getPunctuation(param.lang);
+		_lang = param.lang;
+		_vocab = getVocab(_lang);
 		
 		if (!param.hasOwnProperty('mode') || !param.mode) {
 			alert('Display output mode not specified.');
@@ -112,8 +109,8 @@ var metaDisplayProcessor = (function() {
 		_record = null;
 		_format = null;
 		_isONIX = false;
+		_lang = 'en-us',
 		_vocab = null;
-		_punctuation = '';
 		_mode = 'compact';
 	}
 	
@@ -158,7 +155,7 @@ var metaDisplayProcessor = (function() {
 		// Following additions are not in the algorithm
 		
 		// add punctuation - not in algorithm
-		vis_result.appendChild(_punctuation);
+		vis_result.appendChild(getPunctuation());
 		
 		result.displayHTML.appendChild(vis_result);
 		
@@ -213,7 +210,7 @@ var metaDisplayProcessor = (function() {
 		}
 		
 		// add punctuation - not in algorithm
-		nonvis_result.appendChild(_punctuation);
+		nonvis_result.appendChild(getPunctuation());
 		
 		result.displayHTML.appendChild(nonvis_result);
 		
@@ -222,7 +219,7 @@ var metaDisplayProcessor = (function() {
 				p.appendChild(document.createTextNode(_vocab['ways-of-reading']['ways-of-reading-nonvisual-reading-alt-text'][_mode]));
 		
 			// add punctuation - not in algorithm
-			p.appendChild(_punctuation);
+			p.appendChild(getPunctuation());
 			
 			result.displayHTML.appendChild(p);
 		}
@@ -302,7 +299,7 @@ var metaDisplayProcessor = (function() {
 		}
 		
 		// add punctuation - not in algorithm
-		prerec_result.appendChild(_punctuation);
+		prerec_result.appendChild(getPunctuation());
 		
 		result.displayHTML.appendChild(prerec_result);
 		
@@ -357,7 +354,7 @@ var metaDisplayProcessor = (function() {
 			}
 			
 			// add punctuation - not in algorithm
-			conf_p.appendChild(_punctuation);
+			conf_p.appendChild(getPunctuation());
 			
 			result.displayHTML.appendChild(conf_p);
 			
@@ -369,7 +366,7 @@ var metaDisplayProcessor = (function() {
 				cert_p.appendChild(document.createTextNode(conf_info.certifier));
 				
 				// add punctuation - not in algorithm
-				cert_p.appendChild(_punctuation);
+				cert_p.appendChild(getPunctuation());
 				
 				result.displayHTML.appendChild(cert_p);
 			}
@@ -392,7 +389,7 @@ var metaDisplayProcessor = (function() {
 				}
 				
 				// add punctuation - not in algorithm
-				cred_p.appendChild(_punctuation);
+				cred_p.appendChild(getPunctuation());
 				
 				result.displayHTML.appendChild(cred_p);
 			}
@@ -440,7 +437,7 @@ var metaDisplayProcessor = (function() {
 			}
 
 			// add punctuation - not in algorithm
-			conf_p.appendChild(_punctuation);
+			conf_p.appendChild(getPunctuation());
 			
 			result.displayHTML.appendChild(conf_p);
 			
@@ -451,7 +448,7 @@ var metaDisplayProcessor = (function() {
 					cert_p.appendChild(document.createTextNode(conf_info.certification_date));
 				
 				// add punctuation - not in algorithm
-				cert_p.appendChild(_punctuation);
+				cert_p.appendChild(getPunctuation());
 				
 				result.displayHTML.appendChild(cert_p);
 			}
@@ -466,7 +463,7 @@ var metaDisplayProcessor = (function() {
 				rep_p.appendChild(rep_link);
 				
 				// add punctuation - not in algorithm
-				rep_p.appendChild(_punctuation);
+				rep_p.appendChild(getPunctuation());
 				
 				result.displayHTML.appendChild(rep_p);
 			}
@@ -618,7 +615,7 @@ var metaDisplayProcessor = (function() {
 				p.appendChild(document.createTextNode(_vocab.navigation['navigation-no-metadata'][_mode]));
 				
 				// add punctuation - not in algorithm
-				p.appendChild(_punctuation);
+				p.appendChild(getPunctuation());
 			
 			result.displayHTML.appendChild(p);
 			
@@ -752,7 +749,7 @@ var metaDisplayProcessor = (function() {
 				p.appendChild(document.createTextNode(_vocab['rich-content']['rich-content-unknown'][_mode]));
 			
 			// add punctuation - not in algorithm
-			p.appendChild(_punctuation);
+			p.appendChild(getPunctuation());
 			
 			result.displayHTML.appendChild(p);
 			
@@ -807,7 +804,7 @@ var metaDisplayProcessor = (function() {
 					p.appendChild(document.createTextNode(_vocab['hazards']['hazards-flashing'][_mode]));
 			
 				// add punctuation - not in algorithm
-				p.appendChild(_punctuation);
+				p.appendChild(getPunctuation());
 				
 				result.displayHTML.appendChild(p);
 			}
@@ -817,7 +814,7 @@ var metaDisplayProcessor = (function() {
 					p.appendChild(document.createTextNode(_vocab['hazards']['hazards-motion'][_mode]));
 			
 				// add punctuation - not in algorithm
-				p.appendChild(_punctuation);
+				p.appendChild(getPunctuation());
 				
 				result.displayHTML.appendChild(p);
 			}
@@ -827,7 +824,7 @@ var metaDisplayProcessor = (function() {
 					p.appendChild(document.createTextNode(_vocab['hazards']['hazards-sound'][_mode]));
 			
 				// add punctuation - not in algorithm
-				p.appendChild(_punctuation);
+				p.appendChild(getPunctuation());
 				
 				result.displayHTML.appendChild(p);
 			}
@@ -838,7 +835,7 @@ var metaDisplayProcessor = (function() {
 				p.appendChild(document.createTextNode(_vocab['hazards']['hazards-unknown'][_mode]));
 		
 			// add punctuation - not in algorithm
-			p.appendChild(_punctuation);
+			p.appendChild(getPunctuation());
 			
 			result.displayHTML.appendChild(p);
 		}
@@ -848,7 +845,7 @@ var metaDisplayProcessor = (function() {
 				p.appendChild(document.createTextNode(_vocab['hazards']['hazards-no-metadata'][_mode]));
 		
 			// add punctuation - not in algorithm
-			p.appendChild(_punctuation);
+			p.appendChild(getPunctuation());
 			
 			result.displayHTML.appendChild(p);
 			
@@ -949,7 +946,7 @@ var metaDisplayProcessor = (function() {
 			sum_result.appendChild(document.createTextNode(_vocab['accessibility-summary']['accessibility-summary-no-metadata'][_mode]));
 			
 			// add punctuation - not in algorithm
-			sum_result.appendChild(_punctuation);
+			sum_result.appendChild(getPunctuation());
 			
 			result.hasMetadata = false;
 		}
@@ -989,7 +986,7 @@ var metaDisplayProcessor = (function() {
 		}
 		
 		// add punctuation - not in algorithm
-		legal_result.appendChild(_punctuation);
+		legal_result.appendChild(getPunctuation());
 		
 		result.displayHTML.appendChild(legal_result);
 		
@@ -1225,15 +1222,11 @@ var metaDisplayProcessor = (function() {
 	
 	/* language-specific punctuation */
 	
-	function getPunctuation(lang) {
-		var punctuation;
-		
+	function getPunctuation() {
 		switch (lang) {
 			default:
-				punctuation = document.createTextNode('.');
+				return document.createTextNode('.');
 		}
-		
-		return punctuation;
 	}
 	
 	
