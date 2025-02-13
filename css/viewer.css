@@ -259,6 +259,11 @@ select {
 	width: 20rem;
 }
 
+/* detailed conformance */
+
+summary {
+	font-weight: bold;
+}
 
 /* options */
 
