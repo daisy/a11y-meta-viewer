@@ -407,9 +407,15 @@ var metaDisplayProcessor = (function() {
 				result.displayHTML.appendChild(cred_p);
 			}
 			
-			var detconf_hd = document.createElement('h4');
-				detconf_hd.appendChild(document.createTextNode(_vocab.conformance['conformance-details-title']));
-			result.displayHTML.appendChild(detconf_hd);
+			var det_conf = document.createElement('details');
+			
+			if (_mode == 'descriptive') {
+				det_conf.setAttribute('open', 'open');
+			}
+			
+			var det_sum = document.createElement('summary');
+				det_sum.appendChild(document.createTextNode(_vocab.conformance['conformance-details-title']));
+			det_conf.appendChild(det_sum);
 			
 			var conf_p = document.createElement('p');
 				conf_p.appendChild(document.createTextNode(_vocab.conformance['conformance-claim'][_mode]));
@@ -452,7 +458,7 @@ var metaDisplayProcessor = (function() {
 			// add punctuation - not in algorithm
 			conf_p.appendChild(getPunctuation());
 			
-			result.displayHTML.appendChild(conf_p);
+			det_conf.appendChild(conf_p);
 			
 			if (conf_info.certification_date) {
 			
@@ -463,7 +469,7 @@ var metaDisplayProcessor = (function() {
 				// add punctuation - not in algorithm
 				cert_p.appendChild(getPunctuation());
 				
-				result.displayHTML.appendChild(cert_p);
+				det_conf.appendChild(cert_p);
 			}
 			
 			if (conf_info.certifier_report) {
@@ -478,8 +484,10 @@ var metaDisplayProcessor = (function() {
 				// add punctuation - not in algorithm
 				rep_p.appendChild(getPunctuation());
 				
-				result.displayHTML.appendChild(rep_p);
+				det_conf.appendChild(rep_p);
 			}
+			
+			result.displayHTML.appendChild(det_conf);
 		}
 		
 		return result;
