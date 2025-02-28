@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://www.idpf.org/2007/opf" version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <metadata>
+    <dc:title>EPUB 2 Display Metadata - Text and Image Content</dc:title>
+    <dc:language>en</dc:language>
+    <dc:identifier>urn:uuid:1</dc:identifier>
+    <meta id="conf" name="dcterms:conformsTo" content="EPUB Accessibility 1.1 - WCAG 2.1 Level AA"/>
+    <meta name="a11y:certifiedBy" content="DAISY"/>
+    <meta name="a11y:certifierCredential" content="My Credential"/>
+    <meta name="schema:accessMode" content="textual"/>
+    <meta name="schema:accessMode" content="visual"/>
+    <meta name="schema:accessModeSufficient" content="textual"/>
+    <meta name="schema:accessibilityHazard" content="none"/>
+    <meta name="schema:accessibilityFeature" content="aria"/>
+    <meta name="schema:accessibilityFeature" content="alternativeText"/>
+    <meta name="schema:accessibilityFeature" content="displayTransformability"/>
+    <meta name="schema:accessibilityFeature" content="highContrastDisplay"/>
+    <meta name="schema:accessibilityFeature" content="index"/>
+    <meta name="schema:accessibilityFeature" content="longDescription"/>
+    <meta name="schema:accessibilityFeature" content="pageNavigation"/>
+    <meta name="schema:accessibilityFeature" content="printPageNumbers"/>
+    <meta name="schema:accessibilityFeature" content="readingOrder"/>
+    <meta name="schema:accessibilityFeature" content="structuralNavigation"/>
+    <meta name="schema:accessibilityFeature" content="tableOfContents"/>
+    <meta name="schema:accessibilityFeature" content="unlocked"/>
+    <meta name="schema:accessibilitySummary" content="..."/>
+    <meta name="a11y:certifierReport" content="https://daisy.org/sample/a11y-report.html"/>
+  </metadata>
+  <manifest>
+    <item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml"/>
+    <item id="c01" href="c01.xhtml" media-type="application/xhtml+xml"/>
+  </manifest>
+  <spine toc="ncx">
+    <itemref idref="c01"/>
+  </spine>
+</package>

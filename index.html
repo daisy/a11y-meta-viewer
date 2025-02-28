@@ -14,7 +14,7 @@
 			<h1><img class="logo" src="graphics/daisy_high.jpg" alt="DAISY"> Accessibility Metadata Viewer</h1>
 		</header>
 		<main>
-			<p>Paste an EPUB package document or ONIX record to begin.</p>
+			<p>Paste an EPUB package document or ONIX record to begin, or test using a <a href="#" onclick="selectRecord(); return false;">preconfigured file</a>.</p>
 			
 			<textarea id="input_record" rows="15" autocomplete="off"></textarea>
 			
@@ -57,10 +57,22 @@
 				<button id="result-close-button">Close</button>
 			</dialog>
 			
+			<dialog id="selectRecord">
+				<div class="dialog-hd">
+					<h2>Preconfigured records</h2>
+					<a href="#selectRecord-close-img" id="selectRecord-close-img" class="close" title="Close"><img src="graphics/close-icon.png" alt="Close"></a>
+				</div>
+				<ul>
+					<li>Text with images: <a href="#" onclick="loadRecord('epub3-std.xml')">EPUB 3</a> | <a href="#" onclick="loadRecord('epub2-std.xml')">EPUB 2</a> | <a href="#" onclick="loadRecord('onix-std.xml')">ONIX</a></li>
+					<li>Text with media overlays: <a href="#" onclick="loadRecord('epub3-mo.xml')">EPUB 3</a> | <a href="#" onclick="loadRecord('epub2-mo.xml')">EPUB 2</a> | <a href="#" onclick="loadRecord('onix-mo.xml')">ONIX</a></li>
+				</ul>
+				<button id="selectRecord-close-button">Close</button>
+			</dialog>
+			
 			<dialog id="explainer">
 				<div class="dialog-hd">
 					<h2>Explainer</h2>
-					<a href="#explainer-close" id="explainer-close-img" class="close" title="Close"><img src="graphics/close-icon.png" alt="Close"></a>
+					<a href="#explainer-close-img" id="explainer-close-img" class="close" title="Close"><img src="graphics/close-icon.png" alt="Close"></a>
 				</div>
 				<div id="explainer-body"></div>
 				<button id="explainer-close-button">Close</button>

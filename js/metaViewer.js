@@ -237,3 +237,36 @@ explainer_close_button.addEventListener('click', () => {
 explainer_close_img.addEventListener('click', () => {
   explainer_dialog.close();
 });
+
+
+/* record selection */
+
+var sel_dialog = document.getElementById('selectRecord');
+
+function selectRecord() {
+	sel_dialog.showModal();
+}
+
+var selectRecord_close_button = document.getElementById("selectRecord-close-button");
+var selectRecord_close_img = document.getElementById("selectRecord-close-img");
+
+selectRecord_close_button.addEventListener('click', () => {
+  sel_dialog.close();
+});
+
+selectRecord_close_img.addEventListener('click', () => {
+  sel_dialog.close();
+});
+
+
+async function loadRecord(record_file) {
+
+	const response = await fetch('./samples/' + record_file);
+	
+	const record = await response.text();
+	
+	document.getElementById('input_record').value = record;
+	
+	sel_dialog.close();
+
+}

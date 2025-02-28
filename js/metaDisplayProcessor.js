@@ -335,9 +335,13 @@ var metaDisplayProcessor = (function() {
 		// 3.2.2 Variables setup
 		
 		var conf_info = _isONIX ? processONIXConformance() : processEPUBConformance();
+			
 			conf_info.certifier = _record.evaluate(xpath.conformance.certifier[_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
-			conf_info.certifier_credentials = _record.evaluate(xpath.conformance.certifier_credentials[_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+			
+			conf_info.certifier_credentials = _record.evaluate(xpath.conformance.certifier_credential[_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+			
 			conf_info.certification_date = _record.evaluate(xpath.conformance.certification_date[_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+			
 			conf_info.certifier_report = _record.evaluate(xpath.conformance.certifier_report[_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
 		
 		// 3.2.3 Instructions
@@ -418,41 +422,41 @@ var metaDisplayProcessor = (function() {
 			det_conf.appendChild(det_sum);
 			
 			var conf_p = document.createElement('p');
-				conf_p.appendChild(document.createTextNode(_vocab.conformance['conformance-claim'][_mode]));
+				conf_p.appendChild(document.createTextNode(_vocab.conformance['conformance-details-claim'][_mode]));
 			
 			/* epub accessibility version */
 			if (conf_info.epub_version === '1.0' || conf_info.epub_accessibility_11) {
-				conf_p.appendChild(document.createTextNode(_vocab.conformance['conformance-epub-accessibility-1-0'][_mode]));
+				conf_p.appendChild(document.createTextNode(_vocab.conformance['conformance-details-epub-accessibility-1-0'][_mode]));
 			}
 			
 			else if (conf_info.epub_version === '1.1' || conf_info.epub_accessibility_10) {
-				conf_p.appendChild(document.createTextNode(_vocab.conformance['conformance-epub-accessibility-1-1'][_mode]));
+				conf_p.appendChild(document.createTextNode(_vocab.conformance['conformance-details-epub-accessibility-1-1'][_mode]));
 			}
 			
 			/* wcag version */
 			if (conf_info.wcag_version === '2.2' || conf_info.wcag_22) {
-				conf_p.appendChild(document.createTextNode(_vocab.conformance['conformance-wcag-2-2'][_mode]));
+				conf_p.appendChild(document.createTextNode(_vocab.conformance['conformance-details-wcag-2-2'][_mode]));
 			}
 			
 			else if (conf_info.wcag_version === '2.1' || conf_info.wcag_21) {
-				conf_p.appendChild(document.createTextNode(_vocab.conformance['conformance-wcag-2-1'][_mode]));
+				conf_p.appendChild(document.createTextNode(_vocab.conformance['conformance-details-wcag-2-1'][_mode]));
 			}
 			
 			else if (conf_info.wcag_version === '2.0' || conf_info.wcag_20) {
-				conf_p.appendChild(document.createTextNode(_vocab.conformance['conformance-wcag-2-0'][_mode]));
+				conf_p.appendChild(document.createTextNode(_vocab.conformance['conformance-details-wcag-2-0'][_mode]));
 			}
 			
 			/* wcag level */
 			if (conf_info.wcag_level === 'AAA' || conf_info.level_aaa) {
-				conf_p.appendChild(document.createTextNode(_vocab.conformance['conformance-level-aaa'][_mode]));
+				conf_p.appendChild(document.createTextNode(_vocab.conformance['conformance-details-level-aaa'][_mode]));
 			}
 			
 			else if (conf_info.wcag_level === 'AA' || conf_info.level_aa) {
-				conf_p.appendChild(document.createTextNode(_vocab.conformance['conformance-level-aa'][_mode]));
+				conf_p.appendChild(document.createTextNode(_vocab.conformance['conformance-details-level-aa'][_mode]));
 			}
 			
 			else if (conf_info.wcag_level === 'A' || conf_info.levela) {
-				conf_p.appendChild(document.createTextNode(_vocab.conformance['conformance-level-a'][_mode]));
+				conf_p.appendChild(document.createTextNode(_vocab.conformance['conformance-details-level-a'][_mode]));
 			}
 
 			// add punctuation - not in algorithm
@@ -463,7 +467,7 @@ var metaDisplayProcessor = (function() {
 			if (conf_info.certification_date) {
 			
 				var cert_p = document.createElement('p');
-					cert_p.appendChild(document.createTextNode(_vocab.conformance['conformance-certification-info'][_mode]));
+					cert_p.appendChild(document.createTextNode(_vocab.conformance['conformance-details-certification-info'][_mode]));
 					cert_p.appendChild(document.createTextNode(conf_info.certification_date));
 				
 				// add punctuation - not in algorithm
@@ -477,8 +481,8 @@ var metaDisplayProcessor = (function() {
 				var rep_p = document.createElement('p');
 				
 				var rep_link = document.createElement('a');
-					rep_link.href = conf_info.certifier_credentials;
-					rep_link.appendChild(document.createTextNode(_vocab.conformance['conformance-certifier-report'][_mode]));
+					rep_link.href = conf_info.certifier_report;
+					rep_link.appendChild(document.createTextNode(_vocab.conformance['conformance-details-certifier-report'][_mode]));
 				rep_p.appendChild(rep_link);
 				
 				// add punctuation - not in algorithm
@@ -498,29 +502,14 @@ var metaDisplayProcessor = (function() {
 		
 		var conf_info = {};
 		
-		if (checkForNode(xpath.conformance.epub10a[_format])) {
-			conf_info.epub_format = '1.0';
-			conf_info.wcag_format = '2.0';
-			conf_info.wcag_level = 'A';
-		}
-		
-		if (checkForNode(xpath.conformance.epub10aa[_format])) {
-			conf_info.epub_format = '1.0';
-			conf_info.wcag_format = '2.0';
-			conf_info.wcag_level = 'AA';
-		}
-		
-		if (checkForNode(xpath.conformance.epub10aaa[_format])) {
-			conf_info.epub_format = '1.0';
-			conf_info.wcag_format = '2.0';
-			conf_info.wcag_level = 'AAA';
-		}
-		
 		// js evaluate() can't handle this expression: 
 		// /opf:package/opf:metadata/opf:meta[@property="dcterms:conformsTo" and matches(normalize-space(), "EPUB Accessibility 1\.1 - WCAG 2\.[0-2] Level [A]+")]
 		// using contains() instead to match most of it
 		
 		var conformance = _record.evaluate(xpath.conformance.conformance[_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+		var epub10_wcag20a = _record.evaluate(xpath.conformance.epub10a[_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+		var epub10_wcag20aa = _record.evaluate(xpath.conformance.epub10aa[_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+		var epub10_wcag20aaa = _record.evaluate(xpath.conformance.epub10aaa[_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
 		
 		if (conformance) {
 		
@@ -533,6 +522,24 @@ var metaDisplayProcessor = (function() {
 
 			var level_re = new RegExp('EPUB Accessibility 1\\.1 - WCAG 2\\.[0-2] Level ');
 			conf_info.wcag_level = conformance.replace(level_re, '');
+		}
+		
+		else if (epub10_wcag20aaa) {
+			conf_info.epub_version = '1.0';
+			conf_info.wcag_version = '2.0';
+			conf_info.wcag_level = 'AAA';
+		}
+		
+		else if (epub10_wcag20aa) {
+			conf_info.epub_version = '1.0';
+			conf_info.wcag_version = '2.0';
+			conf_info.wcag_level = 'AA';
+		}
+		
+		else if (epub10_wcag20a) {
+			conf_info.epub_version = '1.0';
+			conf_info.wcag_version = '2.0';
+			conf_info.wcag_level = 'A';
 		}
 		
 		// set empty keys for unused onix variables

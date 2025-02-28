@@ -3,6 +3,7 @@ var en_us = {
         "author": "W3C Publishing Community Group Accessibility Task Force",
         "language": "en-US",
         "variant": "canonical",
+        "version": "2.0.b",
         "audience": "general",
         "description": "Original wording discussed by a large group representing different actors of the English-speaking geographies. It has been improved after proof of concept implementations and panel testers"
     },
@@ -72,45 +73,57 @@ var en_us = {
             "compact": "This publication exceeds accepted accessibility standards",
             "descriptive": "The publication contains a conformance statement that it meets the EPUB Accessibility and WCAG 2 Level AAA standard"
         },
-        "conformance-certification-info": {
-            "compact": "The publication was certified on ",
-            "descriptive": "The publication was certified on "
-        },
         "conformance-certifier": {
-            "compact": "The publication was certified by",
+            "compact": "The publication was certified by ",
             "descriptive": "The publication was certified by "
         },
         "conformance-certifier-credentials": {
             "compact": "The certifier's credential is ",
             "descriptive": "The certifier's credential is "
         },
-        "conformance-certifier-report": {
+        "conformance-details-certification-info": {
+            "compact": "The publication was certified on ",
+            "descriptive": "The publication was certified on "
+        },
+        "conformance-details-certifier-report": {
             "compact": "For more information refer to the certifier's report",
             "descriptive": "For more information refer to the certifier's report"
         },
-        "conformance-claim": {
+        "conformance-details-claim": {
             "compact": "This publication claims to meet",
             "descriptive": "This publication claims to meet"
         },
-        "conformance-epub-accessibility-1-0": {
+        "conformance-details-epub-accessibility-1-0": {
             "compact": " EPUB Accessibility 1.0",
             "descriptive": " EPUB Accessibility 1.0"
         },
-        "conformance-epub-accessibility-1-1": {
+        "conformance-details-epub-accessibility-1-1": {
             "compact": " EPUB Accessibility 1.1",
             "descriptive": " EPUB Accessibility 1.1"
         },
-        "conformance-level-a": {
+        "conformance-details-level-a": {
             "compact": " Level A",
             "descriptive": " Level A"
         },
-        "conformance-level-aa": {
+        "conformance-details-level-aa": {
             "compact": " Level AA",
             "descriptive": " Level AA"
         },
-        "conformance-level-aaa": {
+        "conformance-details-level-aaa": {
             "compact": " Level AAA",
             "descriptive": " Level AAA"
+        },
+        "conformance-details-wcag-2-0": {
+            "compact": " WCAG 2.0",
+            "descriptive": " Web Content Accessibility Guidelines (WCAG) 2.0"
+        },
+        "conformance-details-wcag-2-1": {
+            "compact": " WCAG 2.1",
+            "descriptive": " Web Content Accessibility Guidelines (WCAG) 2.1"
+        },
+        "conformance-details-wcag-2-2": {
+            "compact": " WCAG 2.2",
+            "descriptive": " Web Content Accessibility Guidelines (WCAG) 2.2"
         },
         "conformance-no": {
             "compact": "No information is available",
@@ -119,18 +132,6 @@ var en_us = {
         "conformance-unknown-standard": {
             "compact": "Conformance to accepted standards for accessibility of this publication cannot be determined",
             "descriptive": "Conformance to accepted standards for accessibility of this publication cannot be determined"
-        },
-        "conformance-wcag-2-0": {
-            "compact": " WCAG 2.0",
-            "descriptive": "Web Content Accessibility Guidelines (WCAG ) 2.0"
-        },
-        "conformance-wcag-2-1": {
-            "compact": " WCAG 2.1",
-            "descriptive": "Web Content Accessibility Guidelines (WCAG ) 2.1"
-        },
-        "conformance-wcag-2-2": {
-            "compact": " WCAG 2.2",
-            "descriptive": "Web Content Accessibility Guidelines (WCAG ) 2.2"
         }
     },
     "navigation": {

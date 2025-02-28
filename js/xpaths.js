@@ -77,16 +77,16 @@ var xpath = {
 	},
 	conformance: {
 		epub10a: {
-			epub3: '/package/metadata/link[@rel="dcterms:conformsTo" and @href="http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-a"] | /package/metadata/meta[@property="dcterms:conformsTo" and normalize-space() = "http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-a"]',
-			epub2: '/package/metadata/meta[@name="dcterms:conformsTo" and normalize-space(@content)="http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-a"]'
+			epub3: '/opf:package/opf:metadata/opf:*[(@rel="dcterms:conformsTo" and @href="http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-a") or (@property="dcterms:conformsTo" and normalize-space() = "http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-a")]',
+			epub2: '/opf:package/opf:metadata/opf:meta[@name="dcterms:conformsTo" and normalize-space(@content)="http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-a"]'
 		},
 		epub10aa: {
-			epub3: '/package/metadata/link[@rel="dcterms:conformsTo" and @href="http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-aa"] | /package/metadata/meta[@property="dcterms:conformsTo" and text() = "http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-aa"]',
-			epub2: '/package/metadata/meta[@name="dcterms:conformsTo" and normalize-space(@content)="http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-aa"]'
+			epub3: '/opf:package/opf:metadata/opf:*[(@rel="dcterms:conformsTo" and @href="http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-aa") or (@property="dcterms:conformsTo" and normalize-space() = "http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-aa")]',
+			epub2: '/opf:package/opf:metadata/opf:meta[@name="dcterms:conformsTo" and normalize-space(@content)="http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-aa"]'
 		},
 		epub10aaa: {
-			epub3: '/package/metadata/link[@rel="dcterms:conformsTo" and @href="http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-aaa"] | /package/metadata/meta[@property="dcterms:conformsTo" and text() = "http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-aaa"]',
-			epub2: '/package/metadata/meta[@name="dcterms:conformsTo" and normalize-space(@content)="http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-aaa"]'
+			epub3: '/opf:package/opf:metadata/opf:*[(@rel="dcterms:conformsTo" and @href="http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-aaa") or (@property="dcterms:conformsTo" and normalize-space() = "http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-aaa")]',
+			epub2: '/opf:package/opf:metadata/opf:meta[@name="dcterms:conformsTo" and normalize-space(@content)="http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-aaa"]'
 		},
 		conformance: {
 			epub3: '/opf:package/opf:metadata/opf:meta[@property="dcterms:conformsTo" and contains(normalize-space(), "EPUB Accessibility 1.1 - WCAG 2.")]',
@@ -132,25 +132,25 @@ var xpath = {
 			onix: '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "86"]'
 		},
 		lia_compliant: {
-			onix: '/ONIXMessage/Product/DescriptiveDetail/ProductFormFeature[ProductFormFeatureType = "09" and ProductFormFeatureValue = "01"]'
+			onix: '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "01"]'
 		},
 		certifier: {
-			epub3: '/opf:package/opf:metadata/opf:meta[@property="a11y:certifiedBy"]',
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="a11y:certifiedBy" and (not(@refines) or substring(@refines,2)=//opf:*[(@rel="dcterms:conformsTo" and contains(@href, "http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-")) or (@property="dcterms:conformsTo" and contains(normalize-space(), "http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-")) or (@property="dcterms:conformsTo" and contains(normalize-space(), "EPUB Accessibility 1.1 - WCAG 2."))]/@id)]',
 			epub2: '/opf:package/opf:metadata/opf:meta[@name="a11y:certifiedBy"]/@content',
 			onix: '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "90"]/onix:ProductFormFeatureDescription'
 		},
-		certifier_credentials: {
-			epub3: '/opf:package/opf:metadata/opf:meta[@property="a11y:certifierCredential"]',
+		certifier_credential: {
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="a11y:certifierCredential" and (not(@refines) or substring(@refines,2)=//opf:meta[@property="a11y:certifiedBy" and substring(@refines,2)=//opf:*[(@rel="dcterms:conformsTo" and contains(@href, "http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-")) or (@property="dcterms:conformsTo" and contains(normalize-space(), "http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-")) or (@property="dcterms:conformsTo" and contains(normalize-space(), "EPUB Accessibility 1.1 - WCAG 2."))]/@id]/@id)]',
 			epub2: '/opf:package/opf:metadata/opf:meta[@name="a11y:certifierCredential"]/@content',
 			onix: '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "93"]/onix:ProductFormFeatureDescription'
 		},
 		certification_date: {
-			epub3: '/opf:package/opf:metadata/opf:meta[@property="dcterms:date" and @refines=//opf:meta[@property="a11y:certifiedBy"]/@id]',
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="dcterms:date" and substring(@refines,2)=//opf:*[(@rel="dcterms:conformsTo" and contains(@href, "http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-")) or (@property="dcterms:conformsTo" and contains(normalize-space(), "http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-")) or (@property="dcterms:conformsTo" and contains(normalize-space(), "EPUB Accessibility 1.1 - WCAG 2."))]/@id]',
 			epub2: '/opf:package/opf:metadata/opf:meta[@name="dcterms:date"]/@content',
 			onix: '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "91"]/onix:ProductFormFeatureDescription'
 		},
 		certifier_report: {
-			epub3: '/opf:package/opf:metadata/opf:meta[@property="a11y:certifierReport"]',
+			epub3: '/opf:package/opf:metadata/opf:*[@rel="a11y:certifierReport" and (not(@refines) or substring(@refines,2)=//opf:meta[@property="a11y:certifiedBy" and substring(@refines,2)=//opf:*[(@rel="dcterms:conformsTo" and contains(@href, "http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-")) or (@property="dcterms:conformsTo" and contains(normalize-space(), "http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-")) or (@property="dcterms:conformsTo" and contains(normalize-space(), "EPUB Accessibility 1.1 - WCAG 2."))]/@id]/@id)]/@href',
 			epub2: '/opf:package/opf:metadata/opf:meta[@name="a11y:certifierReport"]/@content',
 			onix: '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "94"]/onix:ProductFormFeatureDescription'
 		}
