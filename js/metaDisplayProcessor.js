@@ -851,16 +851,24 @@ var metaDisplayProcessor = (function() {
 				hazards.push(_vocab['hazards']['hazards-flashing'][_mode]);
 			}
 			
-			if (unknown_flashing_hazard) {
-				hazards.push(_vocab['hazards']['hazards-flashing-unknown'][_mode]);
-			}
-			
 			if (motion_simulation_hazard) {
 				hazards.push(_vocab['hazards']['hazards-motion'][_mode]);
 			}
 			
+			if (sound_hazard) {
+				hazards.push(_vocab['hazards']['hazards-sound'][_mode]);
+			}
+			
+			if (unknown_flashing_hazard) {
+				hazards.push(_vocab['hazards']['hazards-flashing-unknown'][_mode]);
+			}
+			
 			if (unknown_motion_hazard) {
 				hazards.push(_vocab['hazards']['hazards-motion-unknown'][_mode]);
+			}
+			
+			if (unknown_sound_hazard) {
+				hazards.push(_vocab['hazards']['hazards-sound-unknown'][_mode]);
 			}
 			
 			if (no_flashing_hazard) {
@@ -873,14 +881,6 @@ var metaDisplayProcessor = (function() {
 			
 			if (no_sound_hazard) {
 				hazards.push(_vocab['hazards']['hazards-sound-none'][_mode]);
-			}
-			
-			if (sound_hazard) {
-				hazards.push(_vocab['hazards']['hazards-sound'][_mode]);
-			}
-			
-			if (unknown_sound_hazard) {
-				hazards.push(_vocab['hazards']['hazards-sound-unknown'][_mode]);
 			}
 			
 			if (hazards.length == 1) {
