@@ -805,60 +805,33 @@ var metaDisplayProcessor = (function() {
 		
 		var motion_simulation_hazard = checkForNode(xpath.hazards.motion_simulation_hazard[_format]);
 		
-		var no_flashing_hazards = checkForNode(xpath.hazards.no_flashing_hazards[_format]);
+		var no_flashing_hazard = checkForNode(xpath.hazards.no_flashing_hazard[_format]);
 		
 		var no_hazards_or_warnings_confirmed = checkForNode(xpath.hazards.no_hazards_or_warnings_confirmed[_format]);
 		
-		var no_motion_hazards = checkForNode(xpath.hazards.no_motion_hazards[_format]);
+		var no_motion_hazard = checkForNode(xpath.hazards.no_motion_hazard[_format]);
 		
-		var no_sound_hazards = checkForNode(xpath.hazards.no_sound_hazards[_format]);
+		var no_sound_hazard = checkForNode(xpath.hazards.no_sound_hazard[_format]);
 		
 		var sound_hazard = checkForNode(xpath.hazards.sound_hazard[_format]);
 		
+		var unknown_flashing_hazard = checkForNode(xpath.hazards.unknown_flashing_hazard[_format]);
+		
 		var unknown_if_contains_hazards = checkForNode(xpath.hazards.unknown_if_contains_hazards[_format]);
+		
+		var unknown_motion_hazard = checkForNode(xpath.hazards.unknown_motion_hazard[_format]);
+		
+		var unknown_sound_hazard = checkForNode(xpath.hazards.unknown_sound_hazard[_format]);
 		
 		// 3.5.3 Instructions
 		
-		if (no_hazards_or_warnings_confirmed || (no_flashing_hazards && no_motion_hazards && no_sound_hazards)) {
+		if (no_hazards_or_warnings_confirmed || (no_flashing_hazard && no_motion_hazard && no_sound_hazard)) {
 			var p = document.createElement('p');
 				p.appendChild(document.createTextNode(_vocab['hazards']['hazards-none'][_mode]));
 			result.displayHTML.appendChild(p);
 		}
-		
-		else if (flashing_hazard || motion_simulation_hazard || sound_hazard) {
-		
-			if (flashing_hazard) {
-				var p = document.createElement('p');
-					p.appendChild(document.createTextNode(_vocab['hazards']['hazards-flashing'][_mode]));
-			
-				// add punctuation - not in algorithm
-				p.appendChild(getPunctuation());
-				
-				result.displayHTML.appendChild(p);
-			}
-			
-			if (motion_simulation_hazard) {
-				var p = document.createElement('p');
-					p.appendChild(document.createTextNode(_vocab['hazards']['hazards-motion'][_mode]));
-			
-				// add punctuation - not in algorithm
-				p.appendChild(getPunctuation());
-				
-				result.displayHTML.appendChild(p);
-			}
-			
-			if (sound_hazard) {
-				var p = document.createElement('p');
-					p.appendChild(document.createTextNode(_vocab['hazards']['hazards-sound'][_mode]));
-			
-				// add punctuation - not in algorithm
-				p.appendChild(getPunctuation());
-				
-				result.displayHTML.appendChild(p);
-			}
-		}
 
-		else if (unknown_if_contains_hazards) {
+		else if (unknown_if_contains_hazards || (unknown_flashing_hazard && unknown_motion_hazard && unknown_sound_hazard)) {
 			var p = document.createElement('p');
 				p.appendChild(document.createTextNode(_vocab['hazards']['hazards-unknown'][_mode]));
 		
@@ -866,6 +839,75 @@ var metaDisplayProcessor = (function() {
 			p.appendChild(getPunctuation());
 			
 			result.displayHTML.appendChild(p);
+		}
+		
+		else if (flashing_hazard || motion_simulation_hazard || sound_hazard
+				|| no_flashing_hazard || no_motion_hazard || no_sound_hazard
+				|| unknown_flashing_hazard || unknown_motion_hazard || unknown_sound_hazard) {
+		
+			var hazards = [];
+			
+			if (flashing_hazard) {
+				hazards.push(_vocab['hazards']['hazards-flashing'][_mode]);
+			}
+			
+			if (unknown_flashing_hazard) {
+				hazards.push(_vocab['hazards']['hazards-flashing-unknown'][_mode]);
+			}
+			
+			if (motion_simulation_hazard) {
+				hazards.push(_vocab['hazards']['hazards-motion'][_mode]);
+			}
+			
+			if (unknown_motion_hazard) {
+				hazards.push(_vocab['hazards']['hazards-motion-unknown'][_mode]);
+			}
+			
+			if (no_flashing_hazard) {
+				hazards.push(_vocab['hazards']['hazards-flashing-none'][_mode]);
+			}
+			
+			if (no_motion_hazard) {
+				hazards.push(_vocab['hazards']['hazards-motion-none'][_mode]);
+			}
+			
+			if (no_sound_hazard) {
+				hazards.push(_vocab['hazards']['hazards-sound-none'][_mode]);
+			}
+			
+			if (sound_hazard) {
+				hazards.push(_vocab['hazards']['hazards-sound'][_mode]);
+			}
+			
+			if (unknown_sound_hazard) {
+				hazards.push(_vocab['hazards']['hazards-sound-unknown'][_mode]);
+			}
+			
+			if (hazards.length == 1) {
+				var p = document.createElement('p');
+					p.appendChild(document.createTextNode(hazards[0]));
+			
+				// add punctuation - not in algorithm
+				p.appendChild(getPunctuation());
+				
+				result.displayHTML.appendChild(p);
+			}
+			
+			else {
+				var ul = document.createElement('ul');
+				
+				hazards.forEach(function(hazard) {
+					var li = document.createElement('li');
+						li.appendChild(document.createTextNode(hazard));
+				
+					// add punctuation - not in algorithm
+					li.appendChild(getPunctuation());
+					
+					ul.appendChild(li);
+				});
+				
+				result.displayHTML.appendChild(ul);
+			}
 		}
 		
 		else {

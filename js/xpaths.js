@@ -250,30 +250,45 @@ var xpath = {
 			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessibilityHazard" and normalize-space(@content)="flashing"]',
 			onix: '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "12" and onix:ProductFormFeatureValue = "13"]'
 		},
-		no_flashing_hazards: {
+		no_flashing_hazard: {
 			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityHazard" and normalize-space()="noFlashingHazard"]',
 			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessibilityHazard" and normalize-space(@content)="noFlashingHazard"]',
 			onix: '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "12" and onix:ProductFormFeatureValue = "14"]'
+		},
+		unknown_flashing_hazard: {
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityHazard" and normalize-space()="unknownFlashingHazard"]',
+			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessibilityHazard" and normalize-space(@content)="unknownFlashingHazard"]',
+			onix: '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "12" and onix:ProductFormFeatureValue = "24"]'
 		},
 		motion_simulation_hazard: {
 			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityHazard" and normalize-space()="motionSimulation"]',
 			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessibilityHazard" and normalize-space(@content)="motionSimulation"]',
 			onix: '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "12" and onix:ProductFormFeatureValue = "17"]'
 		},
-		no_motion_hazards: {
+		no_motion_hazard: {
 			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityHazard" and normalize-space()="noMotionSimulationHazard"]',
 			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessibilityHazard" and normalize-space(@content)="noMotionSimulation"]',
 			onix: '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "12" and onix:ProductFormFeatureValue = "18"]'
+		},
+		unknown_motion_hazard: {
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityHazard" and normalize-space()="unknownMotionSimulationHazard"]',
+			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessibilityHazard" and normalize-space(@content)="unknownMotionSimulationHazard"]',
+			onix: '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "12" and onix:ProductFormFeatureValue = "26"]'
 		},
 		sound_hazard: {
 			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityHazard" and normalize-space()="sound"]',
 			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessibilityHazard" and normalize-space(@content)="sound"]',
 			onix: '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "12" and onix:ProductFormFeatureValue = "15"]'
 		},
-		no_sound_hazards: {
+		no_sound_hazard: {
 			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityHazard" and normalize-space()="noSoundHazard"]',
 			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessibilityHazard" and normalize-space(@content)="noSoundHazard"]',
 			onix: '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "12" and onix:ProductFormFeatureValue = "16"]'
+		},
+		unknown_sound_hazard: {
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityHazard" and normalize-space()="unknownSoundHazard"]',
+			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessibilityHazard" and normalize-space(@content)="unknownSoundHazard"]',
+			onix: '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "12" and onix:ProductFormFeatureValue = "25"]'
 		},
 		unknown_if_contains_hazards: {
 			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityHazard" and normalize-space()="unknown"]',

@@ -206,9 +206,25 @@ var en_us = {
             "compact": "Flashing content",
             "descriptive": "The publication contains flashing content which can cause photosensitive seizures"
         },
+        "hazards-flashing-none": {
+            "compact": "No flashing hazard",
+            "descriptive": "The publication does not contain flashing content that can cause photosensitive seizures"
+        },
+        "hazards-flashing-unknown": {
+            "compact": "Flashing hazard not known",
+            "descriptive": "The presence of flashing content that can cause photosensitive seizures could not be determined"
+        },
         "hazards-motion": {
             "compact": "Motion simulation",
             "descriptive": "The publication contains motion simulations that can cause motion sickness"
+        },
+        "hazards-motion-none": {
+            "compact": "No motion simulation hazards",
+            "descriptive": "The publication does not contain motion simulations that can cause motion sickness"
+        },
+        "hazards-motion-unknown": {
+            "compact": "Motion simulation hazard not known",
+            "descriptive": "The presence of motion simulations that can cause motion sickness could not be determined"
         },
         "hazards-no-metadata": {
             "compact": "No information is available",
@@ -221,6 +237,14 @@ var en_us = {
         "hazards-sound": {
             "compact": "Sounds",
             "descriptive": "The publication contains sounds which can be uncomfortable"
+        },
+        "hazards-sound-none": {
+            "compact": "No sound hazards",
+            "descriptive": "The publication does not contain sounds that can cause sensitivity issues"
+        },
+        "hazards-sound-unknown": {
+            "compact": "Sound hazards not known",
+            "descriptive": "The presence of sounds that can cause sensitivity issues could not be determined"
         },
         "hazards-unknown": {
             "compact": "The presence of hazards is unknown",
