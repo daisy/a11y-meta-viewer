@@ -7,6 +7,23 @@
 		<script src="js/xpaths.js"></script>
 		<script src="js/lang/en-us/vocabulary.js"></script>
 		<script src="js/addCopyright.js" defer="defer"></script>
+		<style>
+			aside.warn {
+				border-left: 0.3rem solid red;
+				background-color: rgb(248,232,235);
+			}
+			aside.warn > h2 {
+				font-weight: bold;
+				color: rgb(0,0,0);
+				background-color: inherit;
+				margin: 2rem 0 0 0;
+				padding-bottom: 0;
+			}
+			aside > p {
+				margin-top: 0.4rem;
+				padding: 0rem 2rem 1.5rem 2rem;
+			}
+		</style>
 	</head>
 	
 	<body>
@@ -14,6 +31,15 @@
 			<h1><img class="logo" src="graphics/daisy_high.jpg" alt="DAISY"> Accessibility Metadata Viewer</h1>
 		</header>
 		<main>
+			<aside class="warn">
+				<h2 class="hd">Caution</h2>
+				
+				<p>The <a 
+						href="https://w3c.github.io/publ-a11y/a11y-meta-display-guide/2.0/draft/guidelines/">Accessibility
+						Metadata Display Guide for Digital Publications 2.0</a> is still in active development.
+					This viewer is for informative testing purposes only.</p>
+			</aside>
+			
 			<p>Paste an EPUB package document or ONIX record to begin, or test using a <a href="#" onclick="selectRecord(); return false;">preconfigured file</a>.</p>
 			
 			<textarea id="input_record" rows="15" autocomplete="off"></textarea>
@@ -124,9 +150,9 @@
 				<div class="footer-list">
 					<div id="nav-site">Site</div>
 					<ul aria-labelledby="nav-site">
-						<li><a href="/">Metadata viewer</a></li>
+						<li><a href="https://daisy.github.io/a11y-meta-viewer/">Metadata viewer</a></li>
 						<li><a href="instructions.html">How to use</a></li>
-						<li><a href="https://daisy.org/">Sponsor</a></li>
+						<li><a href="https://daisy.org/sponsor/">Sponsor</a></li>
 					</ul>
 				</div>
 				<div class="footer-list">
