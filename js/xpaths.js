@@ -69,10 +69,10 @@ var xpath = {
 			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessMode" and normalize-space(@content)="auditory"]'
 		},
 		non_textual_content_audio: {
-			onix: '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail[contains(" 21 22 ", onix:PrimaryContentType) or contains(" 21 22 ", onix:ProductContentType)]'
+			onix: '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail[onix:PrimaryContentType = "21" or onix:PrimaryContentType = "22" or onix:ProductContentType = "21" or onix:ProductContentType = "22"]'
 		},
 		non_textual_content_audio_in_video: {
-			onix: '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail[contains(" 06 25 26 27 28 29 30 ", onix:PrimaryContentType) or contains(" 06 25 26 27 28 29 30 ", onix:ProductContentType)]'
+			onix: '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail[onix:PrimaryContentType = "06" or onix:PrimaryContentType = "25" or onix:PrimaryContentType = "26" or onix:PrimaryContentType = "27" or onix:PrimaryContentType = "28" or onix:PrimaryContentType = "29" or onix:PrimaryContentType = "30" or onix:ProductContentType = "06" or onix:ProductContentType = "25" or onix:ProductContentType = "26" or onix:ProductContentType = "27" or onix:ProductContentType = "28" or onix:ProductContentType = "29" or onix:ProductContentType = "30"]'
 		}
 	},
 	conformance: {
@@ -329,7 +329,7 @@ var xpath = {
 		exemption: {
 			epub3: '/opf:package/opf:metadata/opf:meta[@property="a11y:exemption"]',
 			epub2: '/opf:package/opf:metadata/opf:meta[@name="a11y:exemption"]',
-			onix: '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and contains(" 75 76 77 ", onix:ProductFormFeatureValue)]'
+			onix: '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and (onix:ProductFormFeatureValue = "75" or onix:ProductFormFeatureValue = "76" or onix:ProductFormFeatureValue = "77")]'
 		}
 	},
 	add_info: {

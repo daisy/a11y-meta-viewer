@@ -51,6 +51,10 @@
 			</ProductFormFeature>
 			<ProductFormFeature>
 				<ProductFormFeatureType>09</ProductFormFeatureType>
+				<ProductFormFeatureValue>36</ProductFormFeatureValue>
+			</ProductFormFeature>
+			<ProductFormFeature>
+				<ProductFormFeatureType>09</ProductFormFeatureType>
 				<ProductFormFeatureValue>52</ProductFormFeatureValue>
 			</ProductFormFeature>
 			<ProductFormFeature>
