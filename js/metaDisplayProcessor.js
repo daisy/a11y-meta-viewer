@@ -397,7 +397,18 @@ var metaDisplayProcessor = (function() {
 				if (conf_info.certifier_credentials.match('^http')) {
 					var cert_link = document.createElement('a');
 						cert_link.href = conf_info.certifier_credentials;
-						cert_link.appendChild(document.createTextNode(conf_info.certifier_credentials));
+						
+						if (conf_info.certifier_credentials == 'https://bornaccessible.org/certification/gca-credential/') {
+							var gca_img = document.createElement('img');
+								gca_img.src = 'graphics/GCA.png';
+								gca_img.alt = 'Benetech Global Certified Accessible';
+							cert_link.appendChild(gca_img);
+						}
+						
+						else {
+							cert_link.appendChild(document.createTextNode(conf_info.certifier_credentials));
+						}
+					
 					cred_p.appendChild(cert_link);
 				}
 				
