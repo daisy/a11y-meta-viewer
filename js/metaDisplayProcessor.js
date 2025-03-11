@@ -402,6 +402,7 @@ var metaDisplayProcessor = (function() {
 							var gca_img = document.createElement('img');
 								gca_img.src = 'graphics/GCA.png';
 								gca_img.alt = 'Benetech Global Certified Accessible';
+								gca_img.height = 80;
 							cert_link.appendChild(gca_img);
 						}
 						
