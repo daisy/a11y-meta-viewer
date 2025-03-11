@@ -415,10 +415,10 @@ var metaDisplayProcessor = (function() {
 				
 				else {
 					cred_p.appendChild(document.createTextNode(conf_info.certifier_credentials));
+					
+					// add punctuation - not in algorithm
+					cred_p.appendChild(getPunctuation());
 				}
-				
-				// add punctuation - not in algorithm
-				cred_p.appendChild(getPunctuation());
 				
 				result.displayHTML.appendChild(cred_p);
 			}
