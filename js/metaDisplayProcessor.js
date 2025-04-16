@@ -1296,6 +1296,26 @@ var metaDisplayProcessor = (function() {
 		var vocab;
 		
 		switch (lang) {
+			case "de":
+				vocab = de;
+				break;
+				
+			case "es-ES":
+				vocab = es_es;
+				break;
+			
+			case "fr-FR":
+				vocab = fr_fr;
+				break;
+				
+			case "it":
+				vocab = it;
+				break;
+				
+			case "ja":
+				vocab = ja;
+				break;
+				
 			default:
 				vocab = en_us;
 		}

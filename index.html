@@ -5,7 +5,12 @@
 		<title>DAISY Accessibility Metadata Viewer</title>
 		<link rel="stylesheet" type="text/css" href="css/viewer.css" />
 		<script src="js/xpaths.js"></script>
+		<script src="js/lang/de/vocabulary.js"></script>
+		<script src="js/lang/es-ES/vocabulary.js"></script>
 		<script src="js/lang/en-us/vocabulary.js"></script>
+		<script src="js/lang/fr-FR/vocabulary.js"></script>
+		<script src="js/lang/it/vocabulary.js"></script>
+		<script src="js/lang/ja/vocabulary.js"></script>
 		<script src="js/addCopyright.js" defer="defer"></script>
 		<style>
 			aside.warn {
@@ -55,7 +60,12 @@
 						<fieldset>
 							<legend>Language:</legend>
 							<select id="lang" onchange="reprocessRecord()">
-								<option id="en">English</option>
+								<option value="en">English</option>
+								<option value="fr-FR">French (France)</option>
+								<option value="de">German</option>
+								<option value="it">Italian</option>
+								<option value="ja">Japanese</option>
+								<option value="es-ES">Spanish (Spain)</option>
 							</select>
 						</fieldset>
 						
