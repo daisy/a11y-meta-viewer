@@ -62,7 +62,7 @@ var xpath = {
 			onix: '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormDetail[normalize-space() = "A305"]'
 		},
 		audiobook: {
-			onix: '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail[onix:PrimaryContentType = "81" or onix:ProductContentType = "81"]'
+			onix: '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail[onix:PrimaryContentType = "01" or onix:ProductContentType = "01"]'
 		},
 		audio_content: {
 			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessMode" and normalize-space()="auditory"]',

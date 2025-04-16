@@ -74,6 +74,10 @@
 				<ProductFormFeatureType>15</ProductFormFeatureType>
 				<ProductFormFeatureValue>101E</ProductFormFeatureValue>
 			</ProductFormFeature>
+			<ProductFormFeature>
+				<ProductFormFeatureType>12</ProductFormFeatureType>
+				<ProductFormFeatureValue>00</ProductFormFeatureValue>
+			</ProductFormFeature>
 			<ProductPackaging>00</ProductPackaging>
 			<PrimaryContentType>10</PrimaryContentType>
 			<EpubTechnicalProtection>00</EpubTechnicalProtection>

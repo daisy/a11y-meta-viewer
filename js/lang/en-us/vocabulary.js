@@ -3,7 +3,7 @@ var en_us = {
         "author": "W3C Publishing Community Group Accessibility Task Force",
         "language": "en-US",
         "variant": "canonical",
-        "version": "2.0.b",
+        "version": "2.0.c",
         "audience": "general",
         "description": "Original wording discussed by a large group representing different actors of the English-speaking geographies. It has been improved after proof of concept implementations and panel testers"
     },
@@ -34,12 +34,12 @@ var en_us = {
             "descriptive": "Prerecorded audio clips are embedded in the content"
         },
         "ways-of-reading-prerecorded-audio-no-metadata": {
-            "compact": " No information about prerecorded audio is available",
-            "descriptive": " No information about prerecorded audio is available"
+            "compact": "No information about prerecorded audio is available",
+            "descriptive": "No information about prerecorded audio is available"
         },
         "ways-of-reading-prerecorded-audio-only": {
             "compact": "Prerecorded audio only",
-            "descriptive": " Audiobook with no text alternative"
+            "descriptive": "Audiobook with no text alternative"
         },
         "ways-of-reading-prerecorded-audio-synchronized": {
             "compact": "Prerecorded audio synchronized with text",
@@ -47,11 +47,11 @@ var en_us = {
         },
         "ways-of-reading-visual-adjustments-modifiable": {
             "compact": "Appearance can be modified",
-            "descriptive": " Appearance of the text and page layout can be modified according to the capabilities of the reading system (font family and font size, spaces between paragraphs, sentences, words, and letters, as well as color of background and text)"
+            "descriptive": "Appearance of the text and page layout can be modified according to the capabilities of the reading system (font family and font size, spaces between paragraphs, sentences, words, and letters, as well as color of background and text)"
         },
         "ways-of-reading-visual-adjustments-unknown": {
             "compact": "No information about appearance modifiability is available",
-            "descriptive": " No information about appearance modifiability is available"
+            "descriptive": "No information about appearance modifiability is available"
         },
         "ways-of-reading-visual-adjustments-unmodifiable": {
             "compact": "Appearance cannot be modified",
@@ -180,16 +180,16 @@ var en_us = {
             "descriptive": "Text descriptions of math are provided"
         },
         "rich-content-closed-captions": {
-            "compact": " Videos have closed captions",
-            "descriptive": " Videos included in publications have closed captions"
+            "compact": "Videos have closed captions",
+            "descriptive": "Videos included in publications have closed captions"
         },
         "rich-content-extended": {
             "compact": "Information-rich images are described by extended descriptions",
             "descriptive": "Information-rich images are described by extended descriptions"
         },
         "rich-content-open-captions": {
-            "compact": " Videos have open captions",
-            "descriptive": " Videos included in publications have open captions"
+            "compact": "Videos have open captions",
+            "descriptive": "Videos included in publications have open captions"
         },
         "rich-content-transcript": {
             "compact": "Transcript(s) provided",
@@ -204,14 +204,14 @@ var en_us = {
         "hazards-title": "Hazards",
         "hazards-flashing": {
             "compact": "Flashing content",
-            "descriptive": "The publication contains flashing content which can cause photosensitive seizures"
+            "descriptive": "The publication contains flashing content that can cause photosensitive seizures"
         },
         "hazards-flashing-none": {
-            "compact": "No flashing hazard",
+            "compact": "No flashing hazards",
             "descriptive": "The publication does not contain flashing content that can cause photosensitive seizures"
         },
         "hazards-flashing-unknown": {
-            "compact": "Flashing hazard not known",
+            "compact": "Flashing hazards not known",
             "descriptive": "The presence of flashing content that can cause photosensitive seizures could not be determined"
         },
         "hazards-motion": {
@@ -223,7 +223,7 @@ var en_us = {
             "descriptive": "The publication does not contain motion simulations that can cause motion sickness"
         },
         "hazards-motion-unknown": {
-            "compact": "Motion simulation hazard not known",
+            "compact": "Motion simulation hazards not known",
             "descriptive": "The presence of motion simulations that can cause motion sickness could not be determined"
         },
         "hazards-no-metadata": {
@@ -236,7 +236,7 @@ var en_us = {
         },
         "hazards-sound": {
             "compact": "Sounds",
-            "descriptive": "The publication contains sounds which can be uncomfortable"
+            "descriptive": "The publication contains sounds that can cause sensitivity issues"
         },
         "hazards-sound-none": {
             "compact": "No sound hazards",
@@ -248,7 +248,7 @@ var en_us = {
         },
         "hazards-unknown": {
             "compact": "The presence of hazards is unknown",
-            "descriptive": "The presents of hazards is unknown"
+            "descriptive": "The presence of hazards is unknown"
         }
     },
     "accessibility-summary": {
@@ -256,6 +256,10 @@ var en_us = {
         "accessibility-summary-no-metadata": {
             "compact": "No information is available",
             "descriptive": "No information is available"
+        },
+        "accessibility-summary-publisher-contact": {
+            "compact": "For more information about the accessibility of this product, please contact the publisher: ",
+            "descriptive": "For more information about the accessibility of this product, please contact the publisher: "
         }
     },
     "legal-considerations": {
@@ -336,8 +340,8 @@ var en_us = {
             "descriptive": "Ultra high contrast between text and background"
         },
         "additional-accessibility-information-visible-page-numbering": {
-            "compact": "Visible page numbering ",
-            "descriptive": "Visible page numbering "
+            "compact": "Visible page numbering",
+            "descriptive": "Visible page numbering"
         },
         "additional-accessibility-information-without-background-sounds": {
             "compact": "Without background sounds",
