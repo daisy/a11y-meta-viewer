@@ -859,39 +859,39 @@ var metaDisplayProcessor = (function() {
 		
 			var hazards = [];
 			
-			if (flashing_hazard) {
+			if (flashing_hazard && hazards.push(_vocab['hazards'].containsKey('hazards-flashing'))) {
 				hazards.push(_vocab['hazards']['hazards-flashing'][_mode]);
 			}
 			
-			if (motion_simulation_hazard) {
+			if (motion_simulation_hazard && hazards.push(_vocab['hazards'].containsKey('hazards-motion'))) {
 				hazards.push(_vocab['hazards']['hazards-motion'][_mode]);
 			}
 			
-			if (sound_hazard) {
+			if (sound_hazard && hazards.push(_vocab['hazards'].containsKey('hazards-sound'))) {
 				hazards.push(_vocab['hazards']['hazards-sound'][_mode]);
 			}
 			
-			if (unknown_flashing_hazard) {
+			if (unknown_flashing_hazard && hazards.push(_vocab['hazards'].containsKey('hazards-flashing-unknown'))) {
 				hazards.push(_vocab['hazards']['hazards-flashing-unknown'][_mode]);
 			}
 			
-			if (unknown_motion_hazard) {
+			if (unknown_motion_hazard && hazards.push(_vocab['hazards'].containsKey('hazards-motion-unknown'))) {
 				hazards.push(_vocab['hazards']['hazards-motion-unknown'][_mode]);
 			}
 			
-			if (unknown_sound_hazard) {
+			if (unknown_sound_hazard && hazards.push(_vocab['hazards'].containsKey('hazards-sound-unknown'))) {
 				hazards.push(_vocab['hazards']['hazards-sound-unknown'][_mode]);
 			}
 			
-			if (no_flashing_hazard) {
+			if (no_flashing_hazard && hazards.push(_vocab['hazards'].containsKey('hazards-flashing-none'))) {
 				hazards.push(_vocab['hazards']['hazards-flashing-none'][_mode]);
 			}
 			
-			if (no_motion_hazard) {
+			if (no_motion_hazard && hazards.push(_vocab['hazards'].containsKey('hazards-motion-none'))) {
 				hazards.push(_vocab['hazards']['hazards-motion-none'][_mode]);
 			}
 			
-			if (no_sound_hazard) {
+			if (no_sound_hazard && hazards.push(_vocab['hazards'].containsKey('hazards-sound-none'))) {
 				hazards.push(_vocab['hazards']['hazards-sound-none'][_mode]);
 			}
 			
