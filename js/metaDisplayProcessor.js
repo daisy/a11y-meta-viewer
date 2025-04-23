@@ -859,39 +859,39 @@ var metaDisplayProcessor = (function() {
 		
 			var hazards = [];
 			
-			if (flashing_hazard && hazards.push(_vocab['hazards'].containsKey('hazards-flashing'))) {
+			if (flashing_hazard && hazards.push(_vocab['hazards'].hasOwnProperty('hazards-flashing'))) {
 				hazards.push(_vocab['hazards']['hazards-flashing'][_mode]);
 			}
 			
-			if (motion_simulation_hazard && hazards.push(_vocab['hazards'].containsKey('hazards-motion'))) {
+			if (motion_simulation_hazard && hazards.push(_vocab['hazards'].hasOwnProperty('hazards-motion'))) {
 				hazards.push(_vocab['hazards']['hazards-motion'][_mode]);
 			}
 			
-			if (sound_hazard && hazards.push(_vocab['hazards'].containsKey('hazards-sound'))) {
+			if (sound_hazard && hazards.push(_vocab['hazards'].hasOwnProperty('hazards-sound'))) {
 				hazards.push(_vocab['hazards']['hazards-sound'][_mode]);
 			}
 			
-			if (unknown_flashing_hazard && hazards.push(_vocab['hazards'].containsKey('hazards-flashing-unknown'))) {
+			if (unknown_flashing_hazard && hazards.push(_vocab['hazards'].hasOwnProperty('hazards-flashing-unknown'))) {
 				hazards.push(_vocab['hazards']['hazards-flashing-unknown'][_mode]);
 			}
 			
-			if (unknown_motion_hazard && hazards.push(_vocab['hazards'].containsKey('hazards-motion-unknown'))) {
+			if (unknown_motion_hazard && hazards.push(_vocab['hazards'].hasOwnProperty('hazards-motion-unknown'))) {
 				hazards.push(_vocab['hazards']['hazards-motion-unknown'][_mode]);
 			}
 			
-			if (unknown_sound_hazard && hazards.push(_vocab['hazards'].containsKey('hazards-sound-unknown'))) {
+			if (unknown_sound_hazard && hazards.push(_vocab['hazards'].hasOwnProperty('hazards-sound-unknown'))) {
 				hazards.push(_vocab['hazards']['hazards-sound-unknown'][_mode]);
 			}
 			
-			if (no_flashing_hazard && hazards.push(_vocab['hazards'].containsKey('hazards-flashing-none'))) {
+			if (no_flashing_hazard && hazards.push(_vocab['hazards'].hasOwnProperty('hazards-flashing-none'))) {
 				hazards.push(_vocab['hazards']['hazards-flashing-none'][_mode]);
 			}
 			
-			if (no_motion_hazard && hazards.push(_vocab['hazards'].containsKey('hazards-motion-none'))) {
+			if (no_motion_hazard && hazards.push(_vocab['hazards'].hasOwnProperty('hazards-motion-none'))) {
 				hazards.push(_vocab['hazards']['hazards-motion-none'][_mode]);
 			}
 			
-			if (no_sound_hazard && hazards.push(_vocab['hazards'].containsKey('hazards-sound-none'))) {
+			if (no_sound_hazard && hazards.push(_vocab['hazards'].hasOwnProperty('hazards-sound-none'))) {
 				hazards.push(_vocab['hazards']['hazards-sound-none'][_mode]);
 			}
 			
