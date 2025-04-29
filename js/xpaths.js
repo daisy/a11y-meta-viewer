@@ -394,8 +394,8 @@ var xpath = {
 			onix: '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "25"]'
 		},
 		page_break_markers: {
-			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="pageBreakMarkers"]',
-			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessibilityFeature" and normalize-space(@content)="pageBreakMarkers"]',
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and (normalize-space()="pageBreakMarkers" or normalize-space()="printPageNumbers")]',
+			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessibilityFeature" and (normalize-space(@content)="pageBreakMarkers" or normalize-space(@content)="printPageNumbers")]',
 			onix: '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail[onix:ProductFormDetail = "E205"]'
 		},
 		ruby_annotations: {
