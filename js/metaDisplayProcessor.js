@@ -1014,8 +1014,8 @@ var metaDisplayProcessor = (function() {
 		
 		if (accessibility_addendum) {
 			var p = document.createElement('p');
-				P.appendChild(document.createTextNode(accessibility_addendum));
-				P.lang = language_accessibility_addendum;
+				p.appendChild(document.createTextNode(accessibility_addendum));
+				p.lang = language_accessibility_addendum;
 			result.displayHTML.appendChild(p);
 		}
 		
