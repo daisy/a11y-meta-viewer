@@ -152,8 +152,8 @@
 				  get: (searchParams, prop) => searchParams.get(prop),
 				});
 				
-				if (params['meta-tags']) {
-					document.getElementById('input_record').value = params['meta-tags'];
+				if (params.record) {
+					document.getElementById('input_record').value = params.record;
 					processRecord();
 				}
 			</script>
