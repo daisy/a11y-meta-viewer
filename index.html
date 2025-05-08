@@ -145,6 +145,18 @@
 			
 			<script src="js/metaViewer.js"></script>
 			<script src="js/metaDisplayProcessor.js"></script>
+			<script>
+				/* process a record submitted to the page */
+				
+				const params = new Proxy(new URLSearchParams(window.location.search), {
+				  get: (searchParams, prop) => searchParams.get(prop),
+				});
+				
+				if (params['meta-tags']) {
+					document.getElementById('input_record').value = params['meta-tags'];
+					processRecord();
+				}
+			</script>
 		</main>
 		<footer>
 			<div class="footer-lists">
