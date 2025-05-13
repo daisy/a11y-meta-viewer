@@ -145,7 +145,7 @@ var xpath = {
 			onix: '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "93"]/onix:ProductFormFeatureDescription'
 		},
 		certification_date: {
-			epub3: '/opf:package/opf:metadata/opf:meta[@property="dcterms:date" and substring(@refines,2)=//opf:*[(@rel="dcterms:conformsTo" and contains(@href, "http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-")) or (@property="dcterms:conformsTo" and contains(normalize-space(), "http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-")) or (@property="dcterms:conformsTo" and contains(normalize-space(), "EPUB Accessibility 1.1 - WCAG 2."))]/@id]',
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="dcterms:date" and (not(@refines) or substring(@refines,2)=//opf:meta[@property="a11y:certifiedBy" and substring(@refines,2)=//opf:*[(@rel="dcterms:conformsTo" and contains(@href, "http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-")) or (@property="dcterms:conformsTo" and contains(normalize-space(), "http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-")) or (@property="dcterms:conformsTo" and contains(normalize-space(), "EPUB Accessibility 1.1 - WCAG 2."))]/@id]/@id)]',
 			epub2: '/opf:package/opf:metadata/opf:meta[@name="dcterms:date"]/@content',
 			onix: '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "91"]/onix:ProductFormFeatureDescription'
 		},
