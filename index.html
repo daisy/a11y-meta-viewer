@@ -156,6 +156,11 @@
 					document.getElementById('input_record').value = params.record;
 					processRecord();
 				}
+				
+				else if (window.location.hash && window.location.hash.startsWith('#record-')) {
+					// github crashes on long query strings so passing in record via fragment for now
+					document.getElementById('input_record').value = decodeURI(window.location.hash.substring(8));
+				}
 			</script>
 		</main>
 		<footer>
