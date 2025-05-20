@@ -185,58 +185,58 @@ var xpath = {
 			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessMode" and normalize-space(@content)="chartOnVisual"]'
 		},
 		charts_diagrams_as_non_graphical_data: {
-			onix: '/ONIXMessage/Product/DescriptiveDetail/ProductFormFeature[ProductFormFeatureType = "09" and ProductFormFeatureValue = "16"]'
+			onix: '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "16"]'
 		},
 		full_alternative_textual_descriptions: {
 			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="longDescriptions"]',
 			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessibilityFeature" and normalize-space(@content)="longDescriptions"]',
-			onix: '/ONIXMessage/Product/DescriptiveDetail/ProductFormFeature[ProductFormFeatureType = "09" and ProductFormFeatureValue = "15"]'
+			onix: '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "15"]'
 		},
 		short_textual_alternative_images: {
-			onix: '/ONIXMessage/Product/DescriptiveDetail/ProductFormFeature[ProductFormFeatureType = "09" and ProductFormFeatureValue = "14"]'
+			onix: '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "14"]'
 		},
 		contains_chemical_formula: {
 			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessMode" and normalize-space()="chemOnVisual"]',
 			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessMode" and normalize-space(@content)="chemOnVisual"]'
 		},
 		chemical_formula_as_latex: {
-			epub3: '/package/metadata/meta[@property="schema:accessibilityFeature" and normalize-space()="latex-chemistry"]',
-			epub2: '/package/metadata/meta[@name="schema:accessibilityFeature" and normalize-space(@content)="latex-chemistry"]'
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="latex-chemistry"]',
+			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessibilityFeature" and normalize-space(@content)="latex-chemistry"]'
 		},
 		chemical_formula_as_mathml: {
 			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="MathML-chemistry"]',
 			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessibilityFeature" and normalize-space(@content)="MathML-chemistry"]',
-			onix: '/ONIXMessage/Product/DescriptiveDetail/ProductFormFeature[ProductFormFeatureType = "09" and ProductFormFeatureValue = "34"]'
+			onix: '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "34"]'
 		},
 		contains_math_formula: {
 			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="describedMath"]',
 			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessibilityFeature" and normalize-space(@content)="describedMath"]',
-			onix: '/ONIXMessage/Product/DescriptiveDetail/DescriptiveDetail[PrimaryContentType = "48" or ContentType = "48"]'
+			onix: '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:DescriptiveDetail[onix:PrimaryContentType = "48" or onix:ContentType = "48"]'
 		},
 		math_formula_as_latex: {
 			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="latex"]',
 			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessibilityFeature" and normalize-space(@content)="latex"]',
-			onix: '/ONIXMessage/Product/DescriptiveDetail/ProductFormFeature[ProductFormFeatureType = "09" and ProductFormFeatureValue = "35"]'
+			onix: '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "35"]'
 		},
 		math_formula_as_mathml: {
 			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="MathML"]',
 			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessibilityFeature" and normalize-space(@content)="MathML"]',
-			onix: '/ONIXMessage/Product/DescriptiveDetail/ProductFormFeature[ProductFormFeatureType = "09" and ProductFormFeatureValue = "17"]'
+			onix: '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "17"]'
 		},
 		closed_captions: {
-			epub3: '/package/metadata/meta[@property="schema:accessibilityFeature" and normalize-space()="closedCaptions"]',
-			epub2: '/package/metadata/meta[@name="schema:accessibilityFeature" and normalize-space(@content)="closedCaptions"]',
-			onix: '/ONIXMessage/Product/DescriptiveDetail[ProductFormDetail = "V210"]'
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="closedCaptions"]',
+			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessibilityFeature" and normalize-space(@content)="closedCaptions"]',
+			onix: '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail[onix:ProductFormDetail = "V210"]'
 		},
 		open_captions: {
-			epub3: '/package/metadata/meta[@property="schema:accessibilityFeature" and normalize-space()="openCaptions"]',
-			epub2: '/package/metadata/meta[@name="schema:accessibilityFeature" and normalize-space(@content)="openCaptions"]',
-			onix: '/ONIXMessage/Product/DescriptiveDetail[ProductFormDetail = "V211"]'
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="openCaptions"]',
+			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessibilityFeature" and normalize-space(@content)="openCaptions"]',
+			onix: '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail[onix:ProductFormDetail = "V211"]'
 		},
 		transcript: {
-			epub3: '/package/metadata/meta[@property="schema:accessibilityFeature" and normalize-space()="transcript"]',
-			epub2: '/package/metadata/meta[@name="schema:accessibilityFeature" and normalize-space(@content)="transcript"]',
-			onix: '/ONIXMessage/Product/DescriptiveDetail[ProductFormDetail = "V212"]'
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="transcript"]',
+			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessibilityFeature" and normalize-space(@content)="transcript"]',
+			onix: '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail[onix:ProductFormDetail = "V212"]'
 		}
 	},
 	hazards: {
