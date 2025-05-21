@@ -1327,7 +1327,7 @@ var metaDisplayProcessor = (function() {
 	/* language-specific punctuation */
 	
 	function getPunctuation() {
-		switch (lang) {
+		switch (_lang) {
 			default:
 				return document.createTextNode('.');
 		}

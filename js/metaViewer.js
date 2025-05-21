@@ -52,7 +52,7 @@ function reprocessRecord() {
 
 function showDisplayMetadata(suppressNoInfo) {
 
-	// reest the result pane
+	// reset the result pane
 	var result_field = document.getElementById('result-body');
 		result_field.textContent = '';
 	
