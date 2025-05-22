@@ -77,25 +77,16 @@ var xpath = {
 	},
 	conformance: {
 		epub10a: {
-			epub3: '/opf:package/opf:metadata/opf:meta[@property="dcterms:conformsTo" and normalize-space() = "http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-a"]',
+			epub3: '/opf:package/opf:metadata/opf:*[(@rel="dcterms:conformsTo" and @href="http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-a") or (@property="dcterms:conformsTo" and normalize-space() = "http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-a")]',
 			epub2: '/opf:package/opf:metadata/opf:meta[@name="dcterms:conformsTo" and normalize-space(@content)="http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-a"]'
 		},
-		epub10a_link: {
-			epub3: '/opf:package/opf:metadata/opf:link[@rel="dcterms:conformsTo" and @href="http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-a"]/@href'
-		},
 		epub10aa: {
-			epub3: '/opf:package/opf:metadata/opf:meta[@property="dcterms:conformsTo" and normalize-space() = "http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-aa"]',
+			epub3: '/opf:package/opf:metadata/opf:*[(@rel="dcterms:conformsTo" and @href="http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-aa") or (@property="dcterms:conformsTo" and normalize-space() = "http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-aa")]',
 			epub2: '/opf:package/opf:metadata/opf:meta[@name="dcterms:conformsTo" and normalize-space(@content)="http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-aa"]'
 		},
-		epub10aa_link: {
-			epub3: '/opf:package/opf:metadata/opf:link[@rel="dcterms:conformsTo" and @href="http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-aa"]/@href'
-		},
 		epub10aaa: {
-			epub3: '/opf:package/opf:metadata/opf:meta[@property="dcterms:conformsTo" and normalize-space() = "http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-aaa"]',
+			epub3: '/opf:package/opf:metadata/opf:*[(@rel="dcterms:conformsTo" and @href="http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-aaa") or (@property="dcterms:conformsTo" and normalize-space() = "http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-aaa")]',
 			epub2: '/opf:package/opf:metadata/opf:meta[@name="dcterms:conformsTo" and normalize-space(@content)="http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-aaa"]'
-		},
-		epub10aaa_link: {
-			epub3: '/opf:package/opf:metadata/opf:link[@rel="dcterms:conformsTo" and @href="http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-aaa"]/@href'
 		},
 		conformance: {
 			epub3: '/opf:package/opf:metadata/opf:meta[@property="dcterms:conformsTo" and contains(normalize-space(), "EPUB Accessibility 1.1 - WCAG 2.")]',
