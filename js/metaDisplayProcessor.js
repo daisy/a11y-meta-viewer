@@ -519,9 +519,24 @@ var metaDisplayProcessor = (function() {
 		// using contains() instead to match most of it
 		
 		var conformance = _record.evaluate(xpath.conformance.conformance[_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+		
 		var epub10_wcag20a = _record.evaluate(xpath.conformance.epub10a[_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+		
+		if (!epub10_wcag20a && _format == 'epub3') {
+			epub10_wcag20a = _record.evaluate(xpath.conformance.epub10a_link[_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+		}
+		
 		var epub10_wcag20aa = _record.evaluate(xpath.conformance.epub10aa[_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+		
+		if (!epub10_wcag20aa && _format == 'epub3') {
+			epub10_wcag20aa = _record.evaluate(xpath.conformance.epub10aa_link[_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+		}
+		
 		var epub10_wcag20aaa = _record.evaluate(xpath.conformance.epub10aaa[_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+		
+		if (!epub10_wcag20aaa && _format == 'epub3') {
+			epub10_wcag20aaa = _record.evaluate(xpath.conformance.epub10aaa_link[_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+		}
 		
 		if (conformance) {
 		
