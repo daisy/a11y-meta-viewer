@@ -158,6 +158,14 @@ div.grid-body ul {
 	padding-left: 2rem;
 }
 
+
+/* json pre display */
+
+pre {
+	font-size: 80%;
+	white-space: pre-wrap;
+}
+
 /* page headers and footers */
 
 header {
@@ -275,7 +283,7 @@ div.options {
 
 fieldset {
 	display: inline-block;
-	margin-right: 5rem;
+	margin-right: 1rem;
 	border: 0;
 	font-size: 90%;
 }

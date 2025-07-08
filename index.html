@@ -70,6 +70,14 @@
 						</fieldset>
 						
 						<fieldset>
+							<legend>Format:</legend>
+							<select id="format" onchange="reprocessRecord()">
+								<option value="html">HTML</option>
+								<option value="json">JSON</option>
+							</select>
+						</fieldset>
+						
+						<fieldset>
 							<legend>Fields with no information available:</legend>
 							<select id="no-info" onchange="reprocessRecord()">
 								<option value="show">Show</option>

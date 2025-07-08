@@ -27,7 +27,7 @@ function processRecord() {
 		return;
 	}
 	
-	showDisplayMetadata(false);
+	showDisplayMetadata(false, 'html');
 }
 
 function reprocessRecord() {
@@ -37,27 +37,38 @@ function reprocessRecord() {
 	var lang = document.getElementById('lang').value;
 	
 	var mode = document.getElementById('mode').value;
-	
+
+	var format = document.getElementById('format').value;
+
 	if (!metaDisplayProcessor.reinitialize({
 			lang: lang,
-			mode: mode
+			mode: mode,
+			format: format
 		})) {
 		return;
 	}
 	
 	var suppressNoInfo = document.getElementById('no-info').value == 'hide' ? true : false;
 	
-	showDisplayMetadata(suppressNoInfo);
+	showDisplayMetadata(suppressNoInfo, format);
 }
 
-function showDisplayMetadata(suppressNoInfo) {
+function showDisplayMetadata(suppressNoInfo, output_format) {
 
 	// reset the result pane
 	var result_field = document.getElementById('result-body');
 		result_field.textContent = '';
 	
-	var result = document.createElement('div');
+	var result;
+	
+	if (output_format === 'html') {
+		result = document.createElement('div');
 		result.classList.add('grid');
+	}
+	
+	else {
+		result = '{';
+	}
 	
 	// 3.1 Ways of reading
 	
@@ -65,12 +76,16 @@ function showDisplayMetadata(suppressNoInfo) {
 	
 	if (ways_result.hasMetadata || !suppressNoInfo) {
 	
-		result.appendChild(makeHeader('ways-of-reading'));
+		var id = 'ways-of-reading';
 		
-		// add grid styling to returned div
-		ways_result.displayHTML.classList.add('grid-body');
-
-		result.appendChild(ways_result.displayHTML);
+		var hd = makeHeader(id, output_format);
+		
+		if (output_format === 'html') {
+			formatHTML(result, hd, ways_result.display);
+		}
+		else {
+			result += formatJSON(id, hd, ways_result.display);
+		}
 	}
 	
 	// 3.2 Conformance
@@ -78,13 +93,16 @@ function showDisplayMetadata(suppressNoInfo) {
 	var conf_result = metaDisplayProcessor.processConformance();
 	
 	if (conf_result.hasMetadata || !suppressNoInfo) {
-	
-		result.appendChild(makeHeader('conformance'));
+		var id = 'conformance';
 		
-		// add grid styling to returned div
-		conf_result.displayHTML.classList.add('grid-body');
-
-		result.appendChild(conf_result.displayHTML);
+		var hd = makeHeader(id, output_format);
+		
+		if (output_format === 'html') {
+			formatHTML(result, hd, conf_result.display);
+		}
+		else {
+			result += "," + formatJSON(id, hd, conf_result.display);
+		}
 	}
 	
 	// 3.3 Navigation
@@ -93,12 +111,16 @@ function showDisplayMetadata(suppressNoInfo) {
 	
 	if (nav_result.hasMetadata || !suppressNoInfo) {
 	
-		result.appendChild(makeHeader('navigation'));
+		var id = 'navigation';
 		
-		// add grid styling to returned div
-		nav_result.displayHTML.classList.add('grid-body');
-
-		result.appendChild(nav_result.displayHTML);
+		var hd = makeHeader(id, output_format);
+		
+		if (output_format === 'html') {
+			formatHTML(result, hd, nav_result.display);
+		}
+		else {
+			result += "," + formatJSON(id,hd, nav_result.display);
+		}
 	}
 	
 	// 3.4 Rich content
@@ -107,12 +129,16 @@ function showDisplayMetadata(suppressNoInfo) {
 	
 	if (rc_result.hasMetadata || !suppressNoInfo) {
 	
-		result.appendChild(makeHeader('rich-content'));
+		var id = 'rich-content';
 		
-		// add grid styling to returned div
-		rc_result.displayHTML.classList.add('grid-body');
-
-		result.appendChild(rc_result.displayHTML);
+		var hd = makeHeader(id, output_format);
+		
+		if (output_format === 'html') {
+			formatHTML(result, hd, rc_result.display);
+		}
+		else {
+			result += "," + formatJSON(id, hd, rc_result.display);
+		}
 	}
 	
 	// 3.5 Hazards
@@ -121,12 +147,16 @@ function showDisplayMetadata(suppressNoInfo) {
 	
 	if (hazard_result.hasMetadata || !suppressNoInfo) {
 	
-		result.appendChild(makeHeader('hazards'));
+		var id = 'hazards';
 		
-		// add grid styling to returned div
-		hazard_result.displayHTML.classList.add('grid-body');
-
-		result.appendChild(hazard_result.displayHTML);
+		var hd = makeHeader(id, output_format);
+		
+		if (output_format === 'html') {
+			formatHTML(result, hd, hazard_result.display);
+		}
+		else {
+			result += "," + formatJSON(id, hd, hazard_result.display);
+		}
 	}
 	
 	// 3.6 Accessibility summary
@@ -135,12 +165,16 @@ function showDisplayMetadata(suppressNoInfo) {
 	
 	if (sum_result.hasMetadata || !suppressNoInfo) {
 	
-		result.appendChild(makeHeader('accessibility-summary'));
+		var id = 'accessibility-summary';
 		
-		// add grid styling to returned div
-		sum_result.displayHTML.classList.add('grid-body');
-
-		result.appendChild(sum_result.displayHTML);
+		var hd = makeHeader(id, output_format);
+		
+		if (output_format === 'html') {
+			formatHTML(result, hd, sum_result.display);
+		}
+		else {
+			result += "," + formatJSON(id, hd, sum_result.display);
+		}
 	}
 	
 	// 3.7 Legal considerations
@@ -149,12 +183,16 @@ function showDisplayMetadata(suppressNoInfo) {
 	
 	if (legal_result.hasMetadata || !suppressNoInfo) {
 	
-		result.appendChild(makeHeader('legal-considerations'));
+		var id = 'legal-considerations';
 		
-		// add grid styling to returned div
-		legal_result.displayHTML.classList.add('grid-body');
-
-		result.appendChild(legal_result.displayHTML);
+		var hd = makeHeader(id, output_format);
+		
+		if (output_format === 'html') {
+			formatHTML(result, hd, legal_result.display);
+		}
+		else {
+			result += "," + formatJSON(id, hd, legal_result.display);
+		}
 	}
 	
 	// 3.8 Additional accessibility information
@@ -164,17 +202,34 @@ function showDisplayMetadata(suppressNoInfo) {
 	// additional information is never shown if there is nothing to display - it doesn't have a no information available string
 	if (aai_result.hasMetadata) {
 	
-		result.appendChild(makeHeader('additional-accessibility-information'));
+		var id = 'additional-accessibility-information';
 		
-		// add grid styling to returned div
-		aai_result.displayHTML.classList.add('grid-body');
-
-		result.appendChild(aai_result.displayHTML);
+		var hd = makeHeader(id, output_format);
+		
+		if (output_format === 'html') {
+			formatHTML(result, hd, aai_result.display);
+		}
+		else {
+			result += "," + formatJSON(id, hd, aai_result.display);
+		}
 	}
 	
 	
 	if (result) {
-		result_field.appendChild(result);
+		if (output_format === 'html') {
+			result_field.appendChild(result);
+		}
+		else {
+			var warning = document.createElement('p');
+			var bold = document.createElement('strong');
+				bold.appendChild(document.createTextNode('CAUTION: The following JSON output is experimental and subject to change at any time.'));
+			warning.appendChild(bold);
+			result_field.appendChild(warning);
+			
+			var pre = document.createElement('pre');
+				pre.innerHTML = result + '\n}';
+			result_field.appendChild(pre);
+		}
 		result_dialog.showModal();
 	}
 }
@@ -183,23 +238,42 @@ function showDisplayMetadata(suppressNoInfo) {
 
 /* common header and explainer dialog */
 
-function makeHeader(id, expl_id) {
+function makeHeader(id, format) {
 
-	var hd_block = document.createElement('div');
-		hd_block.classList.add('grid-hd');
-	
 	var hd_str = metaDisplayProcessor.getHeader(id, '');
 	
-	var hd = document.createElement('h3');
-		hd.appendChild(document.createTextNode(hd_str));
-	hd_block.appendChild(hd);
-	
-	if (expl_id) {
-		hd_block.appendChild(writeExplainerLink(expl_id));
+	if (format === 'json') {
+		return JSON.stringify(hd_str);
 	}
 	
-	return hd_block;
+	else {
+		var hd_block = document.createElement('div');
+			hd_block.classList.add('grid-hd');
+		
+		var hd = document.createElement('h3');
+			hd.appendChild(document.createTextNode(hd_str));
+		hd_block.appendChild(hd);
+		
+		// if (expl_id) {
+		// 	hd_block.appendChild(writeExplainerLink(expl_id));
+		// }
+		
+		return hd_block;
+	}
 }
+
+
+function formatHTML(result, hd, display) {
+	result.appendChild(hd);
+	display.classList.add('grid-body');
+	result.appendChild(display);
+}
+
+
+function formatJSON(id, hd, statements) {
+	return '\n\t"' + id + '": {\n\t\t"title": ' + hd + ',\n\t\t"statements": ' + statements + '\n\t}';
+}
+
 
 function writeExplainerLink(id) {
 	var a = document.createElement('a');
