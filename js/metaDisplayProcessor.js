@@ -443,6 +443,8 @@ var metaDisplayProcessor = (function() {
 		// 3.2.2 Variables setup
 		
 		var conf_info = _isONIX ? processONIXConformance() : processEPUBConformance();
+		
+			conf_info.conformance = _vocab['conformance']['conformance-details-claim'][_mode];
 			
 			conf_info.certifier = _record.evaluate(xpath.conformance.certifier[_input_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
 			
@@ -511,60 +513,41 @@ var metaDisplayProcessor = (function() {
 			
 			if (conf_info.certifier) {
 				
-				var statement = _vocab.conformance['conformance-certifier'][_mode] + conf_info.certifier;
-				
+				var statement = _vocab.conformance['conformance-certifier'][_mode].replace('{certifier}', conf_info.certifier) + _punctuation;
+					
 				if (_output_format === 'html') {
 					var cert_p = document.createElement('p');
-						cert_p.appendChild(document.createTextNode(statement + _punctuation));
+						cert_p.appendChild(document.createTextNode(statement));
 					result.display.appendChild(cert_p);
 				}
 				
 				else {
-					result.display += jsonFormat({value: statement, comma: false, tabs: 3, punctuate: true});
+					result.display += jsonFormat({value: statement, comma: false, tabs: 3, punctuate: false});
 				}
 			}
 			
 			if (conf_info.certifier_credentials) {
 				
 				var statement = _vocab.conformance['conformance-certifier-credentials'][_mode];
-				
-				var credential;
-				
-				if (_output_format === 'html') {
-					 credential = document.createElement('p')
-					 credential.appendChild(document.createTextNode(statement));
-				}
-				else {
-					credential = statement;
-				}
+				var credential = document.createElement('p');
 				
 				if (conf_info.certifier_credentials.match('^http') && _output_format !== 'json') {
-					var cert_link = document.createElement('a');
-						cert_link.href = conf_info.certifier_credentials;
-						
-						if (conf_info.certifier_credentials == 'https://bornaccessible.org/certification/gca-credential/') {
-							var gca_img = document.createElement('img');
-								gca_img.src = 'https://daisy.github.io/a11y-meta-viewer/graphics/GCA.png';
-								gca_img.alt = 'Benetech Global Certified Accessible';
-								gca_img.height = 80;
-							cert_link.appendChild(gca_img);
-						}
-						
-						else {
-							cert_link.appendChild(document.createTextNode(conf_info.certifier_credentials));
-						}
 					
-					credential.appendChild(cert_link);
+					var display = conf_info.certifier_credentials;
+					
+					if (conf_info.certifier_credentials == 'https://bornaccessible.org/certification/gca-credential/') {
+						display = '<img src="https://daisy.github.io/a11y-meta-viewer/graphics/GCA.png" alt="Benetech Global Certified Accessible" height="80"/>';
+					}
+					
+					statement = statement.replace('{certifier_credentials}', '<a href="' + conf_info.certifier_credentials + '">' + display + '</a>' + _punctuation);
+					credential.innerHTML = statement;
 				}
 				
 				else {
-					var cred_info = conf_info.certifier_credentials + _punctuation;
-					if (_output_format === 'html') {
-						credential.appendChild(document.createTextNode(cred_info));
-					}
+					statement = statement.replace('{certifier_credentials}', conf_info.certifier_credentials + _punctuation);
 					
-					else {
-						credential += cred_info;
+					if (_output_format === 'html') {
+						credential.innerHTML = statement;
 					}
 				}
 				
@@ -572,7 +555,7 @@ var metaDisplayProcessor = (function() {
 					result.display.appendChild(credential);
 				}
 				else {
-					result.display += jsonFormat(cred_info, true, 3);
+					result.display += jsonFormat({value: statement, comma: false, tabs: 3, punctuate: false});
 				}
 			}
 			
@@ -582,121 +565,80 @@ var metaDisplayProcessor = (function() {
 				det_conf.setAttribute('open', 'open');
 			}
 			
-			var det_sum, conf_p;
-			var det_hd = _vocab.conformance['conformance-details-title'];
-			var conf_claim = _vocab.conformance['conformance-details-claim'][_mode];
-			var json_claim = conf_claim;
-			
 			if (_output_format === 'html') {
-				det_sum = document.createElement('summary');
-				det_sum.appendChild(document.createTextNode(det_hd));
+				var det_hd = _vocab.conformance['conformance-details-title'];
+				
+				var det_sum = document.createElement('summary');
+					det_sum.appendChild(document.createTextNode(det_hd));
 				
 				det_conf.appendChild(det_sum);
-				
-				conf_p = document.createElement('p');
-				conf_p.appendChild(document.createTextNode(conf_claim));
 			}
 			
 			else {
 				det_conf += '\n\t\t\t"title": ' + JSON.stringify(det_hd) + ',\n\t\t\t"conformance": ';
 			}
 			
+			/* build the conformance claim */
+			var conf_claim = _vocab.conformance['conformance-details-claim'][_mode];
+			
 			/* epub accessibility version */
 			if (conf_info.epub_version === '1.1' || conf_info.epub_accessibility_11) {
-				var statement = _vocab.conformance['conformance-details-epub-accessibility-1-1'][_mode];
-				if (_output_format === 'html') {
-					conf_p.appendChild(document.createTextNode(statement));
-				}
-				else {
-					json_claim += statement;
-				}
+				conf_claim = conf_claim.replace('{epub_accessibility}', _vocab.conformance['conformance-details-epub-accessibility-1-1'][_mode]);
 			}
 			
 			else if (conf_info.epub_version === '1.0' || conf_info.epub_accessibility_10) {
-				var statement = _vocab.conformance['conformance-details-epub-accessibility-1-0'][_mode];
-				if (_output_format === 'html') {
-					conf_p.appendChild(document.createTextNode(statement));
-				}
-				else {
-					json_claim += statement;
-				}
+				conf_claim = conf_claim.replace('{epub_accessibility}', _vocab.conformance['conformance-details-epub-accessibility-1-0'][_mode]);
 			}
 			
 			/* wcag version */
 			if (conf_info.wcag_version === '2.2' || conf_info.wcag_22) {
-				var statement = _vocab.conformance['conformance-details-wcag-2-2'][_mode];
-				if (_output_format === 'html') {
-					conf_p.appendChild(document.createTextNode(statement));
-				}
-				else {
-					json_claim += statement;
-				}
+				conf_claim = conf_claim.replace('{wcag_version}', _vocab.conformance['conformance-details-wcag-2-2'][_mode]);
 			}
 			
 			else if (conf_info.wcag_version === '2.1' || conf_info.wcag_21) {
-				var statement = _vocab.conformance['conformance-details-wcag-2-1'][_mode];
-				if (_output_format === 'html') {
-					conf_p.appendChild(document.createTextNode(statement));
-				}
-				else {
-					json_claim += statement;
-				}
+				conf_claim = conf_claim.replace('{wcag_version}', _vocab.conformance['conformance-details-wcag-2-1'][_mode]);
 			}
 			
 			else if (conf_info.wcag_version === '2.0' || conf_info.wcag_20) {
-				var statement = _vocab.conformance['conformance-details-wcag-2-0'][_mode];
-				if (_output_format === 'html') {
-					conf_p.appendChild(document.createTextNode(statement));
-				}
-				else {
-					json_claim += statement;
-				}
+				conf_claim = conf_claim.replace('{wcag_version}', _vocab.conformance['conformance-details-wcag-2-0'][_mode]);
 			}
 			
 			/* wcag level */
 			if (conf_info.wcag_level === 'AAA' || conf_info.level_aaa) {
-				var statement = _vocab.conformance['conformance-details-level-aaa'][_mode];
-				if (_output_format === 'html') {
-					conf_p.appendChild(document.createTextNode(statement));
-				}
-				else {
-					json_claim += statement;
-				}
+				conf_claim = conf_claim.replace('{wcag_level}', _vocab.conformance['conformance-details-level-aaa'][_mode]);
 			}
 			
 			else if (conf_info.wcag_level === 'AA' || conf_info.level_aa) {
-				var statement = _vocab.conformance['conformance-details-level-aa'][_mode];
-				if (_output_format === 'html') {
-					conf_p.appendChild(document.createTextNode(statement));
-				}
-				else {
-					json_claim += statement;
-				}
+				conf_claim = conf_claim.replace('{wcag_level}', _vocab.conformance['conformance-details-level-aa'][_mode]);
 			}
 			
 			else if (conf_info.wcag_level === 'A' || conf_info.levela) {
-				var statement = _vocab.conformance['conformance-details-level-a'][_mode];
-				if (_output_format === 'html') {
-					conf_p.appendChild(document.createTextNode(statement));
-				}
-				else {
-					json_claim += statement;
-				}
+				conf_claim = conf_claim.replace('{wcag_level}', _vocab.conformance['conformance-details-level-a'][_mode]);
 			}
 			
+			conf_claim += _punctuation;
+			
 			if (_output_format === 'html') {
-				// add punctuation - not in algorithm
-				conf_p.appendChild(document.createTextNode(_punctuation));
+				var conf_p = document.createElement('p');
+					conf_p.appendChild(document.createTextNode(conf_claim));
 				det_conf.appendChild(conf_p);
 			}
 			
 			else {
-				det_conf += JSON.stringify(json_claim + _punctuation);
+				det_conf += JSON.stringify(conf_claim);
 			}
 			
 			if (conf_info.certification_date) {
 			
-				var statement = _vocab.conformance['conformance-details-certification-info'][_mode] + conf_info.certification_date + _punctuation;
+				var localized_date = conf_info.certification_date;
+				
+				if (conf_info.certification_date.match(/^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}:\d{2}.*?)?/)) {
+					var report_date = new Date(conf_info.certification_date);
+					const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+					localized_date = report_date.toLocaleDateString(_lang, options);
+				}
+				
+				var statement = _vocab.conformance['conformance-details-certification-info'][_mode].replace('{certification_date}', localized_date) + _punctuation;
 				
 				if (_output_format === 'html') {
 					var cert_p = document.createElement('p');
@@ -714,15 +656,11 @@ var metaDisplayProcessor = (function() {
 				var statement = _vocab.conformance['conformance-details-certifier-report'][_mode];
 				
 				if (_output_format === 'html') {
+					statement = statement.replace(/\[([^\]]+)\]/, '<a href="' + conf_info.certifier_report + '">$1</a>') + _punctuation;
+					
 					var rep_p = document.createElement('p');
+						rep_p.innerHTML = statement;
 					
-					var rep_link = document.createElement('a');
-						rep_link.href = conf_info.certifier_report;
-						rep_link.appendChild(document.createTextNode(statement));
-					rep_p.appendChild(rep_link);
-					
-					// add punctuation - not in algorithm
-					rep_p.appendChild(document.createTextNode(_punctuation));
 					det_conf.appendChild(rep_p);
 				}
 				
@@ -1393,6 +1331,9 @@ var metaDisplayProcessor = (function() {
 		
 		var language_of_text = _record.evaluate(xpath.summary.language_of_text[_input_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
 
+		// onix algorithm only
+		var publisher_contact_for_accessibility = _record.evaluate(xpath.summary.publisher_contact_for_accessibility[_input_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+		
 
 		// 3.6.3 Instructions
 		
@@ -1478,6 +1419,25 @@ var metaDisplayProcessor = (function() {
 			}
 			
 			result.hasMetadata = false;
+		}
+		
+		if (publisher_contact_for_accessibility) {
+			var statement = _vocab['accessibility-summary']['publisher_contact_for_accessibility'][_mode] + _punctuation;
+			var contact_email = '<a href="mailto:' + publisher_contact_for_accessibility + '">' + publisher_contact_for_accessibility + '</a>';
+			
+			statement = statement.replace('{publisher_contact_for_accessibility}', contact_email);
+			
+			if (_output_format === 'html') {
+				var p = document.createElement('p');
+					p.innerHTML = statement;
+				sum_result.appendChild(p);
+			}
+			
+			else {
+				result.display += jsonFormat({value: statement, comma: true, tabs: 3, punctuate: true});
+			}
+			
+			result.hasMetadata = true;
 		}
 		
 		if (_output_format === 'html') {

@@ -75,56 +75,56 @@ var en_us = {
             "descriptive": "The publication contains a conformance statement that it meets the EPUB Accessibility and WCAG 2 Level AAA standard"
         },
         "conformance-certifier": {
-            "compact": "The publication was certified by ",
-            "descriptive": "The publication was certified by "
+            "compact": "The publication was certified by {certifier}",
+            "descriptive": "The publication was certified by  {certifier}"
         },
         "conformance-certifier-credentials": {
-            "compact": "The certifier's credential is ",
-            "descriptive": "The certifier's credential is "
+            "compact": "The certifier's credential is {certifier_credentials}",
+            "descriptive": "The certifier's credential is {certifier_credentials}"
         },
         "conformance-details-certification-info": {
-            "compact": "The publication was certified on ",
-            "descriptive": "The publication was certified on "
+            "compact": "The publication was certified on {certification_date}",
+            "descriptive": "The publication was certified on {certification_date}"
         },
         "conformance-details-certifier-report": {
-            "compact": "For more information refer to the certifier's report",
-            "descriptive": "For more information refer to the certifier's report"
+            "compact": "For more information refer to the [certifier's report]",
+            "descriptive": "For more information refer to the [certifier's report]"
         },
         "conformance-details-claim": {
-            "compact": "This publication claims to meet",
-            "descriptive": "This publication claims to meet"
+            "compact": "This publication claims to meet {epub_accessibility} {wcag_version} {wcag_level}",
+            "descriptive": "This publication claims to meet {epub_accessibility} {wcag_version} {wcag_level}"
         },
         "conformance-details-epub-accessibility-1-0": {
-            "compact": " EPUB Accessibility 1.0",
-            "descriptive": " EPUB Accessibility 1.0"
+            "compact": "EPUB Accessibility 1.0",
+            "descriptive": "EPUB Accessibility 1.0"
         },
         "conformance-details-epub-accessibility-1-1": {
-            "compact": " EPUB Accessibility 1.1",
-            "descriptive": " EPUB Accessibility 1.1"
+            "compact": "EPUB Accessibility 1.1",
+            "descriptive": "EPUB Accessibility 1.1"
         },
         "conformance-details-level-a": {
-            "compact": " Level A",
-            "descriptive": " Level A"
+            "compact": "Level A",
+            "descriptive": "Level A"
         },
         "conformance-details-level-aa": {
-            "compact": " Level AA",
-            "descriptive": " Level AA"
+            "compact": "Level AA",
+            "descriptive": "Level AA"
         },
         "conformance-details-level-aaa": {
-            "compact": " Level AAA",
-            "descriptive": " Level AAA"
+            "compact": "Level AAA",
+            "descriptive": "Level AAA"
         },
         "conformance-details-wcag-2-0": {
             "compact": " WCAG 2.0",
-            "descriptive": " Web Content Accessibility Guidelines (WCAG) 2.0"
+            "descriptive": "Web Content Accessibility Guidelines (WCAG) 2.0"
         },
         "conformance-details-wcag-2-1": {
             "compact": " WCAG 2.1",
-            "descriptive": " Web Content Accessibility Guidelines (WCAG) 2.1"
+            "descriptive": "Web Content Accessibility Guidelines (WCAG) 2.1"
         },
         "conformance-details-wcag-2-2": {
             "compact": " WCAG 2.2",
-            "descriptive": " Web Content Accessibility Guidelines (WCAG) 2.2"
+            "descriptive": "Web Content Accessibility Guidelines (WCAG) 2.2"
         },
         "conformance-no": {
             "compact": "No information is available",
@@ -259,8 +259,8 @@ var en_us = {
             "descriptive": "No information is available"
         },
         "accessibility-summary-publisher-contact": {
-            "compact": "For more information about the accessibility of this product, please contact the publisher: ",
-            "descriptive": "For more information about the accessibility of this product, please contact the publisher: "
+            "compact": "For more information about the accessibility of this product, please contact the publisher: {publisher_contact_for_accessibility}",
+            "descriptive": "For more information about the accessibility of this product, please contact the publisher: {publisher_contact_for_accessibility}"
         }
     },
     "legal-considerations": {

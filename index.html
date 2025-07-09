@@ -38,6 +38,8 @@
 		<main>
 			<p>Paste an EPUB package document or ONIX record to begin, or test using a <a href="#" onclick="selectRecord(); return false;">preconfigured file</a>.</p>
 			
+			<p><strong>Note:</strong> Due to incompatible changes in the current revision of the Display Guidelines, the viewer is limited to English until new translations are created.</p>
+			
 			<textarea id="input_record" rows="15" autocomplete="off"></textarea>
 			
 			<div><button onclick="processRecord()">Preview</button></div>
@@ -61,11 +63,11 @@
 							<legend>Language:</legend>
 							<select id="lang" onchange="reprocessRecord()">
 								<option value="en">English</option>
-								<option value="fr-FR">French (France)</option>
+						<!--	<option value="fr-FR">French (France)</option>
 								<option value="de">German</option>
 								<option value="it">Italian</option>
 								<option value="ja">Japanese</option>
-								<option value="es-ES">Spanish (Spain)</option>
+								<option value="es-ES">Spanish (Spain)</option> -->
 							</select>
 						</fieldset>
 						
