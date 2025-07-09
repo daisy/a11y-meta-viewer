@@ -633,7 +633,7 @@ var metaDisplayProcessor = (function() {
 				var localized_date = conf_info.certification_date;
 				
 				if (conf_info.certification_date.match(/^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}:\d{2}.*?)?/)) {
-					var report_date = new Date(conf_info.certification_date);
+					var report_date = new Date(conf_info.certification_date.replace('-','/').replace(/T.+/, ''));
 					const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 					localized_date = report_date.toLocaleDateString(_lang, options);
 				}
