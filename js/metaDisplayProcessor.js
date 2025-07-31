@@ -590,6 +590,10 @@ var metaDisplayProcessor = (function() {
 				conf_claim = conf_claim.replace('{epub_accessibility}', _vocab.conformance['conformance-details-epub-accessibility-1-0'][_mode]);
 			}
 			
+			else {
+				conf_claim = conf_claim.replace('{epub_accessibility}', '');
+			}
+			
 			/* wcag version */
 			if (conf_info.wcag_version === '2.2' || conf_info.wcag_22) {
 				conf_claim = conf_claim.replace('{wcag_version}', _vocab.conformance['conformance-details-wcag-2-2'][_mode]);
@@ -603,6 +607,10 @@ var metaDisplayProcessor = (function() {
 				conf_claim = conf_claim.replace('{wcag_version}', _vocab.conformance['conformance-details-wcag-2-0'][_mode]);
 			}
 			
+			else {
+				conf_claim = conf_claim.replace('{wcag_version}', '');
+			}
+			
 			/* wcag level */
 			if (conf_info.wcag_level === 'AAA' || conf_info.level_aaa) {
 				conf_claim = conf_claim.replace('{wcag_level}', _vocab.conformance['conformance-details-level-aaa'][_mode]);
@@ -614,6 +622,10 @@ var metaDisplayProcessor = (function() {
 			
 			else if (conf_info.wcag_level === 'A' || conf_info.levela) {
 				conf_claim = conf_claim.replace('{wcag_level}', _vocab.conformance['conformance-details-level-a'][_mode]);
+			}
+			
+			else {
+				conf_claim = conf_claim.replace('{wcag_level}', '');
 			}
 			
 			conf_claim += _punctuation;
