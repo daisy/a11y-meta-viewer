@@ -6,7 +6,7 @@
     <meta property="dcterms:modified">2025-01-14T12:00:00Z</meta>
     <dc:identifier id="uid">urn:uuid:1</dc:identifier>
     <meta id="conf" property="dcterms:conformsTo">EPUB Accessibility 1.1 - WCAG 2.1 Level AA</meta>
-    <meta property="a11y:certifiedBy">DAISY</meta>
+    <meta property="a11y:certifiedBy">My Organization</meta>
     <meta property="a11y:certifierCredential">My Credential</meta>
     <meta property="schema:accessMode">textual</meta>
     <meta property="schema:accessMode">visual</meta>
@@ -25,7 +25,7 @@
     <meta property="schema:accessibilityFeature">tableOfContents</meta>
     <meta property="schema:accessibilityFeature">unlocked</meta>
     <meta property="schema:accessibilitySummary">...</meta>
-    <link rel="a11y:certifierReport" href="https://daisy.org/sample/a11y-report.html"/>
+    <link rel="a11y:certifierReport" href="https://example.com/sample/a11y-report.html"/>
   </metadata>
   <manifest>
     <item id="nav.xhtml" href="nav.xhtml" media-type="application/xhtml+xml" properties="nav"/>

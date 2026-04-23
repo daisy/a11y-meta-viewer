@@ -5,7 +5,7 @@
     <dc:language>en</dc:language>
     <dc:identifier>urn:uuid:1</dc:identifier>
     <meta id="conf" name="dcterms:conformsTo" content="EPUB Accessibility 1.1 - WCAG 2.1 Level AA"/>
-    <meta name="a11y:certifiedBy" content="DAISY"/>
+    <meta name="a11y:certifiedBy" content="My Organization"/>
     <meta name="a11y:certifierCredential" content="My Credential"/>
     <meta name="schema:accessMode" content="textual"/>
     <meta name="schema:accessMode" content="visual"/>
@@ -24,7 +24,7 @@
     <meta name="schema:accessibilityFeature" content="tableOfContents"/>
     <meta name="schema:accessibilityFeature" content="unlocked"/>
     <meta name="schema:accessibilitySummary" content="..."/>
-    <meta name="a11y:certifierReport" content="https://daisy.org/sample/a11y-report.html"/>
+    <meta name="a11y:certifierReport" content="https://example.com/sample/a11y-report.html"/>
   </metadata>
   <manifest>
     <item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml"/>
