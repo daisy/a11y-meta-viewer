@@ -1770,6 +1770,10 @@ var metaDisplayProcessor = (function() {
 				vocab = ja;
 				break;
 				
+			case "sv-SE":
+				vocab = sv_se;
+				break;
+			
 			default:
 				vocab = en_us;
 		}
