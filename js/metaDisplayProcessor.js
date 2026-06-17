@@ -16,7 +16,7 @@ var metaDisplayProcessor = (function() {
 	var _input_format = null;
 	var _output_format = 'html';
 	var _isONIX = false;
-	var _lang = 'en-us';
+	var _lang = 'en';
 	var _vocab = null;
 	var _mode = 'compact';
 	var _punctuation = '.';
@@ -60,7 +60,7 @@ var metaDisplayProcessor = (function() {
 			
 			if (!lang) {
 				console.log("No language code found. Defaulting to English.");
-				_lang = 'en-us';
+				_lang = 'en';
 			}
 			
 			else {
@@ -76,7 +76,7 @@ var metaDisplayProcessor = (function() {
 			
 			if (!lang) {
 				console.log("No language code found. Defaulting to English.");
-				_lang = 'en-us';
+				_lang = 'en';
 			}
 			
 			else {
@@ -87,7 +87,7 @@ var metaDisplayProcessor = (function() {
 				
 				else {
 					console.log("Unknown language code " + lang + ". Defaulting to English.");
-					_lang = 'en-us';
+					_lang = 'en';
 				}
 			}
 		}
@@ -97,8 +97,15 @@ var metaDisplayProcessor = (function() {
 			return false;
 		}
 		
+		if (!_lang.includes('fr-') && !_lang.includes('sp-')) {
+			_lang = _lang.replace(/-.*?/,'');
+		}
+		
 		// language-specific control settings
 		_vocab = getVocab(_lang);
+		
+		// set the language field in the viewer
+		document.getElementById('lang').value = _lang
 		
 		return true;
 	}
@@ -127,7 +134,7 @@ var metaDisplayProcessor = (function() {
 		_input_format = null;
 		_output_format = 'html';
 		_isONIX = false;
-		_lang = 'en-us',
+		_lang = 'en',
 		_vocab = null;
 		_mode = 'compact';
 		_punctuation = '.';
@@ -1773,7 +1780,6 @@ var metaDisplayProcessor = (function() {
 				break;
 				
 			case "sv":
-			case "sv-SE":
 				vocab = sv_se;
 				break;
 			
@@ -1886,7 +1892,7 @@ const langMap = {
 	div: "dv",
 	dut: "nl",
 	dzo: "dz",
-	eng: "en-us",
+	eng: "en",
 	epo: "eo",
 	est: "et",
 	ewe: "ee",
