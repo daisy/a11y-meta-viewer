@@ -1,5 +1,5 @@
 
-var en_us = {
+var en = {
     "metadata": {
         "author": "W3C Publishing Community Group Accessibility Task Force",
         "language": "en-US",

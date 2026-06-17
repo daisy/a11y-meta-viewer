@@ -97,9 +97,20 @@ var metaDisplayProcessor = (function() {
 			return false;
 		}
 		
-		if (!_lang.includes('fr-') && !_lang.includes('sp-')) {
-			_lang = _lang.replace(/-.*?/,'');
+		_lang = _lang.toLowerCase();
+		
+		if (!_lang.includes('fr-') && !_lang.includes('es-')) {
+			_lang = _lang.replace(/-.*/,'');
 		}
+		
+		else if (_lang == 'fr') {
+			_lang = 'fr-fr';
+		}
+		
+		else if (_lang == 'es') {
+			_lang = 'es-es';
+		}
+
 		
 		// language-specific control settings
 		_vocab = getVocab(_lang);
@@ -1761,13 +1772,11 @@ var metaDisplayProcessor = (function() {
 				vocab = de;
 				break;
 				
-			case "es":
-			case "es-ES":
+			case "es-es":
 				vocab = es_es;
 				break;
 			
-			case "fr":
-			case "fr-FR":
+			case "fr-fr":
 				vocab = fr_fr;
 				break;
 				
@@ -1780,11 +1789,11 @@ var metaDisplayProcessor = (function() {
 				break;
 				
 			case "sv":
-				vocab = sv_se;
+				vocab = sv;
 				break;
 			
 			default:
-				vocab = en_us;
+				vocab = en;
 		}
 		
 		return vocab;
