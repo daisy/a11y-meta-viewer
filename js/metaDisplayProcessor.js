@@ -1754,10 +1754,12 @@ var metaDisplayProcessor = (function() {
 				vocab = de;
 				break;
 				
+			case "es":
 			case "es-ES":
 				vocab = es_es;
 				break;
 			
+			case "fr":
 			case "fr-FR":
 				vocab = fr_fr;
 				break;
@@ -1770,6 +1772,7 @@ var metaDisplayProcessor = (function() {
 				vocab = ja;
 				break;
 				
+			case "sv":
 			case "sv-SE":
 				vocab = sv_se;
 				break;
