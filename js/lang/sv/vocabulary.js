@@ -87,8 +87,8 @@ var sv = {
             "descriptive": "Publikationen certifierades den {certification_date}"
         },
         "conformance-details-certifier-report": {
-            "compact": "Se certifieringsrapporten för mer information",
-            "descriptive": "Se certifieringsrapporten för mer information"
+            "compact": "Se [certifieringsrapporten] för mer information",
+            "descriptive": "Se [certifieringsrapporten] för mer information"
         },
         "conformance-details-claim": {
             "compact": "Publikationen anger att den uppfyller kraven enligt {epub_accessibility} {wcag_version} {wcag_level}",
