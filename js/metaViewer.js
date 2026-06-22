@@ -28,6 +28,9 @@ function processRecord() {
 	}
 	
 	showDisplayMetadata(false, 'html');
+	
+	// set the language field in the viewer
+	document.getElementById('lang').value = metaDisplayProcessor.getLanguage();
 }
 
 function reprocessRecord() {
@@ -51,6 +54,7 @@ function reprocessRecord() {
 	var suppressNoInfo = document.getElementById('no-info').value == 'hide' ? true : false;
 	
 	showDisplayMetadata(suppressNoInfo, format);
+
 }
 
 function showDisplayMetadata(suppressNoInfo, output_format) {

@@ -115,9 +115,6 @@ var metaDisplayProcessor = (function() {
 		// language-specific control settings
 		_vocab = getVocab(_lang);
 		
-		// set the language field in the viewer
-		document.getElementById('lang').value = _lang
-		
 		return true;
 	}
 	
@@ -1857,6 +1854,10 @@ var metaDisplayProcessor = (function() {
 		
 		getHeader: function(id, sub_hd) {
 			return getHeader(id, sub_hd);
+		},
+		
+		getLanguage: function() {
+			return _lang;
 		}
 	}
 })();
