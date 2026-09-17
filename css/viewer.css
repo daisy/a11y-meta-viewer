@@ -313,6 +313,52 @@ div#result li {
 	font-size: 1.6rem
 }
 
+
+
+
+/* validation */
+
+div.validation {
+	margin-top: 5rem;
+	background-color: rgb(245,245,245);
+	scroll-margin-top: 10rem;
+}
+
+div.validation h2 {
+	margin: 0;
+}
+
+div.validation h2.pass {
+	background-color: rgb(0,100,0);
+}
+
+div.validation h2.fail {
+	background-color: rgb(100,0,0);
+}
+
+div.validation p {
+	margin-left: 2rem;
+}
+
+div.validation code {
+	font-size: 80%;
+	color: rgb(160,0,0);
+	display: inline-block;
+}
+
+div.validation input[type='image'] {
+	float: right;
+	margin-top: -2.7rem;
+	margin-right: 1rem;
+}
+
+div.validation p.disclaimer {
+	font-size: 85%;
+	margin-bottom: 3rem;
+	padding-bottom: 1rem;
+}
+
+
 /* zoom and mobile fixes */
 
 @media screen and (max-width: 600px) {
