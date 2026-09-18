@@ -70,7 +70,9 @@ var messages = {
 	
 	accessibilitySummary: {
 		recommended: 'An accessibility summary may be needed if there is important information not captured by the other accessibility metadata.',
-		duplicates: 'More than one accessibility summary declared. Multiple summaries are not likely to be rendered and the property cannot be repeated for translations.'
+		duplicates: 'More than one accessibility summary declared. Multiple summaries are not likely to be rendered and the property cannot be repeated for translations.',
+		summary11for10: 'Do not use List 196 Code 99 to supply a summary for publications that conform to EPUB Accessibility 1.0.',
+		summary10for11: 'Do not use List 196 Code 00 to supply a summary for publications that conform to EPUB Accessibility 1.1 and above.'
 	},
 	
 	contactEmail: {

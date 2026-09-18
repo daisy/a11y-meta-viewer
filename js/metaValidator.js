@@ -436,7 +436,7 @@ function ovalidate(property, checks, record) {
 		if (property === 'conformsTo') {
 			if (_conformance.hasOwnProperty(id)) {
 				if (_conformance[id]) {
-					_warnings.push(messages['accessibilityHazard']['onixdup'].replace('%var%', escapeHtml(value)));
+					_warnings.push(messages['conformsTo']['onixdup'].replace('%var%', escapeHtml(value)));
 				}
 				else {
 					_conformance[id] = true;
@@ -470,6 +470,16 @@ function ovalidate(property, checks, record) {
 				else {
 					_hazards[map.hazards[id]] = true;
 				}
+			}
+		}
+		
+		if (property === 'accessibilitySummary') {
+			if ((_conformance['0902'] || _conformance['0903']) && value === '92') {
+				_errors.push(messages['accessibilitySummary']['summary11for10']);
+			}
+			
+			else if (_conformance['0904'] && value === '00') {
+				_errors.push(messages['accessibilitySummary']['summary10for11']);
 			}
 		}
 		
