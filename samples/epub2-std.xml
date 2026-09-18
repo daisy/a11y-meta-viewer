@@ -11,7 +11,7 @@
     <meta name="schema:accessMode" content="visual"/>
     <meta name="schema:accessModeSufficient" content="textual"/>
     <meta name="schema:accessibilityHazard" content="none"/>
-    <meta name="schema:accessibilityFeature" content="aria"/>
+    <meta name="schema:accessibilityFeature" content="ARIA"/>
     <meta name="schema:accessibilityFeature" content="alternativeText"/>
     <meta name="schema:accessibilityFeature" content="displayTransformability"/>
     <meta name="schema:accessibilityFeature" content="highContrastDisplay"/>

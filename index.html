@@ -4,7 +4,10 @@
 		<meta charset="utf-8" />
 		<title>DAISY Accessibility Metadata Viewer</title>
 		<link rel="stylesheet" type="text/css" href="css/viewer.css" />
-		<script src="js/xpaths.js"></script>
+		<script src="js/config/xpaths.js"></script>
+		<script src="js/config/epub_validation.js"></script>
+		<script src="js/config/onix_validation.js"></script>
+		<script src="js/config/messages.js"></script>
 		<script src="js/lang/de/vocabulary.js"></script>
 		<script src="js/lang/es-ES/vocabulary.js"></script>
 		<script src="js/lang/en/vocabulary.js"></script>
@@ -39,9 +42,20 @@
 		<main>
 			<p>Paste an EPUB package document or ONIX record to begin, or test using a <a href="#" onclick="selectRecord(); return false;">preconfigured file</a>.</p>
 			
-			<textarea id="input_record" rows="15" autocomplete="off"></textarea>
+			<div class="validation" aria-live="polite" hidden="">
+				<h2>Validation result:</h2>
+				<input type="image" src="graphics/close-icon.png" alt="Close validation result" onclick="closeValidation();"/>
+				
+				<div id="validation-result"></div>
+			</div>
 			
-			<div><button onclick="processRecord()">Preview</button></div>
+			<textarea id="input_record" rows="15" autocomplete="off" aria-label="Metadata record"></textarea>
+			
+			<div>
+				<button onclick="processRecord()">Preview</button>
+				<button onclick="validateRecord()">Validate</button>
+				<input id="email" type="email" required="required" hidden="hidden"/>
+			</div>
 			
 			<dialog id="result">
 				<div class="dialog-hd">
@@ -153,6 +167,7 @@
 				</section>
 			</section>
 			
+			<script src="js/metaValidator.js"></script>
 			<script src="js/metaViewer.js"></script>
 			<script src="js/metaDisplayProcessor.js"></script>
 			<script>
@@ -171,6 +186,13 @@
 					// github crashes on long query strings so passing in record via fragment for now
 					document.getElementById('input_record').value = decodeURI(window.location.hash.substring(8));
 					processRecord();
+				}
+			</script>
+			<script>
+				function closeValidation() {
+					let err_div = document.getElementById('validation-result');
+						err_div.innerHTML = '';
+						err_div.parentNode.setAttribute('hidden', '');
 				}
 			</script>
 		</main>

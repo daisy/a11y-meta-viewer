@@ -1449,7 +1449,7 @@ var metaDisplayProcessor = (function() {
 		}
 		
 		if (publisher_contact_for_accessibility) {
-			var statement = _vocab['accessibility-summary']['publisher_contact_for_accessibility'][_mode] + _punctuation;
+			var statement = _vocab['accessibility-summary']['publisher-contact-for-accessibility'][_mode] + _punctuation;
 			var contact_email = '<a href="mailto:' + publisher_contact_for_accessibility + '">' + publisher_contact_for_accessibility + '</a>';
 			
 			statement = statement.replace('{publisher_contact_for_accessibility}', contact_email);
@@ -1807,6 +1807,45 @@ var metaDisplayProcessor = (function() {
 	}
 	
 	
+	/* display info about the translation file used */
+	
+	function translationMetadata() {
+		
+		var result = {};
+			result.hasMetadata = true;
+			result.display = document.createElement('div');
+		
+		var meta = [];
+		
+		// add author
+		if (_vocab['metadata'].hasOwnProperty('author')) {
+			meta.push('Author: ' + _vocab['metadata']['author']);
+		}
+		
+		// add version
+		if (_vocab['metadata'].hasOwnProperty('version')) {
+			meta.push('Version: ' + _vocab['metadata']['version']);
+		}
+		
+		// add description
+		if (_vocab['metadata'].hasOwnProperty('description')) {
+			meta.push('Description: ' + _vocab['metadata']['version']);
+		}
+		
+		var meta_list = document.createElement('ul');
+		
+		meta.sort().forEach((info) => {
+			var li = document.createElement('li');
+				li.appendChild(document.createTextNode(info));
+			meta_list.appendChild(li);
+		});
+		
+		result.display.appendChild(meta_list);
+		
+		return result;
+	}
+	
+	
 	return {
 		initialize: function(param) {
 			return initialize(param);
@@ -1846,6 +1885,10 @@ var metaDisplayProcessor = (function() {
 		
 		processAdditionalA11yInfo: function() {
 			return additionalA11yInfo();
+		},
+		
+		processMetadata: function() {
+			return translationMetadata();
 		},
 		
 		getDisplay: function() {

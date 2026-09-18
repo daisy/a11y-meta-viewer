@@ -258,7 +258,7 @@ var en = {
             "compact": "No information is available",
             "descriptive": "No information is available"
         },
-        "accessibility-summary-publisher-contact": {
+        "publisher-contact-for-accessibility": {
             "compact": "For more information about the accessibility of this product, please contact the publisher: {publisher_contact_for_accessibility}",
             "descriptive": "For more information about the accessibility of this product, please contact the publisher: {publisher_contact_for_accessibility}"
         }

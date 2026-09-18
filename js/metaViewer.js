@@ -219,6 +219,20 @@ function showDisplayMetadata(suppressNoInfo, output_format) {
 	}
 	
 	
+	// Translation metadata
+	
+	var meta_result = metaDisplayProcessor.processMetadata();
+	
+	var meta_hd = makeHeader('metadata', output_format);
+	
+	if (output_format === 'html') {
+		formatHTML(result, hd, meta_result.display);
+	}
+	else {
+		result += "," + formatJSON(id, hd, meta_result.display);
+	}
+	
+	
 	if (result) {
 		if (output_format === 'html') {
 			result_field.appendChild(result);
