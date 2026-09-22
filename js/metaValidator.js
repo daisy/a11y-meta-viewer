@@ -81,7 +81,7 @@ function validateEPUB(record, input_format) {
 	
 	evalidate('accessibilityFeature', ['required', 'single', 'duplicates', 'terms'], input_format, record);
 	
-	evalidate('accessModeSufficient', ['required', 'duplicates'], input_format, record);
+	evalidate('accessModeSufficient', ['required', 'duplicates', 'terms'], input_format, record);
 	
 	evalidate('accessibilityHazard', ['required', 'single', 'duplicates', 'terms'], input_format, record);
 	
@@ -109,13 +109,16 @@ var terms = {};
 	terms.accessibilityFeature_deprecated = [ 'annotations',  'bookmarks',  'captions' ];
 
 	terms.accessModeSufficient = ['textual', 'visual', 'auditory', 'tactile'];
+	terms.accessModeSufficient_lc = terms.accessModeSufficient.map(item => item.toLowerCase());
 
 	terms.accessibilityHazard = ['flashing', 'motionSimulation', 'sound', 'none', 'unknown',
 						'noFlashingHazard', 'noMotionSimulationHazard', 'noSoundHazard',
 						'unknownFlashingHazard', 'unknownMotionSimulationHazard', 'unknownSoundHazard'];
+	terms.accessibilityHazard_lc = terms.accessibilityHazard.map(item => item.toLowerCase());
 	
 	terms.accessMode = ['textual', 'visual', 'auditory', 'tactile', 'chartOnVisual', 'chemOnVisual',
 						'colorDependent', 'diagramOnVisual', 'mathOnVisual', 'musicOnVisual', 'textOnVisual'];
+	terms.accessMode_lc = terms.accessMode.map(item => item.toLowerCase());
 	
 
 
@@ -162,7 +165,7 @@ function evalidate(property, checks, format, record) {
 		
 			if (!terms[property].includes(value)) {
 			
-				if (property === 'accessibilityFeature' && terms[property+'_lc'].includes(value.toLowerCase())) {
+				if (terms.hasOwnProperty(property+'_lc') && terms[property+'_lc'].includes(value.toLowerCase())) {
 					
 					let correct_spelling = '';
 					
@@ -263,13 +266,6 @@ function evalidate(property, checks, format, record) {
 		};
 		
 		for (var i = 0; i < ams_arrays.length; i++) {
-			
-			// check the values are known
-			for (var j = 0; j < ams_arrays[i].length; j++) {
-				if (!terms[property].includes(ams_arrays[i][j])) {
-					_warnings.push(messages[property]['unknown'].replace('%var%', escapeHtml(ams_arrays[i][j])));
-				}
-			}
 			
 			// check for identical sets in same or different order
 			for (var k = i+1; k < ams_arrays.length; k++) {
