@@ -220,7 +220,7 @@ function showDisplayMetadata(suppressNoInfo, output_format) {
 	
 	
 	// Translation metadata
-	
+	/* 
 	var meta_result = metaDisplayProcessor.processMetadata();
 	
 	var meta_hd = makeHeader('metadata', output_format);
@@ -231,19 +231,13 @@ function showDisplayMetadata(suppressNoInfo, output_format) {
 	else {
 		result += "," + formatJSON(id, hd, meta_result.display);
 	}
-	
+	*/
 	
 	if (result) {
 		if (output_format === 'html') {
 			result_field.appendChild(result);
 		}
 		else {
-			var warning = document.createElement('p');
-			var bold = document.createElement('strong');
-				bold.appendChild(document.createTextNode('CAUTION: The following JSON output is experimental and subject to change at any time.'));
-			warning.appendChild(bold);
-			result_field.appendChild(warning);
-			
 			var pre = document.createElement('pre');
 				pre.innerHTML = result + '\n}';
 			result_field.appendChild(pre);
