@@ -4,6 +4,23 @@
 	</Header>
 	<Product>
 		<DescriptiveDetail>
+			<TitleDetail>
+				<TitleType>01</TitleType>
+				<TitleElement>
+					<SequenceNumber>1</SequenceNumber>
+					<TitleElementLevel>01</TitleElementLevel>
+					<TitlePrefix/>
+					<TitleWithoutPrefix>ONIX Display Metadata - Text and Image Content</TitleWithoutPrefix>
+				</TitleElement>
+			</TitleDetail>
+			<Publisher>
+				<PublishingRole>01</PublishingRole>
+				<PublisherName>Acme Publishing</PublisherName>
+			</Publisher>
+			<Language>
+				<LanguageRole>01</LanguageRole>
+				<LanguageCode>eng</LanguageCode>
+			</Language>
 			<ProductComposition>00</ProductComposition>
 			<ProductForm>EA</ProductForm>
 			<ProductFormDetail>E101</ProductFormDetail>

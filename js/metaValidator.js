@@ -731,13 +731,12 @@ function nsResolver(prefix) {
 	switch (prefix) {
 		case 'xml':
 			return 'http://www.w3.org/XML/1998/namespace';
-		default:
-			if (_isONIX) {
-				return "http://ns.editeur.org/onix/3.0/reference";
-			}
-			else {
-				return "http://www.idpf.org/2007/opf";
-			}
+		case 'dc':
+			return 'http://purl.org/dc/elements/1.1/';
+		case 'onix':
+			return "http://ns.editeur.org/onix/3.0/reference";
+		case 'opf':
+			return "http://www.idpf.org/2007/opf";
 	}
 }
 

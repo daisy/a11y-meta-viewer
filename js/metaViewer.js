@@ -6,12 +6,20 @@ var result_close_button = document.getElementById("result-close-button");
 var result_close_img = document.getElementById("result-close-img");
 
 result_close_button.addEventListener("click", () => {
-  document.getElementById("result").close();
+	document.getElementById("result").close();
 });
 
 result_close_img.addEventListener("click", () => {
-  document.getElementById("result").close();
+	document.getElementById("result").close();
 });
+
+
+var result_save_button = document.getElementById("result-save-button");
+
+result_save_button.addEventListener("click", () => {
+	saveResult();
+});
+
 
 /* process input metadata */
 
@@ -71,7 +79,25 @@ function showDisplayMetadata(suppressNoInfo, output_format) {
 	}
 	
 	else {
+		
+		var pub_meta = metaDisplayProcessor.processGeneralInfo();
+		
 		result = '{';
+		result += '\n\t"about": {';
+		result += '\n\t\t"title": "' + pub_meta.title + '",';
+		result += '\n\t\t"publisher": "' + pub_meta.publisher + '",';
+		result += '\n\t\t"language": "' + pub_meta.lang + '",';
+		result += '\n\t\t"generator": {'
+		result += '\n\t\t\t"name": "DAISY Accessibility Metadata Viewer",';
+		result += '\n\t\t\t"version": "0.1.0",';
+		result += '\n\t\t\t"created": "' + new Date().toISOString() + '"';
+		result += '\n\t\t},'
+		result += '\n\t\t"localization": {';
+		result += '\n\t\t\t"creator": "' + pub_meta.translation.creator + '",';
+		result += '\n\t\t\t"language": "' + pub_meta.translation.lang + '",';
+		result += '\n\t\t\t"version": "' + pub_meta.translation.version + '"';
+		result += '\n\t\t}'
+		result += '\n\t},'
 	}
 	
 	// 3.1 Ways of reading
@@ -221,7 +247,7 @@ function showDisplayMetadata(suppressNoInfo, output_format) {
 	
 	// Translation metadata
 	/* 
-	var meta_result = metaDisplayProcessor.processMetadata();
+	var meta_result = metaDisplayProcessor.processTranslationMetadata();
 	
 	var meta_hd = makeHeader('metadata', output_format);
 	
@@ -343,6 +369,38 @@ selectRecord_close_button.addEventListener('click', () => {
 selectRecord_close_img.addEventListener('click', () => {
   sel_dialog.close();
 });
+
+
+
+// save the current result display
+
+function saveResult() {
+
+	const isJSON = document.getElementById('format').value === 'json' ? true : false;
+	
+	let html_head = '<!DOCTYPE html>\n<html lang="' + document.getElementById('lang').value + '>\n<head>\n<meta charset="utf-8">\n<title>Accessibility Statements</title>\n<style>html, body { margin: 0; padding: 2rem; } body { font-family: Calibri,Helvetica,Arial,sans-serif; font-size: 1.2rem; background-color: rgb(251,252,253); color: rgb(0,0,0); line-height: 2.6rem; } h3 { display: inline-block; font-size: 94%; margin: 0; } div.grid-body > h4 { font-size: 94%; font-weight: normal; font-style: italic; margin-top: 4rem; } div.grid { display: grid; grid-template-columns: fit-content(40%) 1fr; gap: 2rem; } div.grid-body > * { font-size: 98%; padding-top: 0; margin-top: 0; } div.grid-body ul { padding-left: 2rem; }</style>\n</head>\n<body>\n';
+	
+	let html_foot = '</body>\n</html>';
+	
+	const markupContent = isJSON ? document.querySelector('#result-body > pre').innerHTML : html_head + document.getElementById('result-body').outerHTML + html_foot;
+	
+	const blob = new Blob([markupContent], { type: (isJSON ? 'text/json' : 'text/html') + ';charset=utf-8' });
+	
+	const blobUrl = URL.createObjectURL(blob);
+	
+	const anchor = document.createElement('a');
+		anchor.href = blobUrl;
+		anchor.download = isJSON ? 'result.json' : 'result.html';
+	
+	document.body.appendChild(anchor);
+	
+	anchor.click();
+	
+	document.body.removeChild(anchor);
+	URL.revokeObjectURL(blobUrl);
+}
+
+
 
 
 async function loadRecord(record_file) {

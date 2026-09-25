@@ -250,7 +250,7 @@ var metaDisplayProcessor = (function() {
 				nonvis_result.appendChild(document.createTextNode(statement));
 			}
 			else {
-				result.display += jsonFormat({value: statement, comma: false, tabs: 3, punctuate: true});
+				result.display += jsonFormat({value: statement, comma: true, tabs: 3, punctuate: true});
 			}
 		}
 		
@@ -260,7 +260,7 @@ var metaDisplayProcessor = (function() {
 				nonvis_result.appendChild(document.createTextNode(statement));
 			}
 			else {
-				result.display += jsonFormat({value: statement, comma: false, tabs: 3, punctuate: true});
+				result.display += jsonFormat({value: statement, comma: true, tabs: 3, punctuate: true});
 			}
 		}
 		
@@ -270,7 +270,7 @@ var metaDisplayProcessor = (function() {
 				nonvis_result.appendChild(document.createTextNode(statement));
 			}
 			else {
-				result.display += jsonFormat({value: statement, comma: false, tabs: 3, punctuate: true});
+				result.display += jsonFormat({value: statement, comma: true, tabs: 3, punctuate: true});
 			}
 		}
 		
@@ -280,7 +280,7 @@ var metaDisplayProcessor = (function() {
 				nonvis_result.appendChild(document.createTextNode(statement));
 			}
 			else {
-				result.display += jsonFormat({value: statement, comma: false, tabs: 3, punctuate: true});
+				result.display += jsonFormat({value: statement, comma: true, tabs: 3, punctuate: true});
 			}
 		}
 		
@@ -303,7 +303,7 @@ var metaDisplayProcessor = (function() {
 				result.display.appendChild(p);
 			}
 			else {
-				result.display += jsonFormat({value: statement, comma: false, tabs: 3, punctuate: true});
+				result.display += jsonFormat({value: statement, comma: true, tabs: 3, punctuate: true});
 			}
 		}
 		
@@ -352,7 +352,7 @@ var metaDisplayProcessor = (function() {
 					prerec_result.appendChild(document.createTextNode(statement));
 				}
 				else {
-					result.display += jsonFormat({value: statement, comma: false, tabs: 3, punctuate: true});
+					result.display += jsonFormat({value: statement, comma: true, tabs: 3, punctuate: true});
 				}
 			}
 			
@@ -362,7 +362,7 @@ var metaDisplayProcessor = (function() {
 					prerec_result.appendChild(document.createTextNode(statement));
 				}
 				else {
-					result.display += jsonFormat({value: statement, comma: false, tabs: 3, punctuate: true});
+					result.display += jsonFormat({value: statement, comma: true, tabs: 3, punctuate: true});
 				}
 			}
 			
@@ -372,7 +372,7 @@ var metaDisplayProcessor = (function() {
 					prerec_result.appendChild(document.createTextNode(statement));
 				}
 				else {
-					result.display += jsonFormat({value: statement, comma: false, tabs: 3, punctuate: true});
+					result.display += jsonFormat({value: statement, comma: true, tabs: 3, punctuate: true});
 				}
 			}
 			
@@ -382,7 +382,7 @@ var metaDisplayProcessor = (function() {
 					prerec_result.appendChild(document.createTextNode(statement));
 				}
 				else {
-					result.display += jsonFormat({value: statement, comma: false, tabs: 3, punctuate: true});
+					result.display += jsonFormat({value: statement, comma: true, tabs: 3, punctuate: true});
 				}
 			}
 		}
@@ -394,7 +394,7 @@ var metaDisplayProcessor = (function() {
 					prerec_result.appendChild(document.createTextNode(statement));
 				}
 				else {
-					result.display += jsonFormat({value: statement, comma: false, tabs: 3, punctuate: true});
+					result.display += jsonFormat({value: statement, comma: true, tabs: 3, punctuate: true});
 				}
 			}
 			
@@ -404,7 +404,7 @@ var metaDisplayProcessor = (function() {
 					prerec_result.appendChild(document.createTextNode(statement));
 				}
 				else {
-					result.display += jsonFormat({value: statement, comma: false, tabs: 3, punctuate: true});
+					result.display += jsonFormat({value: statement, comma: true, tabs: 3, punctuate: true});
 				}
 			}
 			
@@ -414,7 +414,7 @@ var metaDisplayProcessor = (function() {
 					prerec_result.appendChild(document.createTextNode(statement));
 				}
 				else {
-					result.display += jsonFormat({value: statement, comma: false, tabs: 3, punctuate: true});
+					result.display += jsonFormat({value: statement, comma: true, tabs: 3, punctuate: true});
 				}
 			}
 			
@@ -424,7 +424,7 @@ var metaDisplayProcessor = (function() {
 					prerec_result.appendChild(document.createTextNode(statement));
 				}
 				else {
-					result.display += jsonFormat({value: statement, comma: false, tabs: 3, punctuate: true});
+					result.display += jsonFormat({value: statement, comma: true, tabs: 3, punctuate: true});
 				}
 			}
 		}
@@ -537,7 +537,7 @@ var metaDisplayProcessor = (function() {
 				}
 				
 				else {
-					result.display += jsonFormat({value: statement, comma: false, tabs: 3, punctuate: false});
+					result.display += jsonFormat({value: statement, comma: true, tabs: 3, punctuate: false});
 				}
 			}
 			
@@ -570,7 +570,7 @@ var metaDisplayProcessor = (function() {
 					result.display.appendChild(credential);
 				}
 				else {
-					result.display += jsonFormat({value: statement, comma: false, tabs: 3, punctuate: false});
+					result.display += jsonFormat({value: statement, comma: true, tabs: 3, punctuate: false});
 				}
 			}
 			
@@ -580,9 +580,9 @@ var metaDisplayProcessor = (function() {
 				det_conf.setAttribute('open', 'open');
 			}
 			
+			var det_hd = _vocab.conformance['conformance-details-title'];
+			
 			if (_output_format === 'html') {
-				var det_hd = _vocab.conformance['conformance-details-title'];
-				
 				var det_sum = document.createElement('summary');
 					det_sum.appendChild(document.createTextNode(det_hd));
 				
@@ -1429,7 +1429,7 @@ var metaDisplayProcessor = (function() {
 			}
 			
 			else {
-				result.display += jsonFormat(accessibility_summary, (result.display !== '['), 3);
+				result.display += jsonFormat({value: accessibility_summary, comma: (result.display !== '['), tabs: 3, punctuate: false});
 			}
 		}
 		
@@ -1733,13 +1733,12 @@ var metaDisplayProcessor = (function() {
 		switch (prefix) {
 			case 'xml':
 				return 'http://www.w3.org/XML/1998/namespace';
-			default:
-				if (_isONIX) {
-					return "http://ns.editeur.org/onix/3.0/reference";
-				}
-				else {
-					return "http://www.idpf.org/2007/opf";
-				}
+			case 'dc':
+				return 'http://purl.org/dc/elements/1.1/';
+			case 'onix':
+				return "http://ns.editeur.org/onix/3.0/reference";
+			case 'opf':
+				return "http://www.idpf.org/2007/opf";
 		}
 	}
 	
@@ -1807,40 +1806,80 @@ var metaDisplayProcessor = (function() {
 	}
 	
 	
-	/* display info about the translation file used */
 	
-	function translationMetadata() {
+	/* info about the processing */
+	
+	function generalInfo() {
 		
 		var result = {};
-			result.hasMetadata = true;
-			result.display = document.createElement('div');
+			result.title = '';
+			result.publisher = '';
+			result.lang = '';
+			result.translation = {};
+			result.translation.creator = '';
+			result.translation.lang = '';
+			result.translation.version = '';
+			result.translation.desc = '';
 		
-		var meta = [];
+		var title_node = _record.evaluate( xpath['pub_info']['title'][_input_format], _record, nsResolver, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null );
 		
-		// add author
+		if (title_node.snapshotLength) {
+		
+			if (_isONIX) {
+				let prefix = title_node.snapshotItem(0).querySelector('TitlePrefix');
+				
+				if (prefix) {
+					result.title = prefix.innerHTML + ' ';
+				}
+				
+				let title = title_node.snapshotItem(0).querySelector('TitleWithoutPrefix');
+				
+				if (title) {
+					result.title += title.innerHTML;
+				}
+			}
+			
+			else {
+				result.title = title_node.snapshotItem(0).textContent.trim();
+			}
+		}
+		
+		var pub_node = _record.evaluate( xpath['pub_info']['publisher'][_input_format], _record, nsResolver, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null );
+		
+		if (pub_node.snapshotLength) {
+			result.publisher = pub_node.snapshotItem(0).textContent.trim();
+		}
+		
+		var lang_node = _record.evaluate( xpath['pub_info']['language'][_input_format], _record, nsResolver, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null );
+		
+		if (lang_node.snapshotLength) {
+			result.lang = lang_node.snapshotItem(0).textContent.trim();
+			// correct three-letter onix language code
+			if (_isONIX && langMap.hasOwnProperty(result.lang)) {
+				result.lang = langMap[result.lang];
+			}
+		}
+		
+		
+		// add translator
 		if (_vocab['metadata'].hasOwnProperty('author')) {
-			meta.push('Author: ' + _vocab['metadata']['author']);
+			result.translation.creator = _vocab['metadata']['author'];
+		}
+		
+		// add translation language
+		if (_vocab['metadata'].hasOwnProperty('language')) {
+			result.translation.lang = _vocab['metadata']['language'];
 		}
 		
 		// add version
 		if (_vocab['metadata'].hasOwnProperty('version')) {
-			meta.push('Version: ' + _vocab['metadata']['version']);
+			result.translation.version = _vocab['metadata']['version'];
 		}
 		
 		// add description
 		if (_vocab['metadata'].hasOwnProperty('description')) {
-			meta.push('Description: ' + _vocab['metadata']['version']);
+			result.translation.desc = _vocab['metadata']['description'];
 		}
-		
-		var meta_list = document.createElement('ul');
-		
-		meta.sort().forEach((info) => {
-			var li = document.createElement('li');
-				li.appendChild(document.createTextNode(info));
-			meta_list.appendChild(li);
-		});
-		
-		result.display.appendChild(meta_list);
 		
 		return result;
 	}
@@ -1887,8 +1926,8 @@ var metaDisplayProcessor = (function() {
 			return additionalA11yInfo();
 		},
 		
-		processMetadata: function() {
-			return translationMetadata();
+		processGeneralInfo: function() {
+			return generalInfo();
 		},
 		
 		getDisplay: function() {

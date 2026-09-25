@@ -4,6 +4,7 @@
     <dc:title>EPUB 2 Display Metadata - Text and Image Content</dc:title>
     <dc:language>en</dc:language>
     <dc:identifier>urn:uuid:1</dc:identifier>
+    <dc:publisher>Acme Publishing</dc:publisher>
     <meta id="conf" name="dcterms:conformsTo" content="EPUB Accessibility 1.1 - WCAG 2.1 Level AA"/>
     <meta name="a11y:certifiedBy" content="My Organization"/>
     <meta name="a11y:certifierCredential" content="My Credential"/>

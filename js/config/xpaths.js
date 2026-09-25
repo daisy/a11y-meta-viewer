@@ -405,5 +405,22 @@ var xpath = {
 			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="rubyAnnotations"]',
 			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessibilityFeature" and normalize-space(@content)="rubyAnnotations"]'
 		}
+	},
+	pub_info: {
+		title: {
+			epub3: '/opf:package/opf:metadata/dc:title',
+			epub2: '/opf:package/opf:metadata/dc:title',
+			onix: '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:TitleDetail[onix:TitleType="01"]/onix:TitleElement'
+		},
+		publisher: {
+			epub3: '/opf:package/opf:metadata/dc:publisher',
+			epub2: '/opf:package/opf:metadata/dc:publisher',
+			onix: '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:Publisher[onix:PublishingRole="01"]/onix:PublisherName'
+		},
+		language: {
+			epub3: '/opf:package/opf:metadata/dc:language',
+			epub2: '/opf:package/opf:metadata/dc:language',
+			onix: '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:Language[onix:LanguageRole="01"]/onix:LanguageCode'
+		}
 	}
 };

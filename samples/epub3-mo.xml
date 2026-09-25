@@ -6,6 +6,7 @@
 		<dc:language>en</dc:language>
 		<meta property="dcterms:modified">2025-01-14T12:00:00Z</meta>
 		<dc:identifier id="uid">urn:uuid:1</dc:identifier>
+		<dc:publisher>Acme Publishing</dc:publisher>
 		<meta id="conf" property="dcterms:conformsTo">EPUB Accessibility 1.1 - WCAG 2.1 Level AA</meta>
 		<meta property="a11y:certifiedBy">My Organization</meta>
 		<meta property="a11y:certifierCredential">My Credential</meta>
