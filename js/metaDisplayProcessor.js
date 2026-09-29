@@ -1054,21 +1054,6 @@ var metaDisplayProcessor = (function() {
 			}
 		}
 		
-		if (full_alternative_textual_descriptions) {
-		
-			var statement = _vocab['rich-content']['rich-content-extended'][_mode];
-			
-			if (_output_format === 'html') {
-				var li = document.createElement('li');
-					li.appendChild(document.createTextNode(statement));
-				richcontent.appendChild(li);
-			}
-			
-			else {
-				result.display += jsonFormat({value: statement, comma: (result.display !== '['), tabs: 3, punctuate: true});
-			}
-		}
-		
 		if (closed_captions) {
 		
 			var statement = _vocab['rich-content']['rich-content-closed-captions'][_mode];
