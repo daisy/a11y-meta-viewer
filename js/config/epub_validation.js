@@ -1,5 +1,5 @@
 
-var epub = {
+const epub = {
 	
 	conformsTo: {
 		epub3: '/opf:package/opf:metadata/opf:*[@property = "dcterms:conformsTo"]',

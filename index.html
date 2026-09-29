@@ -169,8 +169,8 @@
 			</section>
 			
 			<script src="js/metaValidator.js"></script>
-			<script src="js/metaViewer.js"></script>
 			<script src="js/metaDisplayProcessor.js"></script>
+			<script src="js/metaViewer.js"></script>
 			<script>
 				/* process a record submitted to the page */
 				
@@ -191,7 +191,7 @@
 			</script>
 			<script>
 				function closeValidation() {
-					let err_div = document.getElementById('validation-result');
+					const err_div = document.getElementById('validation-result');
 						err_div.innerHTML = '';
 						err_div.parentNode.setAttribute('hidden', '');
 				}

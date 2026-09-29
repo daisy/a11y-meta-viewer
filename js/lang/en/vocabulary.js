@@ -1,12 +1,13 @@
 
-var en = {
+const en = {
     "metadata": {
         "author": "W3C Publishing Community Group Accessibility Task Force",
         "language": "en-US",
         "variant": "canonical",
-        "version": "2.0.c",
+        "version": "2.1.a",
         "audience": "general",
-        "description": "Original wording discussed by a large group representing different actors of the English-speaking geographies. It has been improved after proof of concept implementations and panel testers"
+        "source": "https://www.w3.org/community/reports/publishingcg/CG-FINAL-a11y-display-guidelines-20251222/",
+        "description": "Canonical English language representations of the compact and descriptive display strings defined in the Accessibility Metadata Display Guide for Digital Publications 2.1."
     },
     "ways-of-reading": {
         "ways-of-reading-title": "Ways of reading",

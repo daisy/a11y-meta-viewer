@@ -1,4 +1,4 @@
-var sv = {
+const sv = {
     "metadata": {
         "author": "Swedish Agency for Accessible Media (MTM), National Agency for Special Needs Education and Schools (SPSM), Accessibility Library Celia",
         "language": "sv-SE",

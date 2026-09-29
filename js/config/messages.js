@@ -1,5 +1,5 @@
 
-var messages = {
+const messages = {
 	
 	conformsTo: {
 		required: 'No conformance claims found.',

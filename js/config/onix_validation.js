@@ -1,5 +1,5 @@
 
-var onix = {
+const onix = {
 
 	conformsTo: [
 		'/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and ((onix:ProductFormFeatureValue >= 2 and onix:ProductFormFeatureValue <= 4) or (onix:ProductFormFeatureValue >= 80 and onix:ProductFormFeatureValue <= 86))]'

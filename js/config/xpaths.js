@@ -1,5 +1,5 @@
 
-var xpath = {
+const xpath = {
 	ways_of_reading: {
 		all_textual_content_can_be_modified: {
 			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="displayTransformability"]',

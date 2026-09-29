@@ -1,4 +1,4 @@
-var es_es = {
+const es_es = {
   "metadata": {
     "author": "W3C Publishing Community Group Accessibility Task Force",
     "language": "es-ES",

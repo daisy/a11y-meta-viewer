@@ -1,4 +1,4 @@
-var de = {
+const de = {
   "metadata": {
     "author": "W3C Publishing Community Group Accessibility Task Force",
     "language": "de-DE",

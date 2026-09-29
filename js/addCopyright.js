@@ -1,3 +1,3 @@
-var date = new Date();
-var yr = date.getFullYear();
+const date = new Date();
+const yr = date.getFullYear();
 document.getElementById('copy-yr').innerHTML = yr;

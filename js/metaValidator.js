@@ -1,12 +1,12 @@
 /* validate input metadata */
 
-var _isONIX = false;
+let _isONIX = false;
 
-var _errors = [];
-var _warnings = [];
+let _errors = [];
+let _warnings = [];
 
-var _hazards;
-var _conformance;
+let _hazards = {};
+let _conformance = {};
 
 const escapeHtml = unsafe => {
 	return unsafe
@@ -26,17 +26,17 @@ function validateRecord() {
 	
 	resetVariables();
 	
-	var xml = document.getElementById('input_record').value;
+	const xml = document.getElementById('input_record').value;
 	
 	if (!xml) {
 		alert('No metadata provided.');
 		return;
 	}
 	
-	var record;
+	let record = '';
 	
 	try {
-		var parser = new DOMParser();
+		const parser = new DOMParser();
 		record = parser.parseFromString(xml, "text/xml");
 	}
 	
@@ -49,8 +49,8 @@ function validateRecord() {
 		return;
 	}
 	
-	var root = record.documentElement;
-	var input_format = 'epub3';
+	const root = record.documentElement;
+	let input_format = 'epub3';
 	
 	if (root.nodeName == 'package') {
 		_isONIX = false;
@@ -94,7 +94,7 @@ function validateEPUB(record, input_format) {
 }
 
 
-var terms = {};
+const terms = {};
 
 	terms.accessibilityFeature = [ 'ARIA', 'index', 'pageBreakMarkers', 'printPageNumbers', 'pageNavigation',
 			'readingOrder', 'structuralNavigation', 'tableOfContents', 'taggedPDF', 'alternativeText',
@@ -128,9 +128,9 @@ function evalidate(property, checks, format, record) {
 
 	// get all matching property declarations
 	
-	var xpath = epub[property][format];
+	const xpath = epub[property][format];
 	
-	var nodes = record.evaluate( xpath, record, nsResolver, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null );
+	const nodes = record.evaluate( xpath, record, nsResolver, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null );
 	
 	
 	// check for one or more instance of a property
@@ -147,17 +147,17 @@ function evalidate(property, checks, format, record) {
 	
 	
 	// value checks to run
-	let check = {};
+	const check = {};
 		check.terms = checks.includes('terms');
 		check.claim = checks.includes('claim');
 		check.email = checks.includes('email');
 		check.single = checks.includes('single');
 	
 	let valid_claim = false;
-	let ams_arrays = [];
-	let found = [];
+	const ams_arrays = [];
+	const found = [];
 	
-	for (var i = 0; i < nodes.snapshotLength; i++) {
+	for (let i = 0; i < nodes.snapshotLength; i++) {
 	
 		const value = nodes.snapshotItem(i).textContent.trim();
 		
@@ -167,7 +167,7 @@ function evalidate(property, checks, format, record) {
 			
 				if (terms.hasOwnProperty(property+'_lc') && terms[property+'_lc'].includes(value.toLowerCase())) {
 					
-					let correct_spelling = '';
+					const correct_spelling = '';
 					
 					for (term of terms[property]) {
 						if (term.toLowerCase() === value.toLowerCase()) {
@@ -232,12 +232,12 @@ function evalidate(property, checks, format, record) {
 			if (value.match(/\s/) && !value.match(/,/)) {
 				_errors.push(messages[property]['separator'].replace('%tag%', '<code>' + escapeHtml(nodes.snapshotItem(i).outerHTML) + '</code>'));
 			}
-			var arr = value.split(/[\s,]+/);
+			const arr = value.split(/[\s,]+/);
 			ams_arrays.push(arr);
 		}
 		
 		else if (property === 'accessibilityHazard') {
-			var hazard = value.toLowerCase();
+			const hazard = value.toLowerCase();
 			if (_hazards.hasOwnProperty(hazard)) {
 				_hazards[hazard] = true;
 			}
@@ -265,10 +265,10 @@ function evalidate(property, checks, format, record) {
 			return sortedA.every((val, index) => val === sortedB[index]);
 		};
 		
-		for (var i = 0; i < ams_arrays.length; i++) {
+		for (let i = 0; i < ams_arrays.length; i++) {
 			
 			// check for identical sets in same or different order
-			for (var k = i+1; k < ams_arrays.length; k++) {
+			for (let k = i+1; k < ams_arrays.length; k++) {
 				if (arraysEqualIgnoreOrder(ams_arrays[i], ams_arrays[k])) {
 					_errors.push(messages[property]['duplicates'].replace('%var%', escapeHtml(ams_arrays[k])));
 				}
@@ -284,7 +284,7 @@ function evalidate(property, checks, format, record) {
 
 
 function checkEmail(email) {
-	var input = document.getElementById('email');
+	const input = document.getElementById('email');
 		input.value = email;
 	
 	if (! (typeof input.checkValidity === 'function' ? input.checkValidity() : /\S+@\S+\.\S+/.test(email))) {
@@ -312,7 +312,7 @@ function validateONIX(record) {
 }
 
 
-let map = {};
+const map = {};
 
 	map.hazards = {
 		'1200': 'none',
@@ -375,7 +375,7 @@ let map = {};
 
 function ovalidate(property, checks, record) {
 
-	var nodes = getNodes(property, record);
+	const nodes = getNodes(property, record);
 	
 	if (nodes.length === 0) {
 		
@@ -394,7 +394,7 @@ function ovalidate(property, checks, record) {
 		return;
 	}
 	
-	let found = [];
+	const found = [];
 	
 	nodes.forEach(function(node) {
 		
@@ -501,12 +501,12 @@ function ovalidate(property, checks, record) {
 
 function getNodes(property, record) {
 
-	var xpaths = onix[property];
+	const xpaths = onix[property];
 	
-	var nodes = [];
+	const nodes = [];
 	
 	xpaths.forEach(function(xpath) {
-		var matches = record.evaluate( xpath, record, nsResolver, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null );
+		const matches = record.evaluate( xpath, record, nsResolver, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null );
 		let node = matches.iterateNext();
 		while (node) {
 			nodes.push(node);
@@ -558,7 +558,7 @@ function resetVariables() {
 
 function checkConformance() {
 
-	let stray_claims = false;
+	const stray_claims = false;
 	
 	if (_conformance['0908'] || _conformance['0909']) {
 	
@@ -568,7 +568,7 @@ function checkConformance() {
 		
 		else {
 		
-			for (var key of Object.keys(_conformance)) {
+			for (let key of Object.keys(_conformance)) {
 				
 				if ((key === '0908') || (key === '0909')) {
 					continue;
@@ -596,7 +596,7 @@ function checkConformance() {
 		
 		else {
 		
-			for (var key of Object.keys(_conformance)) {
+			for (let key of Object.keys(_conformance)) {
 				
 				if ((key === '0902') || (key === '0903')) {
 					continue;
@@ -745,9 +745,9 @@ function nsResolver(prefix) {
 
 function displayResult() {
 
-	let err_div = document.getElementById('validation-result');
+	const err_div = document.getElementById('validation-result');
 	
-	let h2 = err_div.parentNode.querySelector('h2');
+	const h2 = err_div.parentNode.querySelector('h2');
 		h2.classList = '';
 	
 	let result = '';

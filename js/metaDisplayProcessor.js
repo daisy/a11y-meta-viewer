@@ -8,18 +8,16 @@
  * Differences between the epub and onix techniques' variables and outputs are noted throughout.
  */
 
-'use strict';
-
-var metaDisplayProcessor = (function() {
+const metaDisplayProcessor = (function() {
 	
-	var _record = null;
-	var _input_format = null;
-	var _output_format = 'html';
-	var _isONIX = false;
-	var _lang = 'en';
-	var _vocab = null;
-	var _mode = 'compact';
-	var _punctuation = '.';
+	let _record = null;
+	let _input_format = null;
+	let _output_format = 'html';
+	let _isONIX = false;
+	let _lang = 'en';
+	let _vocab = null;
+	let _mode = 'compact';
+	let _punctuation = '.';
 	
 	function initialize(param) {
 	
@@ -35,7 +33,7 @@ var metaDisplayProcessor = (function() {
 		 * omitted from this code. The _record variable is only configured once
 		 */  
 		
-		var record = preprocessing(param.record_as_text);
+		const record = preprocessing(param.record_as_text);
 		
 		if (!record) {
 			return false;
@@ -43,12 +41,11 @@ var metaDisplayProcessor = (function() {
 		
 		_record = record;
 		
-		var root = _record.documentElement;
+		const root = _record.documentElement;
+		let lang = '';
 		
 		if (root.nodeName == 'package') {
 			_input_format = root.getAttribute('version') == '2.0' ? 'epub2' : 'epub3';
-			
-			var lang = '';
 			
 			if (_input_format == 'epub3') {
 				lang = root.getAttribute('xml:lang');
@@ -72,7 +69,7 @@ var metaDisplayProcessor = (function() {
 			_input_format = 'onix';
 			_isONIX = true;
 			
-			var lang = _record.evaluate('/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:Language/onix:LanguageCode', _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+			lang = _record.evaluate('/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:Language/onix:LanguageCode', _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
 			
 			if (!lang) {
 				console.log("No language code found. Defaulting to English.");
@@ -156,7 +153,7 @@ var metaDisplayProcessor = (function() {
 	function waysOfReading() {
 	
 		// return values
-		var result = {};
+		const result = {};
 			result.hasMetadata = true; // this value is never changed to false as this field always displays
 			result.display = _output_format === 'html' ? document.createElement('div') : '[';
 		
@@ -166,16 +163,17 @@ var metaDisplayProcessor = (function() {
 		 
 		// 3.1.1.2 Variables setup
 		
-		var all_textual_content_can_be_modified = checkForNode(xpath.ways_of_reading.all_textual_content_can_be_modified[_input_format]);
+		const all_textual_content_can_be_modified = checkForNode(xpath.ways_of_reading.all_textual_content_can_be_modified[_input_format]);
 		
-		var is_fixed_layout = checkForNode(xpath.ways_of_reading.is_fixed_layout[_input_format]);
+		const is_fixed_layout = checkForNode(xpath.ways_of_reading.is_fixed_layout[_input_format]);
 		
 		// 3.1.1.3 Instructions
 		
-		var vis_result = document.createElement('p');
+		const vis_result = document.createElement('p');
+		let statement = '';
 		
 		if (all_textual_content_can_be_modified) {
-			var statement = _vocab['ways-of-reading']['ways-of-reading-visual-adjustments-modifiable'][_mode];
+			statement = _vocab['ways-of-reading']['ways-of-reading-visual-adjustments-modifiable'][_mode];
 			if (_output_format === 'html') {
 				vis_result.appendChild(document.createTextNode(statement));
 			}
@@ -185,7 +183,7 @@ var metaDisplayProcessor = (function() {
 		}
 		
 		else if (is_fixed_layout) {
-			var statement = _vocab['ways-of-reading']['ways-of-reading-visual-adjustments-unmodifiable'][_mode];
+			statement = _vocab['ways-of-reading']['ways-of-reading-visual-adjustments-unmodifiable'][_mode];
 			if (_output_format === 'html') {
 				vis_result.appendChild(document.createTextNode(statement));
 			}
@@ -195,7 +193,7 @@ var metaDisplayProcessor = (function() {
 		}
 		
 		else {
-			var statement = _vocab['ways-of-reading']['ways-of-reading-visual-adjustments-unknown'][_mode];
+			statement = _vocab['ways-of-reading']['ways-of-reading-visual-adjustments-unknown'][_mode];
 			if (_output_format === 'html') {
 				vis_result.appendChild(document.createTextNode(statement));
 			}
@@ -217,18 +215,18 @@ var metaDisplayProcessor = (function() {
 		 
 		// 3.1.2.2 Variables setup
 		
-		var all_necessary_content_textual = checkForNode(xpath.ways_of_reading.all_necessary_content_textual[_input_format]); 
+		const all_necessary_content_textual = checkForNode(xpath.ways_of_reading.all_necessary_content_textual[_input_format]); 
 		
-		var audio_only_content = checkForNode(xpath.ways_of_reading.audio_only_content[_input_format]);
+		const audio_only_content = checkForNode(xpath.ways_of_reading.audio_only_content[_input_format]);
 		
 		// onix algorithm only
-		var real_text = _isONIX ? checkForNode(xpath.ways_of_reading.real_text[_input_format]) : false;
+		const real_text = _isONIX ? checkForNode(xpath.ways_of_reading.real_text[_input_format]) : false;
 		
 		
 		// epub algorithm only
-		var some_sufficient_text = !_isONIX ? checkForNode(xpath.ways_of_reading.some_sufficient_text[_input_format]) : false;
+		const some_sufficient_text = !_isONIX ? checkForNode(xpath.ways_of_reading.some_sufficient_text[_input_format]) : false;
 		
-		var textual_alternatives = checkForNode(xpath.ways_of_reading.textual_alternatives[_input_format]);
+		const textual_alternatives = checkForNode(xpath.ways_of_reading.textual_alternatives[_input_format]);
 		
 		if (!textual_alternatives && _isONIX) {
 			// onix transcript check requires a different xpath - only test if text alternatives haven't already been found
@@ -236,16 +234,16 @@ var metaDisplayProcessor = (function() {
 		}
 		
 		// epub algorithm only
-		var visual_only_content = !_isONIX ? checkForNode(xpath.ways_of_reading.visual_only_content[_input_format]) : false;
+		const visual_only_content = !_isONIX ? checkForNode(xpath.ways_of_reading.visual_only_content[_input_format]) : false;
 		
 		
 		
 		// 3.1.2.3 Instructions
 		
-		var nonvis_result = document.createElement('p');
+		const nonvis_result = document.createElement('p');
 		
 		if (all_necessary_content_textual) {
-			var statement = _vocab['ways-of-reading']['ways-of-reading-nonvisual-reading-readable'][_mode];
+			statement = _vocab['ways-of-reading']['ways-of-reading-nonvisual-reading-readable'][_mode];
 			if (_output_format === 'html') {
 				nonvis_result.appendChild(document.createTextNode(statement));
 			}
@@ -255,7 +253,7 @@ var metaDisplayProcessor = (function() {
 		}
 		
 		else if (some_sufficient_text || textual_alternatives || real_text) {
-			var statement = _vocab['ways-of-reading']['ways-of-reading-nonvisual-reading-not-fully'][_mode];
+			statement = _vocab['ways-of-reading']['ways-of-reading-nonvisual-reading-not-fully'][_mode];
 			if (_output_format === 'html') {
 				nonvis_result.appendChild(document.createTextNode(statement));
 			}
@@ -265,7 +263,7 @@ var metaDisplayProcessor = (function() {
 		}
 		
 		else if (audio_only_content || visual_only_content) {
-			var statement = _vocab['ways-of-reading']['ways-of-reading-nonvisual-reading-not-readable'][_mode];
+			statement = _vocab['ways-of-reading']['ways-of-reading-nonvisual-reading-not-readable'][_mode];
 			if (_output_format === 'html') {
 				nonvis_result.appendChild(document.createTextNode(statement));
 			}
@@ -275,7 +273,7 @@ var metaDisplayProcessor = (function() {
 		}
 		
 		else {
-			var statement = _vocab['ways-of-reading']['ways-of-reading-nonvisual-reading-no-metadata'][_mode];
+			statement = _vocab['ways-of-reading']['ways-of-reading-nonvisual-reading-no-metadata'][_mode];
 			if (_output_format === 'html') {
 				nonvis_result.appendChild(document.createTextNode(statement));
 			}
@@ -292,10 +290,10 @@ var metaDisplayProcessor = (function() {
 		
 		if (textual_alternatives) {
 			
-			var statement = _vocab['ways-of-reading']['ways-of-reading-nonvisual-reading-alt-text'][_mode];
+			statement = _vocab['ways-of-reading']['ways-of-reading-nonvisual-reading-alt-text'][_mode];
 			
 			if (_output_format === 'html') {
-				var p = document.createElement('p');
+				const p = document.createElement('p');
 					p.appendChild(document.createTextNode(statement));
 			
 				// add punctuation - not in algorithm
@@ -315,25 +313,25 @@ var metaDisplayProcessor = (function() {
 		 */
 		 
 		// 3.1.3.2 Variables setup
-		var all_content_audio = checkForNode(xpath.ways_of_reading.all_content_audio[_input_format]);
+		const all_content_audio = checkForNode(xpath.ways_of_reading.all_content_audio[_input_format]);
 		
 		// onix algorithm only
-		var all_content_pre_recorded = _isONIX ? checkForNode(xpath.ways_of_reading.all_content_pre_recorded[_input_format]) : false;
+		const all_content_pre_recorded = _isONIX ? checkForNode(xpath.ways_of_reading.all_content_pre_recorded[_input_format]) : false;
 		
 		// epub algorithm only
-		var audio_content = !_isONIX ? checkForNode(xpath.ways_of_reading.audio_content[_input_format]) : false;
+		const audio_content = !_isONIX ? checkForNode(xpath.ways_of_reading.audio_content[_input_format]) : false;
 		
 		// onix algorithm only
-		var audiobook = _isONIX ? checkForNode(xpath.ways_of_reading.audiobook[_input_format]) : false;
+		const audiobook = _isONIX ? checkForNode(xpath.ways_of_reading.audiobook[_input_format]) : false;
 
 		// onix algorithm only
-		var non_textual_content_audio = _isONIX ? checkForNode(xpath.ways_of_reading.non_textual_content_audio[_input_format]) : false;
+		const non_textual_content_audio = _isONIX ? checkForNode(xpath.ways_of_reading.non_textual_content_audio[_input_format]) : false;
 		
 		// onix algorithm only
-		var non_textual_content_audio_in_video = _isONIX ? checkForNode(xpath.ways_of_reading.non_textual_content_audio_in_video[_input_format]) : false;
+		const non_textual_content_audio_in_video = _isONIX ? checkForNode(xpath.ways_of_reading.non_textual_content_audio_in_video[_input_format]) : false;
 		
 		// onix has to check two variables for media overlays
-		var synchronised_pre_recorded_audio = !_isONIX ?
+		const synchronised_pre_recorded_audio = !_isONIX ?
 											checkForNode(xpath.ways_of_reading.synchronised_pre_recorded_audio[_input_format]) :
 											(checkForNode(xpath.ways_of_reading.synchronised_pre_recorded_audio[_input_format])
 												&& checkForNode(xpath.ways_of_reading.synchronised_pre_recorded_audio_2[_input_format]));
@@ -341,13 +339,13 @@ var metaDisplayProcessor = (function() {
 		
 		// 3.1.3.3 Instructions
 		
-		var prerec_result = document.createElement('p');
+		const prerec_result = document.createElement('p');
 		
 		// algorithms for the formats are currently too different to combine
 		
 		if (_isONIX) {
 			if (all_content_audio && !synchronised_pre_recorded_audio) {
-				var statement = _vocab['ways-of-reading']['ways-of-reading-prerecorded-audio-only'][_mode];
+				statement = _vocab['ways-of-reading']['ways-of-reading-prerecorded-audio-only'][_mode];
 				if (_output_format === 'html') {
 					prerec_result.appendChild(document.createTextNode(statement));
 				}
@@ -357,7 +355,7 @@ var metaDisplayProcessor = (function() {
 			}
 			
 			else if ((audiobook || non_textual_content_audio || non_textual_content_audio_in_video) && !all_content_pre_recorded) {
-				var statement = _vocab['ways-of-reading']['ways-of-reading-prerecorded-audio-complementary'][_mode];
+				statement = _vocab['ways-of-reading']['ways-of-reading-prerecorded-audio-complementary'][_mode];
 				if (_output_format === 'html') {
 					prerec_result.appendChild(document.createTextNode(statement));
 				}
@@ -367,7 +365,7 @@ var metaDisplayProcessor = (function() {
 			}
 			
 			else if (all_content_pre_recorded && synchronised_pre_recorded_audio) {
-				var statement = _vocab['ways-of-reading']['ways-of-reading-prerecorded-audio-synchronized'][_mode];
+				statement = _vocab['ways-of-reading']['ways-of-reading-prerecorded-audio-synchronized'][_mode];
 				if (_output_format === 'html') {
 					prerec_result.appendChild(document.createTextNode(statement));
 				}
@@ -377,7 +375,7 @@ var metaDisplayProcessor = (function() {
 			}
 			
 			else {
-				var statement = _vocab['ways-of-reading']['ways-of-reading-prerecorded-audio-no-metadata'][_mode];
+				statement = _vocab['ways-of-reading']['ways-of-reading-prerecorded-audio-no-metadata'][_mode];
 				if (_output_format === 'html') {
 					prerec_result.appendChild(document.createTextNode(statement));
 				}
@@ -389,7 +387,7 @@ var metaDisplayProcessor = (function() {
 		
 		else {
 			if (synchronised_pre_recorded_audio) {
-				var statement = _vocab['ways-of-reading']['ways-of-reading-prerecorded-audio-synchronized'][_mode];
+				statement = _vocab['ways-of-reading']['ways-of-reading-prerecorded-audio-synchronized'][_mode];
 				if (_output_format === 'html') {
 					prerec_result.appendChild(document.createTextNode(statement));
 				}
@@ -399,7 +397,7 @@ var metaDisplayProcessor = (function() {
 			}
 			
 			else if (all_content_audio) {
-				var statement = _vocab['ways-of-reading']['ways-of-reading-prerecorded-audio-only'][_mode];
+				statement = _vocab['ways-of-reading']['ways-of-reading-prerecorded-audio-only'][_mode];
 				if (_output_format === 'html') {
 					prerec_result.appendChild(document.createTextNode(statement));
 				}
@@ -409,7 +407,7 @@ var metaDisplayProcessor = (function() {
 			}
 			
 			else if (audio_content) {
-				var statement = _vocab['ways-of-reading']['ways-of-reading-prerecorded-audio-complementary'][_mode];
+				statement = _vocab['ways-of-reading']['ways-of-reading-prerecorded-audio-complementary'][_mode];
 				if (_output_format === 'html') {
 					prerec_result.appendChild(document.createTextNode(statement));
 				}
@@ -419,7 +417,7 @@ var metaDisplayProcessor = (function() {
 			}
 			
 			else {
-				var statement = _vocab['ways-of-reading']['ways-of-reading-prerecorded-audio-no-metadata'][_mode];
+				statement = _vocab['ways-of-reading']['ways-of-reading-prerecorded-audio-no-metadata'][_mode];
 				if (_output_format === 'html') {
 					prerec_result.appendChild(document.createTextNode(statement));
 				}
@@ -451,13 +449,13 @@ var metaDisplayProcessor = (function() {
 	function conformance() {
 		
 		// return values
-		var result = {};
+		const result = {};
 			result.hasMetadata = true; // this value is never changed to false as this field always displays
 			result.display = _output_format === 'html' ? document.createElement('div') : '[';
 		
 		// 3.2.2 Variables setup
 		
-		var conf_info = _isONIX ? processONIXConformance() : processEPUBConformance();
+		const conf_info = _isONIX ? processONIXConformance() : processEPUBConformance();
 		
 			conf_info.conformance = _vocab['conformance']['conformance-details-claim'][_mode];
 			
@@ -471,12 +469,12 @@ var metaDisplayProcessor = (function() {
 		
 		// 3.2.3 Instructions
 		
-		var conf_metadata = !_isONIX ? (conf_info.epub_version || conf_info.wcag_version) : (conf_info.epub_accessibility_10 || conf_info.epub_accessibility_11 || conf_info.wcag_20 || conf_info.wcag_21 || conf_info.wcag_22);
+		const conf_metadata = !_isONIX ? (conf_info.epub_version || conf_info.wcag_version) : (conf_info.epub_accessibility_10 || conf_info.epub_accessibility_11 || conf_info.wcag_20 || conf_info.wcag_21 || conf_info.wcag_22);
 		
 		if (!conf_metadata) {
-			var statement = _vocab.conformance['conformance-no'][_mode];
+			statement = _vocab.conformance['conformance-no'][_mode];
 			if (_output_format === 'html') {
-				var p = document.createElement('p');
+				const p = document.createElement('p');
 					p.appendChild(document.createTextNode(statement))
 				result.display.appendChild(p);
 			}
@@ -487,10 +485,10 @@ var metaDisplayProcessor = (function() {
 		
 		else {
 		
-			var conf_p = document.createElement('p');
+			const conf_p = document.createElement('p');
 			
 			if (conf_info.wcag_level == 'AAA' || conf_info.level_aaa) {
-				var statement = _vocab.conformance['conformance-aaa'][_mode];
+				statement = _vocab.conformance['conformance-aaa'][_mode];
 				if (_output_format === 'html') {
 					conf_p.appendChild(document.createTextNode(statement));
 				}
@@ -500,7 +498,7 @@ var metaDisplayProcessor = (function() {
 			}
 			
 			else if (conf_info.wcag_level == 'AA' || conf_info.level_aa) {
-				var statement = _vocab.conformance['conformance-aa'][_mode];
+				statement = _vocab.conformance['conformance-aa'][_mode];
 				if (_output_format === 'html') {
 					conf_p.appendChild(document.createTextNode(statement));
 				}
@@ -510,7 +508,7 @@ var metaDisplayProcessor = (function() {
 			}
 			
 			else if (conf_info.wcag_level == 'A' || conf_info.level_a) {
-				var statement = _vocab.conformance['conformance-a'][_mode];
+				statement = _vocab.conformance['conformance-a'][_mode];
 				if (_output_format === 'html') {
 					conf_p.appendChild(document.createTextNode(statement));
 				}
@@ -528,10 +526,10 @@ var metaDisplayProcessor = (function() {
 			
 			if (conf_info.certifier) {
 				
-				var statement = _vocab.conformance['conformance-certifier'][_mode].replace('{certifier}', conf_info.certifier) + _punctuation;
+				statement = _vocab.conformance['conformance-certifier'][_mode].replace('{certifier}', conf_info.certifier) + _punctuation;
 					
 				if (_output_format === 'html') {
-					var cert_p = document.createElement('p');
+					const cert_p = document.createElement('p');
 						cert_p.appendChild(document.createTextNode(statement));
 					result.display.appendChild(cert_p);
 				}
@@ -543,12 +541,12 @@ var metaDisplayProcessor = (function() {
 			
 			if (conf_info.certifier_credentials) {
 				
-				var statement = _vocab.conformance['conformance-certifier-credentials'][_mode];
-				var credential = document.createElement('p');
+				statement = _vocab.conformance['conformance-certifier-credentials'][_mode];
+				const credential = document.createElement('p');
 				
 				if (conf_info.certifier_credentials.match('^http') && _output_format !== 'json') {
 					
-					var display = conf_info.certifier_credentials;
+					let display = conf_info.certifier_credentials;
 					
 					if (conf_info.certifier_credentials == 'https://bornaccessible.org/certification/gca-credential/') {
 						display = '<img src="https://daisy.github.io/a11y-meta-viewer/graphics/GCA.png" alt="Benetech Global Certified Accessible" height="80"/>';
@@ -574,16 +572,16 @@ var metaDisplayProcessor = (function() {
 				}
 			}
 			
-			var det_conf = _output_format === 'html' ? document.createElement('details') : '\n\t\t],\n\t\t"details": {';
+			let det_conf = _output_format === 'html' ? document.createElement('details') : '\n\t\t],\n\t\t"details": {';
 			
 			if (_mode == 'descriptive' && _output_format === 'html') {
 				det_conf.setAttribute('open', 'open');
 			}
 			
-			var det_hd = _vocab.conformance['conformance-details-title'];
+			const det_hd = _vocab.conformance['conformance-details-title'];
 			
 			if (_output_format === 'html') {
-				var det_sum = document.createElement('summary');
+				const det_sum = document.createElement('summary');
 					det_sum.appendChild(document.createTextNode(det_hd));
 				
 				det_conf.appendChild(det_sum);
@@ -594,7 +592,7 @@ var metaDisplayProcessor = (function() {
 			}
 			
 			/* build the conformance claim */
-			var conf_claim = _vocab.conformance['conformance-details-claim'][_mode];
+			let conf_claim = _vocab.conformance['conformance-details-claim'][_mode];
 			
 			/* epub accessibility version */
 			if (conf_info.epub_version === '1.1' || conf_info.epub_accessibility_11) {
@@ -646,9 +644,9 @@ var metaDisplayProcessor = (function() {
 			conf_claim += _punctuation;
 			
 			if (_output_format === 'html') {
-				var conf_p = document.createElement('p');
-					conf_p.appendChild(document.createTextNode(conf_claim));
-				det_conf.appendChild(conf_p);
+				const ext_conf_p = document.createElement('p');
+					ext_conf_p.appendChild(document.createTextNode(conf_claim));
+				det_conf.appendChild(ext_conf_p);
 			}
 			
 			else {
@@ -657,20 +655,20 @@ var metaDisplayProcessor = (function() {
 			
 			if (conf_info.certification_date) {
 			
-				var localized_date = conf_info.certification_date;
+				const localized_date = conf_info.certification_date;
 				
 				if (conf_info.certification_date.match(/^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}:\d{2}.*?)?/)) {
-					var report_date = new Date(conf_info.certification_date.replace('-','/').replace(/T.+/, ''));
+					const report_date = new Date(conf_info.certification_date.replace('-','/').replace(/T.+/, ''));
 					const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 					localized_date = report_date.toLocaleDateString(_lang, options);
 				}
 				
-				var statement = _vocab.conformance['conformance-details-certification-info'][_mode].replace('{certification_date}', localized_date) + _punctuation;
+				statement = _vocab.conformance['conformance-details-certification-info'][_mode].replace('{certification_date}', localized_date) + _punctuation;
 				
 				if (_output_format === 'html') {
-					var cert_p = document.createElement('p');
-						cert_p.appendChild(document.createTextNode(statement));
-					det_conf.appendChild(cert_p);
+					const certifier_p = document.createElement('p');
+						certifier_p.appendChild(document.createTextNode(statement));
+					det_conf.appendChild(certifier_p);
 				}
 				
 				else {
@@ -680,12 +678,12 @@ var metaDisplayProcessor = (function() {
 			
 			if (conf_info.certifier_report) {
 				
-				var statement = _vocab.conformance['conformance-details-certifier-report'][_mode];
+				statement = _vocab.conformance['conformance-details-certifier-report'][_mode];
 				
 				if (_output_format === 'html') {
 					statement = statement.replace(/\[([^\]]+)\]/, '<a href="' + conf_info.certifier_report + '">$1</a>') + _punctuation;
 					
-					var rep_p = document.createElement('p');
+					const rep_p = document.createElement('p');
 						rep_p.innerHTML = statement;
 					
 					det_conf.appendChild(rep_p);
@@ -710,19 +708,19 @@ var metaDisplayProcessor = (function() {
 	
 	function processEPUBConformance() {
 		
-		var conf_info = {};
+		const conf_info = {};
 		
 		// js evaluate() can't handle this expression: 
 		// /opf:package/opf:metadata/opf:meta[@property="dcterms:conformsTo" and matches(normalize-space(), "EPUB Accessibility 1\.1 - WCAG 2\.[0-2] Level [A]+")]
 		// using contains() instead to match most of it
 		
-		var conformance = _record.evaluate(xpath.conformance.conformance[_input_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+		let conformance = _record.evaluate(xpath.conformance.conformance[_input_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
 		
-		var epub10_wcag20a = checkForNode(xpath.conformance.epub10a[_input_format]);
+		const epub10_wcag20a = checkForNode(xpath.conformance.epub10a[_input_format]);
 		
-		var epub10_wcag20aa = checkForNode(xpath.conformance.epub10aa[_input_format]);
+		const epub10_wcag20aa = checkForNode(xpath.conformance.epub10aa[_input_format]);
 		
-		var epub10_wcag20aaa = checkForNode(xpath.conformance.epub10aaa[_input_format]);
+		const epub10_wcag20aaa = checkForNode(xpath.conformance.epub10aaa[_input_format]);
 		
 		if (conformance) {
 		
@@ -730,10 +728,10 @@ var metaDisplayProcessor = (function() {
 			
 			conf_info.epub_version = '1.1';
 
-			var version_re = new RegExp('EPUB Accessibility 1\\.1 - WCAG (2\\.[0-2]) Level [A]+');
+			const version_re = new RegExp('EPUB Accessibility 1\\.1 - WCAG (2\\.[0-2]) Level [A]+');
 			conf_info.wcag_version = conformance.replace(version_re, '$1');
 
-			var level_re = new RegExp('EPUB Accessibility 1\\.1 - WCAG 2\\.[0-2] Level ');
+			const level_re = new RegExp('EPUB Accessibility 1\\.1 - WCAG 2\\.[0-2] Level ');
 			conf_info.wcag_level = conformance.replace(level_re, '');
 		}
 		
@@ -774,7 +772,7 @@ var metaDisplayProcessor = (function() {
 	
 	function processONIXConformance() {
 	
-		var conf_info = {}
+		const conf_info = {}
 			conf_info.epub_accessibility_10 = checkForNode(xpath.conformance.epub_accessibility_10_1[_input_format]) || checkForNode(xpath.conformance.epub_accessibility_10_2[_input_format]);
 			conf_info.epub_accessibility_11 = checkForNode(xpath.conformance.epub_accessibility_11[_input_format]);
 			conf_info.level_a = checkForNode(xpath.conformance.level_a_1[_input_format]) || checkForNode(xpath.conformance.level_a_2[_input_format]);
@@ -804,33 +802,33 @@ var metaDisplayProcessor = (function() {
 	function navigation() {
 	
 		// return values
-		var result = {};
+		const result = {};
 			result.hasMetadata = true;
 			result.display = _output_format === 'html' ? document.createElement('div') : '[';
 		
 		// 3.3.2 Variables setup
 		
-		var index_navigation = checkForNode(xpath.navigation.index_navigation[_input_format]);
+		const index_navigation = checkForNode(xpath.navigation.index_navigation[_input_format]);
 		
-		var next_previous_structural_navigation = checkForNode(xpath.navigation.next_previous_structural_navigation[_input_format]);
+		const next_previous_structural_navigation = checkForNode(xpath.navigation.next_previous_structural_navigation[_input_format]);
 		
-		var page_navigation = checkForNode(xpath.navigation.page_navigation[_input_format]);
+		const page_navigation = checkForNode(xpath.navigation.page_navigation[_input_format]);
 		
-		var table_of_contents_navigation = checkForNode(xpath.navigation.table_of_contents_navigation[_input_format]);
+		const table_of_contents_navigation = checkForNode(xpath.navigation.table_of_contents_navigation[_input_format]);
 		
 		// 3.3.3 Instructions
 		
 		if (table_of_contents_navigation || index_navigation || page_navigation || next_previous_structural_navigation) {
 			
-			var navigation = document.createElement('ul');
+			const navigation = document.createElement('ul');
 			
 			if (table_of_contents_navigation) {
-				var statement = _vocab.navigation['navigation-toc'][_mode];
+				statement = _vocab.navigation['navigation-toc'][_mode];
 				
 				if (_output_format === 'html') {
-					var li = document.createElement('li');
-						li.appendChild(document.createTextNode(statement));
-					navigation.appendChild(li);
+					const li_nav = document.createElement('li');
+						li_nav.appendChild(document.createTextNode(statement));
+					navigation.appendChild(li_nav);
 				}
 				
 				else {
@@ -840,12 +838,12 @@ var metaDisplayProcessor = (function() {
 			
 			if (index_navigation) {
 			
-				var statement = _vocab.navigation['navigation-index'][_mode];
+				statement = _vocab.navigation['navigation-index'][_mode];
 				
 				if (_output_format === 'html') {
-					var li = document.createElement('li');
-						li.appendChild(document.createTextNode(statement));
-					navigation.appendChild(li);
+					const li_idx = document.createElement('li');
+						li_idx.appendChild(document.createTextNode(statement));
+					navigation.appendChild(li_idx);
 				}
 				
 				else {
@@ -855,12 +853,12 @@ var metaDisplayProcessor = (function() {
 			
 			if (page_navigation) {
 			
-				var statement = _vocab.navigation['navigation-page-navigation'][_mode];
+				statement = _vocab.navigation['navigation-page-navigation'][_mode];
 				
 				if (_output_format === 'html') {
-					var li = document.createElement('li');
-						li.appendChild(document.createTextNode(statement));
-					navigation.appendChild(li);
+					const li_page = document.createElement('li');
+						li_page.appendChild(document.createTextNode(statement));
+					navigation.appendChild(li_page);
 				}
 				
 				else {
@@ -870,12 +868,12 @@ var metaDisplayProcessor = (function() {
 			
 			if (next_previous_structural_navigation) {
 			
-				var statement = _vocab.navigation['navigation-structural'][_mode];
+				statement = _vocab.navigation['navigation-structural'][_mode];
 				
 				if (_output_format === 'html') {
-					var li = document.createElement('li');
-						li.appendChild(document.createTextNode(statement));
-					navigation.appendChild(li);
+					const li_str = document.createElement('li');
+						li_str.appendChild(document.createTextNode(statement));
+					navigation.appendChild(li_str);
 				}
 				
 				else {
@@ -891,7 +889,7 @@ var metaDisplayProcessor = (function() {
 		else {
 		
 			if (_output_format === 'html') {
-				var p = document.createElement('p');
+				const p = document.createElement('p');
 					p.appendChild(document.createTextNode(_vocab.navigation['navigation-no-metadata'][_mode]));
 					
 					// add punctuation - not in algorithm
@@ -922,56 +920,56 @@ var metaDisplayProcessor = (function() {
 	 function richContent() {
 	 
 		// return values
-		var result = {};
+		const result = {};
 			result.hasMetadata = true;
 			result.display = _output_format === 'html' ? document.createElement('div') : '[';
 		
 		// 3.4.2 Variables setup
 		
 		// onix algorithm only
-		var charts_diagrams_as_non_graphical_data = _isONIX ? checkForNode(xpath.rich_content.charts_diagrams_as_non_graphical_data[_input_format]) : false;
+		const charts_diagrams_as_non_graphical_data = _isONIX ? checkForNode(xpath.rich_content.charts_diagrams_as_non_graphical_data[_input_format]) : false;
 		
 		// epub algorithm only
-		var chemical_formula_as_latex = !_isONIX ? checkForNode(xpath.rich_content.chemical_formula_as_latex[_input_format]) : false;
+		const chemical_formula_as_latex = !_isONIX ? checkForNode(xpath.rich_content.chemical_formula_as_latex[_input_format]) : false;
 		
-		var chemical_formula_as_mathml = checkForNode(xpath.rich_content.chemical_formula_as_mathml[_input_format]);
+		const chemical_formula_as_mathml = checkForNode(xpath.rich_content.chemical_formula_as_mathml[_input_format]);
 		
-		var closed_captions = checkForNode(xpath.rich_content.closed_captions[_input_format]);
-		
-		// epub algorithm only
-		var contains_charts_diagrams = !_isONIX ? checkForNode(xpath.rich_content.contains_charts_diagrams[_input_format]) : false;
+		const closed_captions = checkForNode(xpath.rich_content.closed_captions[_input_format]);
 		
 		// epub algorithm only
-		var contains_chemical_formula = !_isONIX ? checkForNode(xpath.rich_content.contains_chemical_formula[_input_format]) : false;
+		const contains_charts_diagrams = !_isONIX ? checkForNode(xpath.rich_content.contains_charts_diagrams[_input_format]) : false;
 		
-		var contains_math_formula = checkForNode(xpath.rich_content.contains_math_formula[_input_format]);
+		// epub algorithm only
+		const contains_chemical_formula = !_isONIX ? checkForNode(xpath.rich_content.contains_chemical_formula[_input_format]) : false;
 		
-		var full_alternative_textual_descriptions = checkForNode(xpath.rich_content.full_alternative_textual_descriptions[_input_format]);
+		const contains_math_formula = checkForNode(xpath.rich_content.contains_math_formula[_input_format]);
 		
-		var math_formula_as_latex = checkForNode(xpath.rich_content.math_formula_as_latex[_input_format]);
+		const full_alternative_textual_descriptions = checkForNode(xpath.rich_content.full_alternative_textual_descriptions[_input_format]);
 		
-		var math_formula_as_mathml = checkForNode(xpath.rich_content.math_formula_as_mathml[_input_format]);
+		const math_formula_as_latex = checkForNode(xpath.rich_content.math_formula_as_latex[_input_format]);
 		
-		var open_captions = checkForNode(xpath.rich_content.open_captions[_input_format]);
+		const math_formula_as_mathml = checkForNode(xpath.rich_content.math_formula_as_mathml[_input_format]);
 		
-		var transcript = checkForNode(xpath.rich_content.transcript[_input_format]);
+		const open_captions = checkForNode(xpath.rich_content.open_captions[_input_format]);
+		
+		const transcript = checkForNode(xpath.rich_content.transcript[_input_format]);
 
 		// onix algorithm only
-		var short_textual_alternative_images = _isONIX ? checkForNode(xpath.rich_content.short_textual_alternative_images[_input_format]) : false;
+		const short_textual_alternative_images = _isONIX ? checkForNode(xpath.rich_content.short_textual_alternative_images[_input_format]) : false;
 
 
 		// 3.4.3 Instructions
 		
-		var richcontent = document.createElement('ul');
+		const richcontent = document.createElement('ul');
 		
 		if (math_formula_as_mathml) {
 		
-			var statement = _vocab['rich-content']['rich-content-accessible-math-as-mathml'][_mode];
+			statement = _vocab['rich-content']['rich-content-accessible-math-as-mathml'][_mode];
 			
 			if (_output_format === 'html') {
-				var li = document.createElement('li');
-					li.appendChild(document.createTextNode(statement));
-				richcontent.appendChild(li);
+				const li_rc = document.createElement('li');
+					li_rc.appendChild(document.createTextNode(statement));
+				richcontent.appendChild(li_rc);
 			}
 			
 			else {
@@ -981,12 +979,12 @@ var metaDisplayProcessor = (function() {
 		
 		if (math_formula_as_latex) {
 		
-			var statement = _vocab['rich-content']['rich-content-accessible-math-as-latex'][_mode];
+			statement = _vocab['rich-content']['rich-content-accessible-math-as-latex'][_mode];
 			
 			if (_output_format === 'html') {
-				var li = document.createElement('li');
-					li.appendChild(document.createTextNode(statement));
-				richcontent.appendChild(li);
+				const li_ml = document.createElement('li');
+					li_ml.appendChild(document.createTextNode(statement));
+				richcontent.appendChild(li_ml);
 			}
 			
 			else {
@@ -996,12 +994,12 @@ var metaDisplayProcessor = (function() {
 		
 		if (contains_math_formula) {
 		
-			var statement = _vocab['rich-content']['rich-content-accessible-math-described'][_mode];
+			statement = _vocab['rich-content']['rich-content-accessible-math-described'][_mode];
 			
 			if (_output_format === 'html') {
-				var li = document.createElement('li');
-					li.appendChild(document.createTextNode(statement));
-				richcontent.appendChild(li);
+				const li_math = document.createElement('li');
+					li_math.appendChild(document.createTextNode(statement));
+				richcontent.appendChild(li_math);
 			}
 			
 			else {
@@ -1011,12 +1009,12 @@ var metaDisplayProcessor = (function() {
 		
 		if (chemical_formula_as_mathml) {
 		
-			var statement = _vocab['rich-content']['rich-content-accessible-chemistry-as-mathml'][_mode];
+			statement = _vocab['rich-content']['rich-content-accessible-chemistry-as-mathml'][_mode];
 			
 			if (_output_format === 'html') {
-				var li = document.createElement('li');
-					li.appendChild(document.createTextNode(statement));
-				richcontent.appendChild(li);
+				const li_cm = document.createElement('li');
+					li_cm.appendChild(document.createTextNode(statement));
+				richcontent.appendChild(li_cm);
 			}
 			
 			else {
@@ -1026,12 +1024,12 @@ var metaDisplayProcessor = (function() {
 		
 		if (chemical_formula_as_latex) {
 
-			var statement = _vocab['rich-content']['rich-content-accessible-chemistry-as-latex'][_mode];
+			statement = _vocab['rich-content']['rich-content-accessible-chemistry-as-latex'][_mode];
 			
 			if (_output_format === 'html') {
-				var li = document.createElement('li');
-					li.appendChild(document.createTextNode(statement));
-				richcontent.appendChild(li);
+				const li_cl = document.createElement('li');
+					li_cl.appendChild(document.createTextNode(statement));
+				richcontent.appendChild(li_cl);
 			}
 			
 			else {
@@ -1041,12 +1039,12 @@ var metaDisplayProcessor = (function() {
 		
 		if (charts_diagrams_as_non_graphical_data || full_alternative_textual_descriptions) {
 		
-			var statement = _vocab['rich-content']['rich-content-extended'][_mode];
+			statement = _vocab['rich-content']['rich-content-extended'][_mode];
 			
 			if (_output_format === 'html') {
-				var li = document.createElement('li');
-					li.appendChild(document.createTextNode(statement));
-				richcontent.appendChild(li);
+				const li_cd = document.createElement('li');
+					li_cd.appendChild(document.createTextNode(statement));
+				richcontent.appendChild(li_cd);
 			}
 			
 			else {
@@ -1056,12 +1054,12 @@ var metaDisplayProcessor = (function() {
 		
 		if (full_alternative_textual_descriptions) {
 		
-			var statement = _vocab['rich-content']['rich-content-extended'][_mode];
+			statement = _vocab['rich-content']['rich-content-extended'][_mode];
 			
 			if (_output_format === 'html') {
-				var li = document.createElement('li');
-					li.appendChild(document.createTextNode(statement));
-				richcontent.appendChild(li);
+				const li_alt = document.createElement('li');
+					li_alt.appendChild(document.createTextNode(statement));
+				richcontent.appendChild(li_alt);
 			}
 			
 			else {
@@ -1071,12 +1069,12 @@ var metaDisplayProcessor = (function() {
 		
 		if (closed_captions) {
 		
-			var statement = _vocab['rich-content']['rich-content-closed-captions'][_mode];
+			statement = _vocab['rich-content']['rich-content-closed-captions'][_mode];
 			
 			if (_output_format === 'html') {
-				var li = document.createElement('li');
-					li.appendChild(document.createTextNode(statement));
-				richcontent.appendChild(li);
+				const li_cc = document.createElement('li');
+					li_cc.appendChild(document.createTextNode(statement));
+				richcontent.appendChild(li_cc);
 			}
 			
 			else {
@@ -1086,12 +1084,12 @@ var metaDisplayProcessor = (function() {
 		
 		if (open_captions) {
 		
-			var statement = _vocab['rich-content']['rich-content-open-captions'][_mode];
+			statement = _vocab['rich-content']['rich-content-open-captions'][_mode];
 			
 			if (_output_format === 'html') {
-				var li = document.createElement('li');
-					li.appendChild(document.createTextNode(statement));
-				richcontent.appendChild(li);
+				const li_oc = document.createElement('li');
+					li_oc.appendChild(document.createTextNode(statement));
+				richcontent.appendChild(li_oc);
 			}
 			
 			else {
@@ -1101,12 +1099,12 @@ var metaDisplayProcessor = (function() {
 		
 		if (transcript) {
 		
-			var statement = _vocab['rich-content']['rich-content-transcript'][_mode];
+			statement = _vocab['rich-content']['rich-content-transcript'][_mode];
 			
 			if (_output_format === 'html') {
-				var li = document.createElement('li');
-					li.appendChild(document.createTextNode(statement));
-				richcontent.appendChild(li);
+				const li_tr = document.createElement('li');
+					li_tr.appendChild(document.createTextNode(statement));
+				richcontent.appendChild(li_tr);
 			}
 			
 			else {
@@ -1118,17 +1116,17 @@ var metaDisplayProcessor = (function() {
 			result.display.appendChild(richcontent);
 		}
 		
-		var unknown_rich_content = 
+		const unknown_rich_content = 
 				(_isONIX) ?
 					(!(math_formula_as_mathml || math_formula_as_latex || (contains_math_formula && short_textual_alternative_images) || chemical_formula_as_mathml || charts_diagrams_as_non_graphical_data || full_alternative_textual_descriptions || closed_captions || open_captions || transcript))
 					: (!(math_formula_as_mathml || math_formula_as_latex || (contains_math_formula && full_alternative_textual_descriptions) || chemical_formula_as_mathml || full_alternative_textual_descriptions || closed_captions || open_captions || transcript));
 		
 		if (unknown_rich_content) {
 			
-			var statement = _vocab['rich-content']['rich-content-unknown'][_mode] + _punctuation;
+			statement = _vocab['rich-content']['rich-content-unknown'][_mode] + _punctuation;
 			
 			if (_output_format === 'html') {
-				var p = document.createElement('p');
+				const p = document.createElement('p');
 					p.appendChild(document.createTextNode(statement));
 				
 				result.display.appendChild(p);
@@ -1156,44 +1154,44 @@ var metaDisplayProcessor = (function() {
 	function hazards() {
 	
 		// return values
-		var result = {};
+		const result = {};
 			result.hasMetadata = true;
 			result.display = _output_format === 'html' ? document.createElement('div') : '[';
 		
 		// 3.5.2 Variables setup
 		
-		var flashing_hazard = checkForNode(xpath.hazards.flashing_hazard[_input_format]);
+		const flashing_hazard = checkForNode(xpath.hazards.flashing_hazard[_input_format]);
 		
-		var motion_simulation_hazard = checkForNode(xpath.hazards.motion_simulation_hazard[_input_format]);
+		const motion_simulation_hazard = checkForNode(xpath.hazards.motion_simulation_hazard[_input_format]);
 		
-		var no_flashing_hazard = checkForNode(xpath.hazards.no_flashing_hazard[_input_format]);
+		const no_flashing_hazard = checkForNode(xpath.hazards.no_flashing_hazard[_input_format]);
 		
-		var no_hazards_or_warnings_confirmed = checkForNode(xpath.hazards.no_hazards_or_warnings_confirmed[_input_format]);
+		const no_hazards_or_warnings_confirmed = checkForNode(xpath.hazards.no_hazards_or_warnings_confirmed[_input_format]);
 		
-		var no_motion_hazard = checkForNode(xpath.hazards.no_motion_hazard[_input_format]);
+		const no_motion_hazard = checkForNode(xpath.hazards.no_motion_hazard[_input_format]);
 		
-		var no_sound_hazard = checkForNode(xpath.hazards.no_sound_hazard[_input_format]);
+		const no_sound_hazard = checkForNode(xpath.hazards.no_sound_hazard[_input_format]);
 		
-		var sound_hazard = checkForNode(xpath.hazards.sound_hazard[_input_format]);
+		const sound_hazard = checkForNode(xpath.hazards.sound_hazard[_input_format]);
 		
-		var unknown_flashing_hazard = checkForNode(xpath.hazards.unknown_flashing_hazard[_input_format]);
+		const unknown_flashing_hazard = checkForNode(xpath.hazards.unknown_flashing_hazard[_input_format]);
 		
-		var unknown_if_contains_hazards = checkForNode(xpath.hazards.unknown_if_contains_hazards[_input_format]);
+		const unknown_if_contains_hazards = checkForNode(xpath.hazards.unknown_if_contains_hazards[_input_format]);
 		
-		var unknown_motion_hazard = checkForNode(xpath.hazards.unknown_motion_hazard[_input_format]);
+		const unknown_motion_hazard = checkForNode(xpath.hazards.unknown_motion_hazard[_input_format]);
 		
-		var unknown_sound_hazard = checkForNode(xpath.hazards.unknown_sound_hazard[_input_format]);
+		const unknown_sound_hazard = checkForNode(xpath.hazards.unknown_sound_hazard[_input_format]);
 		
 		// 3.5.3 Instructions
 		
 		if (no_hazards_or_warnings_confirmed || (no_flashing_hazard && no_motion_hazard && no_sound_hazard)) {
 			
-			var statement = _vocab['hazards']['hazards-none'][_mode] + _punctuation;
+			statement = _vocab['hazards']['hazards-none'][_mode] + _punctuation;
 			
 			if (_output_format === 'html') {
-				var p = document.createElement('p');
-					p.appendChild(document.createTextNode(statement));
-				result.display.appendChild(p);
+				const p_nohaz = document.createElement('p');
+					p_nohaz.appendChild(document.createTextNode(statement));
+				result.display.appendChild(p_nohaz);
 			}
 			
 			else {
@@ -1203,12 +1201,12 @@ var metaDisplayProcessor = (function() {
 
 		else if (unknown_if_contains_hazards || (unknown_flashing_hazard && unknown_motion_hazard && unknown_sound_hazard)) {
 			
-			var statement = _vocab['hazards']['hazards-unknown'][_mode] + _punctuation;
+			statement = _vocab['hazards']['hazards-unknown'][_mode] + _punctuation;
 			
 			if (_output_format === 'html') {
-				var p = document.createElement('p');
-					p.appendChild(document.createTextNode(statement));
-				result.display.appendChild(p);
+				const p_unk = document.createElement('p');
+					p_unk.appendChild(document.createTextNode(statement));
+				result.display.appendChild(p_unk);
 			}
 			
 			else {
@@ -1220,7 +1218,7 @@ var metaDisplayProcessor = (function() {
 				|| no_flashing_hazard || no_motion_hazard || no_sound_hazard
 				|| unknown_flashing_hazard || unknown_motion_hazard || unknown_sound_hazard) {
 		
-			var hazards = [];
+			const hazards = [];
 			
 			if (flashing_hazard && _vocab['hazards'].hasOwnProperty('hazards-flashing')) {
 				hazards.push(_vocab['hazards']['hazards-flashing'][_mode]);
@@ -1260,13 +1258,13 @@ var metaDisplayProcessor = (function() {
 			
 			if (hazards.length == 1) {
 				
-				var statement = hazards[0] + _punctuation;
+				statement = hazards[0] + _punctuation;
 				
 				if (_output_format === 'html') {
-					var p = document.createElement('p');
-						p.appendChild(document.createTextNode(statement));
+					const p_haz = document.createElement('p');
+						p_haz.appendChild(document.createTextNode(statement));
 					
-					result.display.appendChild(p);
+					result.display.appendChild(p_haz);
 				}
 				
 				else {
@@ -1276,14 +1274,14 @@ var metaDisplayProcessor = (function() {
 			
 			else {
 			
-				var ul = document.createElement('ul');
+				const ul = document.createElement('ul');
 				
 				hazards.forEach(function(hazard) {
 				
-					var statement = hazard + _punctuation;
+					statement = hazard + _punctuation;
 					
 					if (_output_format === 'html') {
-						var li = document.createElement('li');
+						const li = document.createElement('li');
 							li.appendChild(document.createTextNode(statement));
 						
 						ul.appendChild(li);
@@ -1302,13 +1300,13 @@ var metaDisplayProcessor = (function() {
 		
 		else {
 		
-			var statement = _vocab['hazards']['hazards-no-metadata'][_mode] + _punctuation;
+			statement = _vocab['hazards']['hazards-no-metadata'][_mode] + _punctuation;
 			
 			if (_output_format === 'html') {
-				var p = document.createElement('p');
-					p.appendChild(document.createTextNode(statement));
+				const p_nometa = document.createElement('p');
+					p_nometa.appendChild(document.createTextNode(statement));
 				
-				result.display.appendChild(p);
+				result.display.appendChild(p_nometa);
 			}
 			
 			else {
@@ -1334,41 +1332,41 @@ var metaDisplayProcessor = (function() {
 	 function accessibilitySummary() {
 	 
 		// return values
-		var result = {};
+		const result = {};
 			result.hasMetadata = true;
 			result.display = _output_format === 'html' ? document.createElement('div') : '[';
 		
 		// 3.6.2 Variables setup
 		
 		// onix algorithm only
-		var accessibility_addendum = _isONIX ? _record.evaluate(xpath.summary.accessibility_addendum[_input_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue : '';
+		const accessibility_addendum = _isONIX ? _record.evaluate(xpath.summary.accessibility_addendum[_input_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue : '';
 
-		var accessibility_summary =  _record.evaluate(xpath.summary.accessibility_summary[_input_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+		const accessibility_summary =  _record.evaluate(xpath.summary.accessibility_summary[_input_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
 		
 		// onix algorithm only
-		var known_limited_accessibility = _isONIX ? _record.evaluate(xpath.summary.known_limited_accessibility[_input_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue : '';
+		const known_limited_accessibility = _isONIX ? _record.evaluate(xpath.summary.known_limited_accessibility[_input_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue : '';
 		
 		// onix algorithm only
-		var lang_attribute_accessibility_addendum = _isONIX ? _record.evaluate(xpath.summary.lang_attribute_accessibility_addendum[_input_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue : '';
+		const lang_attribute_accessibility_addendum = _isONIX ? _record.evaluate(xpath.summary.lang_attribute_accessibility_addendum[_input_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue : '';
 		
-		var lang_attribute_accessibility_summary = _record.evaluate(xpath.summary.lang_attribute_accessibility_summary[_input_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+		const lang_attribute_accessibility_summary = _record.evaluate(xpath.summary.lang_attribute_accessibility_summary[_input_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
 		
 		// onix algorithm only
-		var lang_known_limited_accessibility = _isONIX ? _record.evaluate(xpath.summary.lang_known_limited_accessibility[_input_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue : '';
+		const lang_known_limited_accessibility = _isONIX ? _record.evaluate(xpath.summary.lang_known_limited_accessibility[_input_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue : '';
 		
-		var language_of_text = _record.evaluate(xpath.summary.language_of_text[_input_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+		const language_of_text = _record.evaluate(xpath.summary.language_of_text[_input_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
 
 		// onix algorithm only
-		var publisher_contact_for_accessibility = _record.evaluate(xpath.summary.publisher_contact_for_accessibility[_input_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+		const publisher_contact_for_accessibility = _record.evaluate(xpath.summary.publisher_contact_for_accessibility[_input_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
 		
 
 		// 3.6.3 Instructions
 		
-		var sum_result = document.createElement('p');
+		const sum_result = document.createElement('p');
 		
-		var language_accessibility_addendum;
-		var language_accessibility_summary;
-		var language_known_limited_accessibility;
+		let language_accessibility_addendum = '';
+		let language_accessibility_summary = '';
+		let language_known_limited_accessibility = '';
 		
 		if (lang_attribute_accessibility_addendum) {
 			language_accessibility_addendum = lang_attribute_accessibility_addendum;
@@ -1398,10 +1396,10 @@ var metaDisplayProcessor = (function() {
 		
 		if (known_limited_accessibility) {
 			if (_output_format === 'html') {
-				var p = document.createElement('p');
-					p.appendChild(document.createTextNode(known_limited_accessibility));
-					p.lang = language_known_limited_accessibility;
-				result.display.appendChild(p);
+				const p_kla = document.createElement('p');
+					p_kla.appendChild(document.createTextNode(known_limited_accessibility));
+					p_kla.lang = language_known_limited_accessibility;
+				result.display.appendChild(p_kla);
 			}
 			
 			else {
@@ -1411,10 +1409,10 @@ var metaDisplayProcessor = (function() {
 		
 		if (accessibility_addendum) {
 			if (_output_format === 'html') {
-				var p = document.createElement('p');
-					p.appendChild(document.createTextNode(accessibility_addendum));
-					p.lang = language_accessibility_addendum;
-				result.display.appendChild(p);
+				const p_aa = document.createElement('p');
+					p_aa.appendChild(document.createTextNode(accessibility_addendum));
+					p_aa.lang = language_accessibility_addendum;
+				result.display.appendChild(p_aa);
 			}
 			
 			else {
@@ -1435,7 +1433,7 @@ var metaDisplayProcessor = (function() {
 		
 		else {
 			
-			var statement = _vocab['accessibility-summary']['accessibility-summary-no-metadata'][_mode] + _punctuation;
+			statement = _vocab['accessibility-summary']['accessibility-summary-no-metadata'][_mode] + _punctuation;
 			
 			if (_output_format === 'html') {
 				sum_result.appendChild(document.createTextNode(statement));
@@ -1449,15 +1447,15 @@ var metaDisplayProcessor = (function() {
 		}
 		
 		if (publisher_contact_for_accessibility) {
-			var statement = _vocab['accessibility-summary']['publisher-contact-for-accessibility'][_mode] + _punctuation;
-			var contact_email = '<a href="mailto:' + publisher_contact_for_accessibility + '">' + publisher_contact_for_accessibility + '</a>';
+			statement = _vocab['accessibility-summary']['publisher-contact-for-accessibility'][_mode] + _punctuation;
+			const contact_email = '<a href="mailto:' + publisher_contact_for_accessibility + '">' + publisher_contact_for_accessibility + '</a>';
 			
 			statement = statement.replace('{publisher_contact_for_accessibility}', contact_email);
 			
 			if (_output_format === 'html') {
-				var p = document.createElement('p');
-					p.innerHTML = statement;
-				sum_result.appendChild(p);
+				const p_pca = document.createElement('p');
+					p_pca.innerHTML = statement;
+				sum_result.appendChild(p_pca);
 			}
 			
 			else {
@@ -1486,17 +1484,17 @@ var metaDisplayProcessor = (function() {
 	function legal() {
 	
 		// return values
-		var result = {};
+		const result = {};
 			result.hasMetadata = true;
 			result.display = _output_format === 'html' ? document.createElement('div') : '[';
 		
 		// 3.7.2 Variables setup
-		var exemption = checkForNode(xpath.legal.exemption[_input_format]);
+		const exemption = checkForNode(xpath.legal.exemption[_input_format]);
 		
 		// 3.7.3 Instructions
 		
-		var legal_result = document.createElement('p');
-		var statement;
+		const legal_result = document.createElement('p');
+		let statement = '';
 		
 		if (exemption) {
 			statement = _vocab['legal-considerations']['legal-considerations-exempt'][_mode] + _punctuation;
@@ -1528,66 +1526,66 @@ var metaDisplayProcessor = (function() {
 	 function additionalA11yInfo() {
 	 
 		// return values
-		var result = {};
+		const result = {};
 			result.hasMetadata = false; // assume no metadata and flip as testing
 			result.display = _output_format === 'html' ? document.createElement('div') : '[';
 		
 		// 3.8.2 Variables setup
 		
 		// epub algorithm only
-		var aria = _input_format == !_isONIX ? checkForNode(xpath.add_info.aria[_input_format]) : false;
+		const aria = _input_format == !_isONIX ? checkForNode(xpath.add_info.aria[_input_format]) : false;
 		
 		// epub algorithm only
-		var audio_descriptions = !_isONIX ? checkForNode(xpath.add_info.audio_descriptions[_input_format]) : false;
+		const audio_descriptions = !_isONIX ? checkForNode(xpath.add_info.audio_descriptions[_input_format]) : false;
 		
 		// epub algorithm only
-		var braille = !_isONIX ? checkForNode(xpath.add_info.braille[_input_format]) : false;
+		const braille = !_isONIX ? checkForNode(xpath.add_info.braille[_input_format]) : false;
 		
 		// onix algorithm only
-		var color_not_sole_means_of_conveying_information = _isONIX ? checkForNode(xpath.add_info.color_not_sole_means_of_conveying_information[_input_format]) : false;
+		const color_not_sole_means_of_conveying_information = _isONIX ? checkForNode(xpath.add_info.color_not_sole_means_of_conveying_information[_input_format]) : false;
 		
 		// onix algorithm only
-		var dyslexia_readability = _isONIX ? checkForNode(xpath.add_info.dyslexia_readability[_input_format]) : false;
+		const dyslexia_readability = _isONIX ? checkForNode(xpath.add_info.dyslexia_readability[_input_format]) : false;
 
 		// epub algorithm only
-		var full_ruby_annotations = !_isONIX ? checkForNode(xpath.add_info.full_ruby_annotations[_input_format]) : false;
+		const full_ruby_annotations = !_isONIX ? checkForNode(xpath.add_info.full_ruby_annotations[_input_format]) : false;
 		
-		var high_contrast_between_foreground_and_background_audio = checkForNode(xpath.add_info.high_contrast_between_foreground_and_background_audio[_input_format]);
+		const high_contrast_between_foreground_and_background_audio = checkForNode(xpath.add_info.high_contrast_between_foreground_and_background_audio[_input_format]);
 		
-		var high_contrast_between_text_and_background = checkForNode(xpath.add_info.high_contrast_between_text_and_background[_input_format]);
-		
-		// epub algorithm only
-		var large_print = !_isONIX ? checkForNode(xpath.add_info.large_print[_input_format]) : false;
+		const high_contrast_between_text_and_background = checkForNode(xpath.add_info.high_contrast_between_text_and_background[_input_format]);
 		
 		// epub algorithm only
-		var page_break_markers = !_isONIX ? checkForNode(xpath.add_info.page_break_markers[_input_format]) : false;
+		const large_print = !_isONIX ? checkForNode(xpath.add_info.large_print[_input_format]) : false;
 		
 		// epub algorithm only
-		var ruby_annotations = !_isONIX ? checkForNode(xpath.add_info.ruby_annotations[_input_format]) : false;
-		
-		var sign_language = checkForNode(xpath.add_info.sign_language[_input_format]);
+		const page_break_markers = !_isONIX ? checkForNode(xpath.add_info.page_break_markers[_input_format]) : false;
 		
 		// epub algorithm only
-		var tactile_graphic = !_isONIX ? checkForNode(xpath.add_info.tactile_graphic[_input_format]) : false;
+		const ruby_annotations = !_isONIX ? checkForNode(xpath.add_info.ruby_annotations[_input_format]) : false;
+		
+		const sign_language = checkForNode(xpath.add_info.sign_language[_input_format]);
 		
 		// epub algorithm only
-		var tactile_object = !_isONIX ? checkForNode(xpath.add_info.tactile_object[_input_format]) : false;
+		const tactile_graphic = !_isONIX ? checkForNode(xpath.add_info.tactile_graphic[_input_format]) : false;
 		
-		var text_to_speech_hinting = checkForNode(xpath.add_info.text_to_speech_hinting[_input_format]);
+		// epub algorithm only
+		const tactile_object = !_isONIX ? checkForNode(xpath.add_info.tactile_object[_input_format]) : false;
+		
+		const text_to_speech_hinting = checkForNode(xpath.add_info.text_to_speech_hinting[_input_format]);
 
 		// onix algorithm only
-		var ultra_high_contrast_between_text_and_background = _isONIX ? checkForNode(xpath.add_info.ultra_high_contrast_between_text_and_background[_input_format]) : false;
+		const ultra_high_contrast_between_text_and_background = _isONIX ? checkForNode(xpath.add_info.ultra_high_contrast_between_text_and_background[_input_format]) : false;
 		
 		// onix algorithm only
-		var visible_page_numbering = _isONIX ? checkForNode(xpath.add_info.page_break_markers[_input_format]) : false;
+		const visible_page_numbering = _isONIX ? checkForNode(xpath.add_info.page_break_markers[_input_format]) : false;
 		
 		// onix algorithm only
-		var without_background_sounds = _isONIX ? checkForNode(xpath.add_info.without_background_sounds[_input_format]) : false;
+		const without_background_sounds = _isONIX ? checkForNode(xpath.add_info.without_background_sounds[_input_format]) : false;
 		
 		
 		// 3.8.3 Instructions
 		
-		var add_info = [];
+		const add_info = [];
 		
 		if (aria) {
 			add_info.push(_vocab['additional-accessibility-information']['additional-accessibility-information-aria'][_mode]);
@@ -1661,11 +1659,11 @@ var metaDisplayProcessor = (function() {
 			add_info.push(_vocab['additional-accessibility-information']['additional-accessibility-information-without-background-sounds'][_mode]);
 		}
 		
-		var aai = document.createElement('ul');
+		const aai = document.createElement('ul');
 		
 		add_info.sort().forEach((info) => {
 			if (_output_format === 'html') {
-				var li = document.createElement('li');
+				const li = document.createElement('li');
 					li.appendChild(document.createTextNode(info));
 				aai.appendChild(li);
 			}
@@ -1691,10 +1689,10 @@ var metaDisplayProcessor = (function() {
 	
 	function preprocessing(record_as_text) {
 		
-		var record;
+		let record = null;
 		
 		try {
-			var parser = new DOMParser();
+			const parser = new DOMParser();
 			record = parser.parseFromString(record_as_text, "text/xml");
 		}
 		
@@ -1710,7 +1708,7 @@ var metaDisplayProcessor = (function() {
 	// 3.2 Check for node
 	
 	function checkForNode(path) {
-		var result = _record.evaluate(path, _record, nsResolver, XPathResult.BOOLEAN_TYPE, null);
+		const result = _record.evaluate(path, _record, nsResolver, XPathResult.BOOLEAN_TYPE, null);
 		return result.booleanValue;
 	}
 	
@@ -1719,7 +1717,7 @@ var metaDisplayProcessor = (function() {
 	
 	// get the heading for a section or subsection
 	function getHeader(id, sub_hd) {
-		var title_id = id + (sub_hd ? '-' + sub_hd : '-title');
+		const title_id = id + (sub_hd ? '-' + sub_hd : '-title');
 		if (id && _vocab.hasOwnProperty(id) && _vocab[id].hasOwnProperty(title_id)) {
 			return _vocab[id][title_id];
 		}
@@ -1745,10 +1743,10 @@ var metaDisplayProcessor = (function() {
 	// formats the json array values
 	function jsonFormat(options) {
 		
-		var indent = options.comma ? ',\n' : '\n';
+		let indent = options.comma ? ',\n' : '\n';
 		
 		if (options.tabs) {
-			for (var i = 0; i < options.tabs; i++) {
+			for (let i = 0; i < options.tabs; i++) {
 				indent += '\t';
 			}
 		}
@@ -1761,7 +1759,7 @@ var metaDisplayProcessor = (function() {
 	
 	function getVocab(lang) {
 	
-		var vocab;
+		let vocab = null;
 		
 		switch (lang) {
 			case "de":
@@ -1811,7 +1809,7 @@ var metaDisplayProcessor = (function() {
 	
 	function generalInfo() {
 		
-		var result = {};
+		const result = {};
 			result.title = '';
 			result.publisher = '';
 			result.lang = '';
@@ -1821,7 +1819,7 @@ var metaDisplayProcessor = (function() {
 			result.translation.version = '';
 			result.translation.desc = '';
 		
-		var title_node = _record.evaluate( xpath['pub_info']['title'][_input_format], _record, nsResolver, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null );
+		const title_node = _record.evaluate( xpath['pub_info']['title'][_input_format], _record, nsResolver, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null );
 		
 		if (title_node.snapshotLength) {
 		
@@ -1844,13 +1842,13 @@ var metaDisplayProcessor = (function() {
 			}
 		}
 		
-		var pub_node = _record.evaluate( xpath['pub_info']['publisher'][_input_format], _record, nsResolver, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null );
+		const pub_node = _record.evaluate( xpath['pub_info']['publisher'][_input_format], _record, nsResolver, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null );
 		
 		if (pub_node.snapshotLength) {
 			result.publisher = pub_node.snapshotItem(0).textContent.trim();
 		}
 		
-		var lang_node = _record.evaluate( xpath['pub_info']['language'][_input_format], _record, nsResolver, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null );
+		const lang_node = _record.evaluate( xpath['pub_info']['language'][_input_format], _record, nsResolver, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null );
 		
 		if (lang_node.snapshotLength) {
 			result.lang = lang_node.snapshotItem(0).textContent.trim();
