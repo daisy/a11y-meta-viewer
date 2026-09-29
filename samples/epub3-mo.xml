@@ -10,6 +10,7 @@
 		<meta id="conf" property="dcterms:conformsTo">EPUB Accessibility 1.1 - WCAG 2.1 Level AA</meta>
 		<meta property="a11y:certifiedBy">My Organization</meta>
 		<meta property="a11y:certifierCredential">My Credential</meta>
+		<meta property="a11y:contactEmail">a11y@example.org</meta>
 		<meta property="schema:accessMode">textual</meta>
 		<meta property="schema:accessModeSufficient">textual</meta>
 		<meta property="schema:accessModeSufficient">auditory</meta>

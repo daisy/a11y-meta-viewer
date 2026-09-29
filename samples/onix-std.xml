@@ -88,6 +88,11 @@
 				<ProductFormFeatureDescription>https://bornaccessible.org/certification/gca-credential/</ProductFormFeatureDescription>
 			</ProductFormFeature>
 			<ProductFormFeature>
+				<ProductFormFeatureType>09</ProductFormFeatureType>
+				<ProductFormFeatureValue>99</ProductFormFeatureValue>
+				<ProductFormFeatureDescription>a11y@example.org</ProductFormFeatureDescription>
+			</ProductFormFeature>
+			<ProductFormFeature>
 				<ProductFormFeatureType>15</ProductFormFeatureType>
 				<ProductFormFeatureValue>101E</ProductFormFeatureValue>
 			</ProductFormFeature>

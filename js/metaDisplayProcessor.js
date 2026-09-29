@@ -1357,7 +1357,7 @@ const metaDisplayProcessor = (function() {
 		const language_of_text = _record.evaluate(xpath.summary.language_of_text[_input_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
 
 		// onix algorithm only
-		const publisher_contact_for_accessibility = _record.evaluate(xpath.summary.publisher_contact_for_accessibility[_input_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+		const accessibility_summary_publisher_contact = _record.evaluate(xpath.summary.accessibility_summary_publisher_contact[_input_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
 		
 
 		// 3.6.3 Instructions
@@ -1446,11 +1446,11 @@ const metaDisplayProcessor = (function() {
 			result.hasMetadata = false;
 		}
 		
-		if (publisher_contact_for_accessibility) {
-			statement = _vocab['accessibility-summary']['publisher-contact-for-accessibility'][_mode] + _punctuation;
-			const contact_email = '<a href="mailto:' + publisher_contact_for_accessibility + '">' + publisher_contact_for_accessibility + '</a>';
+		if (accessibility_summary_publisher_contact) {
+			statement = _vocab['accessibility-summary']['accessibility-summary-publisher-contact'][_mode] + _punctuation;
+			const contact_email = '<a href="mailto:' + accessibility_summary_publisher_contact + '">' + accessibility_summary_publisher_contact + '</a>';
 			
-			statement = statement.replace('{publisher_contact_for_accessibility}', contact_email);
+			statement = statement.replace('{accessibility_summary_publisher_contact}', contact_email);
 			
 			if (_output_format === 'html') {
 				const p_pca = document.createElement('p');

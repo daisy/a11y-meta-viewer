@@ -8,6 +8,7 @@
     <meta id="conf" name="dcterms:conformsTo" content="EPUB Accessibility 1.1 - WCAG 2.1 Level AA"/>
     <meta name="a11y:certifiedBy" content="My Organization"/>
     <meta name="a11y:certifierCredential" content="My Credential"/>
+    <meta name="a11y:contactEmail" content="a11y@example.org"/>
     <meta name="schema:accessMode" content="textual"/>
     <meta name="schema:accessMode" content="visual"/>
     <meta name="schema:accessModeSufficient" content="textual"/>
