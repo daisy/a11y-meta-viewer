@@ -188,8 +188,8 @@ var xpath = {
 			onix: '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "16"]'
 		},
 		full_alternative_textual_descriptions: {
-			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="longDescriptions"]',
-			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessibilityFeature" and normalize-space(@content)="longDescriptions"]',
+			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="longDescription"]',
+			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessibilityFeature" and normalize-space(@content)="longDescription"]',
 			onix: '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "15"]'
 		},
 		short_textual_alternative_images: {
