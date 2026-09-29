@@ -77,7 +77,7 @@ const en = {
         },
         "conformance-certifier": {
             "compact": "The publication was certified by {certifier}",
-            "descriptive": "The publication was certified by  {certifier}"
+            "descriptive": "The publication was certified by {certifier}"
         },
         "conformance-certifier-credentials": {
             "compact": "The certifier's credential is {certifier_credentials}",
@@ -116,16 +116,16 @@ const en = {
             "descriptive": "Level AAA"
         },
         "conformance-details-wcag-2-0": {
-            "compact": " WCAG 2.0",
-            "descriptive": "Web Content Accessibility Guidelines (WCAG) 2.0"
+            "compact": "WCAG 2.0",
+            "descriptive": " Web Content Accessibility Guidelines (WCAG) 2.0"
         },
         "conformance-details-wcag-2-1": {
-            "compact": " WCAG 2.1",
-            "descriptive": "Web Content Accessibility Guidelines (WCAG) 2.1"
+            "compact": "WCAG 2.1",
+            "descriptive": " Web Content Accessibility Guidelines (WCAG) 2.1"
         },
         "conformance-details-wcag-2-2": {
-            "compact": " WCAG 2.2",
-            "descriptive": "Web Content Accessibility Guidelines (WCAG) 2.2"
+            "compact": "WCAG 2.2",
+            "descriptive": " Web Content Accessibility Guidelines (WCAG) 2.2"
         },
         "conformance-no": {
             "compact": "No information is available",
@@ -259,7 +259,7 @@ const en = {
             "compact": "No information is available",
             "descriptive": "No information is available"
         },
-        "publisher-contact-for-accessibility": {
+        "accessibility-summary-publisher-contact": {
             "compact": "For more information about the accessibility of this product, please contact the publisher: {publisher_contact_for_accessibility}",
             "descriptive": "For more information about the accessibility of this product, please contact the publisher: {publisher_contact_for_accessibility}"
         }
@@ -318,8 +318,8 @@ const en = {
             "descriptive": "Page breaks included from the original print source"
         },
         "additional-accessibility-information-ruby-annotations": {
-            "compact": "Some Ruby annotations",
-            "descriptive": "Some Ruby annotations"
+            "compact": "Some ruby annotations",
+            "descriptive": "Some ruby annotations"
         },
         "additional-accessibility-information-sign-language": {
             "compact": "Sign language",
