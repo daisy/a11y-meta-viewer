@@ -81,7 +81,7 @@ function validateEPUB(record, input_format) {
 	
 	evalidate('accessibilityFeature', ['required', 'single', 'duplicates', 'terms'], input_format, record);
 	
-	evalidate('accessModeSufficient', ['required', 'duplicates', 'terms'], input_format, record);
+	evalidate('accessModeSufficient', ['required'], input_format, record);
 	
 	evalidate('accessibilityHazard', ['required', 'single', 'duplicates', 'terms'], input_format, record);
 	
@@ -163,7 +163,7 @@ function evalidate(property, checks, format, record) {
 		
 		if (check.terms) {
 		
-			if (!terms[property].includes(value) && property !== 'accessModeSufficient') {
+			if (!terms[property].includes(value)) {
 			
 				if (terms.hasOwnProperty(property+'_lc') && terms[property+'_lc'].includes(value.toLowerCase())) {
 					
@@ -211,18 +211,20 @@ function evalidate(property, checks, format, record) {
 		
 		// check for duplicates
 		
-		if (found.includes(value.toLowerCase())) {
-			if (property === 'accessibilitySummary') {
-				_warnings.push(messages[property]['duplicates']);
+		if (check.duplicates) {
+			if (found.includes(value.toLowerCase())) {
+				if (property === 'accessibilitySummary') {
+					_warnings.push(messages[property]['duplicates']);
+				}
+				
+				else {
+					_warnings.push(messages[property]['duplicates'].replace('%tag%', '<code>' + escapeHtml(nodes.snapshotItem(i).outerHTML) + '</code>'));
+				}
 			}
 			
 			else {
-				_warnings.push(messages[property]['duplicates'].replace('%tag%', '<code>' + escapeHtml(nodes.snapshotItem(i).outerHTML) + '</code>'));
+				found.push(value.toLowerCase());
 			}
-		}
-		
-		else {
-			found.push(value.toLowerCase());
 		}
 		
 		
@@ -270,7 +272,7 @@ function evalidate(property, checks, format, record) {
 			// check for identical sets in same or different order
 			for (var k = i+1; k < ams_arrays.length; k++) {
 				if (arraysEqualIgnoreOrder(ams_arrays[i], ams_arrays[k])) {
-					_errors.push(messages[property]['duplicates'].replace('%var%', escapeHtml(ams_arrays[k])));
+					_errors.push(messages[property]['duplicates'].replace('%var%', escapeHtml(ams_arrays[k].join(','))));
 				}
 			}
 			
