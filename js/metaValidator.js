@@ -163,7 +163,7 @@ function evalidate(property, checks, format, record) {
 		
 		if (check.terms) {
 		
-			if (!terms[property].includes(value)) {
+			if (!terms[property].includes(value) && property !== 'accessModeSufficient') {
 			
 				if (terms.hasOwnProperty(property+'_lc') && terms[property+'_lc'].includes(value.toLowerCase())) {
 					
@@ -273,6 +273,32 @@ function evalidate(property, checks, format, record) {
 					_errors.push(messages[property]['duplicates'].replace('%var%', escapeHtml(ams_arrays[k])));
 				}
 			}
+			
+			// check for unknown values within the set
+			
+			ams_arrays[i].forEach(function(value) {
+			
+				if (!terms['accessModeSufficient'].includes(value)) {
+				
+					if (terms['accessModeSufficient_lc'].includes(value.toLowerCase())) {
+						
+						let correct_spelling = '';
+						
+						for (term of terms['accessModeSufficient_lc']) {
+							if (term.toLowerCase() === value.toLowerCase()) {
+								correct_spelling = term;
+								break;
+							}
+						}
+						
+						_warnings.push(messages['accessModeSufficient']['spelling'].replace('%var%', escapeHtml(value)).replace('%val%', correct_spelling));
+					}
+					
+					else {
+						_warnings.push(messages['accessModeSufficient']['unknown'].replace('%tag%', '<code>' + escapeHtml(nodes.snapshotItem(i).outerHTML) + '</code>'));
+					}
+				}
+			});
 		}
 	}
 	
