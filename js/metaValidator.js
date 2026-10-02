@@ -81,7 +81,7 @@ function validateEPUB(record, input_format) {
 	
 	evalidate('accessibilityFeature', ['required', 'single', 'duplicates', 'terms'], input_format, record);
 	
-	evalidate('accessModeSufficient', ['required', 'duplicates', 'terms'], input_format, record);
+	evalidate('accessModeSufficient', ['required'], input_format, record);
 	
 	evalidate('accessibilityHazard', ['required', 'single', 'duplicates', 'terms'], input_format, record);
 	
@@ -211,18 +211,20 @@ function evalidate(property, checks, format, record) {
 		
 		// check for duplicates
 		
-		if (found.includes(value.toLowerCase())) {
-			if (property === 'accessibilitySummary') {
-				_warnings.push(messages[property]['duplicates']);
+		if (check.duplicates) {
+			if (found.includes(value.toLowerCase())) {
+				if (property === 'accessibilitySummary') {
+					_warnings.push(messages[property]['duplicates']);
+				}
+				
+				else {
+					_warnings.push(messages[property]['duplicates'].replace('%tag%', '<code>' + escapeHtml(nodes.snapshotItem(i).outerHTML) + '</code>'));
+				}
 			}
 			
 			else {
-				_warnings.push(messages[property]['duplicates'].replace('%tag%', '<code>' + escapeHtml(nodes.snapshotItem(i).outerHTML) + '</code>'));
+				found.push(value.toLowerCase());
 			}
-		}
-		
-		else {
-			found.push(value.toLowerCase());
 		}
 		
 		
@@ -270,9 +272,35 @@ function evalidate(property, checks, format, record) {
 			// check for identical sets in same or different order
 			for (let k = i+1; k < ams_arrays.length; k++) {
 				if (arraysEqualIgnoreOrder(ams_arrays[i], ams_arrays[k])) {
-					_errors.push(messages[property]['duplicates'].replace('%var%', escapeHtml(ams_arrays[k])));
+					_errors.push(messages[property]['duplicates'].replace('%var%', escapeHtml(ams_arrays[k].join(','))));
 				}
 			}
+			
+			// check for unknown values within the set
+			
+			ams_arrays[i].forEach(function(value) {
+			
+				if (!terms['accessModeSufficient'].includes(value)) {
+				
+					if (terms['accessModeSufficient_lc'].includes(value.toLowerCase())) {
+						
+						let correct_spelling = '';
+						
+						for (term of terms['accessModeSufficient_lc']) {
+							if (term.toLowerCase() === value.toLowerCase()) {
+								correct_spelling = term;
+								break;
+							}
+						}
+						
+						_warnings.push(messages['accessModeSufficient']['spelling'].replace('%var%', escapeHtml(value)).replace('%val%', correct_spelling));
+					}
+					
+					else {
+						_warnings.push(messages['accessModeSufficient']['unknown'].replace('%tag%', '<code>' + escapeHtml(nodes.snapshotItem(i).outerHTML) + '</code>'));
+					}
+				}
+			});
 		}
 	}
 	
