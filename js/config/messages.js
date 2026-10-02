@@ -39,7 +39,7 @@ var messages = {
 		oreq: 'No sufficient access modes found. This error can be ignored if ONIX does not yet have a value for the content.',
 		duplicates: 'Duplicate sufficient access mode set "%var%" declared.',
 		spelling: 'Non-standard capitalization "%var%" found in sufficient access mode declaration. Expected "%val%".',
-		unknown: 'Unknown sufficient access mode type "%var%".',
+		unknown: 'Unknown sufficient access mode type: %tag%',
 		separator: 'Sufficient access mode values must be separated by commas: %tag%'
 	},
 	
@@ -47,7 +47,7 @@ var messages = {
 		required: 'No information about accessibility hazards has been provided.',
 		duplicates: 'Duplicate accessibility hazard declared: %tag%',
 		spelling: 'Non-standard capitalization "%var%" found in accessibility hazard declaration. Expected "%val%".',
-		unknown: 'Unknown hazard type "%var%".',
+		unknown: 'Unknown hazard type: %tag%',
 		none_indiv: 'Do not declare a global no hazard value as well as individual no hazard values.',
 		none_mix: 'Do not mix a no hazard declaration with any other hazard declarations.',
 		unknown_indiv: 'Do not mix an unknown hazard declaration with the individual unknown hazard values.',
@@ -68,7 +68,7 @@ var messages = {
 		recommended: 'At least one access mode is recommended.',
 		duplicates: 'Duplicate access mode declared: %tag%',
 		spelling: 'Non-standard capitalization "%var%" found in access mode declaration. Expected "%val%".',
-		unknown: 'Unknown access mode type "%var%".'
+		unknown: 'Unknown access mode type: %tag%'
 	},
 	
 	accessibilitySummary: {
