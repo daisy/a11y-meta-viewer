@@ -412,10 +412,15 @@ const xpath = {
 			epub2: '/opf:package/opf:metadata/dc:title',
 			onix: '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:TitleDetail[onix:TitleType="01"]/onix:TitleElement'
 		},
+		uid: {
+			epub3: '/opf:package/opf:metadata/dc:identifier[normalize-space(@id) = normalize-space(/opf:package/@unique-identifier)]',
+			epub2: '/opf:package/opf:metadata/dc:identifier[normalize-space(@id) = normalize-space(/opf:package/@unique-identifier)]',
+			onix: '/onix:ONIXMessage/onix:Product/onix:ProductIdentifier/onix:IDValue'
+		},
 		publisher: {
 			epub3: '/opf:package/opf:metadata/dc:publisher',
 			epub2: '/opf:package/opf:metadata/dc:publisher',
-			onix: '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:Publisher[onix:PublishingRole="01"]/onix:PublisherName'
+			onix: '/onix:ONIXMessage/onix:Product/onix:PublishingDetail/onix:Publisher[onix:PublishingRole="01"]/onix:PublisherName'
 		},
 		language: {
 			epub3: '/opf:package/opf:metadata/dc:language',

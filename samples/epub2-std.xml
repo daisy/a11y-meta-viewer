@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<package xmlns="http://www.idpf.org/2007/opf" version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/">
+<package xmlns="http://www.idpf.org/2007/opf" version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" unique-identifier="uid">
   <metadata>
     <dc:title>EPUB 2 Display Metadata - Text and Image Content</dc:title>
     <dc:language>en</dc:language>
-    <dc:identifier>urn:uuid:1</dc:identifier>
+    <dc:identifier id="uid">urn:isbn:9780000000001</dc:identifier>
     <dc:publisher>Acme Publishing</dc:publisher>
     <meta id="conf" name="dcterms:conformsTo" content="EPUB Accessibility 1.1 - WCAG 2.1 Level AA"/>
     <meta name="a11y:certifiedBy" content="My Organization"/>

@@ -1118,7 +1118,7 @@ const metaDisplayProcessor = (function() {
 			}
 			
 			else {
-				result.display += '\n\t\t\t' + JSON.stringify(statement);
+				result.display += jsonFormat({value: statement, comma: (result.display !== '['), tabs: 3, punctuate: false});
 			}
 			
 			result.hasMetadata = false;
@@ -1180,7 +1180,7 @@ const metaDisplayProcessor = (function() {
 			}
 			
 			else {
-				result.display += '\n\t\t\t' + JSON.stringify(statement);
+				result.display += jsonFormat({value: statement, comma: (result.display !== '['), tabs: 3, punctuate: true});
 			}
 		}
 
@@ -1195,7 +1195,7 @@ const metaDisplayProcessor = (function() {
 			}
 			
 			else {
-				result.display += '\n\t\t\t' + JSON.stringify(statement);
+				result.display += jsonFormat({value: statement, comma: (result.display !== '['), tabs: 3, punctuate: true});
 			}
 		}
 		
@@ -1253,7 +1253,7 @@ const metaDisplayProcessor = (function() {
 				}
 				
 				else {
-					result.display += '\n\t\t\t' + JSON.stringify(statement);
+					result.display += jsonFormat({value: statement, comma: (result.display !== '['), tabs: 3, punctuate: true});
 				}
 			}
 			
@@ -1295,7 +1295,7 @@ const metaDisplayProcessor = (function() {
 			}
 			
 			else {
-				result.display += '\n\t\t\t' + JSON.stringify(statement);
+				result.display += jsonFormat({value: statement, comma: (result.display !== '['), tabs: 3, punctuate: false});
 			}
 			
 			result.hasMetadata = false;
@@ -1388,7 +1388,7 @@ const metaDisplayProcessor = (function() {
 			}
 			
 			else {
-				result.display += '\n\t\t\t' + JSON.stringify(known_limited_accessibility);
+				result.display += jsonFormat({value: known_limited_accessibility, comma: (result.display !== '['), tabs: 3, punctuate: true});
 			}
 		}
 		
@@ -1401,7 +1401,7 @@ const metaDisplayProcessor = (function() {
 			}
 			
 			else {
-				result.display += jsonFormat(known_limited_accessibility, (result.display !== '['), 3);
+				result.display += jsonFormat({value: known_limited_accessibility, comma: (result.display !== '['), tabs: 3, punctuate: true});
 			}
 		}
 		
@@ -1412,7 +1412,7 @@ const metaDisplayProcessor = (function() {
 			}
 			
 			else {
-				result.display += jsonFormat({value: accessibility_summary, comma: (result.display !== '['), tabs: 3, punctuate: false});
+				result.display += jsonFormat({value: accessibility_summary, comma: (result.display !== '['), tabs: 3, punctuate: true});
 			}
 		}
 		
@@ -1432,7 +1432,9 @@ const metaDisplayProcessor = (function() {
 		}
 		
 		if (accessibility_summary_publisher_contact) {
+			
 			statement = _vocab['accessibility-summary']['accessibility-summary-publisher-contact'][_mode] + _punctuation;
+			
 			const contact_email = '<a href="mailto:' + accessibility_summary_publisher_contact + '">' + accessibility_summary_publisher_contact + '</a>';
 			
 			statement = statement.replace('{accessibility_summary_publisher_contact}', contact_email);
@@ -1496,7 +1498,7 @@ const metaDisplayProcessor = (function() {
 		}
 		
 		else {
-			result.display += '\n\t\t\t' + JSON.stringify(statement);
+			result.display += jsonFormat({value: statement, comma: (result.display !== '['), tabs: 3, punctuate: false});
 			result.display += '\n\t\t]';
 		}
 		
@@ -1795,9 +1797,11 @@ const metaDisplayProcessor = (function() {
 	function generalInfo() {
 		
 		const result = {};
-			result.title = '';
-			result.publisher = '';
-			result.lang = '';
+			result.pub = {};
+			result.pub.title = '';
+			result.pub.publisher = '';
+			result.pub.lang = '';
+			result.pub.id = '';
 			result.translation = {};
 			result.translation.creator = '';
 			result.translation.lang = '';
@@ -1809,40 +1813,54 @@ const metaDisplayProcessor = (function() {
 		if (title_node.snapshotLength) {
 		
 			if (_isONIX) {
-				let prefix = title_node.snapshotItem(0).querySelector('TitlePrefix');
-				
-				if (prefix) {
-					result.title = prefix.innerHTML + ' ';
-				}
-				
-				let title = title_node.snapshotItem(0).querySelector('TitleWithoutPrefix');
+			
+				let title = title_node.snapshotItem(0).querySelector('TitleText');
 				
 				if (title) {
-					result.title += title.innerHTML;
+					result.pub.title += title.innerHTML;
+				}
+				
+				else {
+					const prefix = title_node.snapshotItem(0).querySelector('TitlePrefix');
+					
+					if (prefix) {
+						result.pub.title = prefix.innerHTML + ' ';
+					}
+					
+					title = title_node.snapshotItem(0).querySelector('TitleWithoutPrefix');
+					
+					if (title) {
+						result.pub.title += title.innerHTML;
+					}
 				}
 			}
 			
 			else {
-				result.title = title_node.snapshotItem(0).textContent.trim();
+				result.pub.title = title_node.snapshotItem(0).textContent.trim();
 			}
+		}
+		
+		const uid_node = _record.evaluate( xpath['pub_info']['uid'][_input_format], _record, nsResolver, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null );
+		
+		if (uid_node.snapshotLength) {
+			result.pub.id = uid_node.snapshotItem(0).textContent.trim();
 		}
 		
 		const pub_node = _record.evaluate( xpath['pub_info']['publisher'][_input_format], _record, nsResolver, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null );
 		
 		if (pub_node.snapshotLength) {
-			result.publisher = pub_node.snapshotItem(0).textContent.trim();
+			result.pub.publisher = pub_node.snapshotItem(0).textContent.trim();
 		}
 		
 		const lang_node = _record.evaluate( xpath['pub_info']['language'][_input_format], _record, nsResolver, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null );
 		
 		if (lang_node.snapshotLength) {
-			result.lang = lang_node.snapshotItem(0).textContent.trim();
+			result.pub.lang = lang_node.snapshotItem(0).textContent.trim();
 			// correct three-letter onix language code
 			if (_isONIX && langMap.hasOwnProperty(result.lang)) {
-				result.lang = langMap[result.lang];
+				result.pub.lang = langMap[result.lang];
 			}
 		}
-		
 		
 		// add translator
 		if (_vocab['metadata'].hasOwnProperty('author')) {

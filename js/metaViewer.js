@@ -6,11 +6,11 @@ const result_close_button = document.getElementById("result-close-button");
 const result_close_img = document.getElementById("result-close-img");
 
 result_close_button.addEventListener("click", () => {
-	document.getElementById("result").close();
+	closeResult();
 });
 
 result_close_img.addEventListener("click", () => {
-	document.getElementById("result").close();
+	closeResult();
 });
 
 
@@ -87,7 +87,7 @@ function showDisplayMetadata(suppressNoInfo, output_format) {
 			result += '\n\t\t"created": "' + new Date().toISOString() + '",';
 			result += formatJSONBlock('generator', {name: 'DAISY Accessibility Metadata Viewer', version: '0.1.0'}, 2, true);
 			result += formatJSONBlock('localization', {creator: pub_meta.translation.creator, language: pub_meta.translation.lang, version: pub_meta.translation.version}, 2, true);
-			result += formatJSONBlock('publication', {title: pub_meta.title, publisher: pub_meta.publisher, language: pub_meta.lang}, 2, false);
+			result += formatJSONBlock('publication', {title: pub_meta.pub.title, identifier: pub_meta.pub.id, publisher: pub_meta.pub.publisher, language: pub_meta.pub.lang}, 2, false);
 		result += '\n\t},'
 	}
 	
@@ -304,10 +304,19 @@ function formatJSONBlock(name, properties, tabs, comma) {
 	const lastProperty = props[props.length - 1];
 	
 	for (let property of Object.keys(properties)) {
-		json += indent + '\t"' + property + '": ' + JSON.stringify(properties[property]);
 		
-		if (property !== lastProperty) {
-			json += ',';
+		if (properties[property]) {
+			json += indent + '\t"' + property + '": ' + JSON.stringify(properties[property]);
+			
+			if (property !== lastProperty) {
+				json += ',';
+			}
+		}
+		
+		else {
+			if (property === lastProperty) {
+				json = json.replace(/,$/, '');
+			}
 		}
 	}
 	
@@ -378,6 +387,17 @@ selectRecord_close_button.addEventListener('click', () => {
 selectRecord_close_img.addEventListener('click', () => {
   sel_dialog.close();
 });
+
+
+
+// close the result dialog and reset the configuration options
+
+function closeResult() {
+	document.getElementById('result').close();
+	document.getElementById('mode').value = 'compact';
+	document.getElementById('format').value = 'html';
+	document.getElementById('no-info').value = 'show';
+}
 
 
 
