@@ -1,12 +1,13 @@
 
-var en = {
+const en = {
     "metadata": {
         "author": "W3C Publishing Community Group Accessibility Task Force",
         "language": "en-US",
         "variant": "canonical",
-        "version": "2.0.c",
+        "version": "2.1.a",
         "audience": "general",
-        "description": "Original wording discussed by a large group representing different actors of the English-speaking geographies. It has been improved after proof of concept implementations and panel testers"
+        "source": "https://www.w3.org/community/reports/publishingcg/CG-FINAL-a11y-display-guidelines-20251222/",
+        "description": "Canonical English language representations of the compact and descriptive display strings defined in the Accessibility Metadata Display Guide for Digital Publications 2.1."
     },
     "ways-of-reading": {
         "ways-of-reading-title": "Ways of reading",
@@ -76,7 +77,7 @@ var en = {
         },
         "conformance-certifier": {
             "compact": "The publication was certified by {certifier}",
-            "descriptive": "The publication was certified by  {certifier}"
+            "descriptive": "The publication was certified by {certifier}"
         },
         "conformance-certifier-credentials": {
             "compact": "The certifier's credential is {certifier_credentials}",
@@ -115,16 +116,16 @@ var en = {
             "descriptive": "Level AAA"
         },
         "conformance-details-wcag-2-0": {
-            "compact": " WCAG 2.0",
-            "descriptive": "Web Content Accessibility Guidelines (WCAG) 2.0"
+            "compact": "WCAG 2.0",
+            "descriptive": " Web Content Accessibility Guidelines (WCAG) 2.0"
         },
         "conformance-details-wcag-2-1": {
-            "compact": " WCAG 2.1",
-            "descriptive": "Web Content Accessibility Guidelines (WCAG) 2.1"
+            "compact": "WCAG 2.1",
+            "descriptive": " Web Content Accessibility Guidelines (WCAG) 2.1"
         },
         "conformance-details-wcag-2-2": {
-            "compact": " WCAG 2.2",
-            "descriptive": "Web Content Accessibility Guidelines (WCAG) 2.2"
+            "compact": "WCAG 2.2",
+            "descriptive": " Web Content Accessibility Guidelines (WCAG) 2.2"
         },
         "conformance-no": {
             "compact": "No information is available",
@@ -258,7 +259,7 @@ var en = {
             "compact": "No information is available",
             "descriptive": "No information is available"
         },
-        "publisher-contact-for-accessibility": {
+        "accessibility-summary-publisher-contact": {
             "compact": "For more information about the accessibility of this product, please contact the publisher: {publisher_contact_for_accessibility}",
             "descriptive": "For more information about the accessibility of this product, please contact the publisher: {publisher_contact_for_accessibility}"
         }
@@ -317,8 +318,8 @@ var en = {
             "descriptive": "Page breaks included from the original print source"
         },
         "additional-accessibility-information-ruby-annotations": {
-            "compact": "Some Ruby annotations",
-            "descriptive": "Some Ruby annotations"
+            "compact": "Some ruby annotations",
+            "descriptive": "Some ruby annotations"
         },
         "additional-accessibility-information-sign-language": {
             "compact": "Sign language",
