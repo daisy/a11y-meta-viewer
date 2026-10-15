@@ -1,4 +1,4 @@
-var it = {
+const it = {
   "metadata": {
     "author": "W3C Publishing Community Group Accessibility Task Force",
     "language": "it-IT",

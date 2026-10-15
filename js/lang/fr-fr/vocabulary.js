@@ -1,4 +1,4 @@
-var fr_fr = {
+const fr_fr = {
   "metadata": {
     "author": "W3C Publishing Community Group Accessibility Task Force",
     "language": "fr-FR",

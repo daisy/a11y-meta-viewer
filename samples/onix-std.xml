@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ONIXMessage xmlns="http://ns.editeur.org/onix/3.0/reference" release="3.0">
 	<Header>
+		<Sender>
+			<SenderName>DAISY</SenderName>
+		</Sender>
+		<SentDateTime>20260929T142700Z</SentDateTime>
 	</Header>
 	<Product>
+		<RecordReference>abc123</RecordReference>
+		<NotificationType>03</NotificationType>
+		<ProductIdentifier>
+			<ProductIDType>15</ProductIDType>
+			<IDValue>9780000000001</IDValue>
+		</ProductIdentifier>
 		<DescriptiveDetail>
 			<ProductComposition>00</ProductComposition>
-			<ProductForm>EA</ProductForm>
+			<ProductForm>ED</ProductForm>
 			<ProductFormDetail>E101</ProductFormDetail>
 			<ProductFormDetail>E200</ProductFormDetail>
 			<ProductFormFeature>
@@ -32,6 +42,10 @@
 			<ProductFormFeature>
 				<ProductFormFeatureType>09</ProductFormFeatureType>
 				<ProductFormFeatureValue>14</ProductFormFeatureValue>
+			</ProductFormFeature>
+			<ProductFormFeature>
+				<ProductFormFeatureType>09</ProductFormFeatureType>
+				<ProductFormFeatureValue>15</ProductFormFeatureValue>
 			</ProductFormFeature>
 			<ProductFormFeature>
 				<ProductFormFeatureType>09</ProductFormFeatureType>
@@ -71,6 +85,11 @@
 				<ProductFormFeatureDescription>https://bornaccessible.org/certification/gca-credential/</ProductFormFeatureDescription>
 			</ProductFormFeature>
 			<ProductFormFeature>
+				<ProductFormFeatureType>09</ProductFormFeatureType>
+				<ProductFormFeatureValue>99</ProductFormFeatureValue>
+				<ProductFormFeatureDescription>a11y@example.org</ProductFormFeatureDescription>
+			</ProductFormFeature>
+			<ProductFormFeature>
 				<ProductFormFeatureType>15</ProductFormFeatureType>
 				<ProductFormFeatureValue>101E</ProductFormFeatureValue>
 			</ProductFormFeature>
@@ -78,8 +97,6 @@
 				<ProductFormFeatureType>12</ProductFormFeatureType>
 				<ProductFormFeatureValue>00</ProductFormFeatureValue>
 			</ProductFormFeature>
-			<ProductPackaging>00</ProductPackaging>
-			<PrimaryContentType>10</PrimaryContentType>
 			<EpubTechnicalProtection>00</EpubTechnicalProtection>
 			<EpubUsageConstraint>
 				<EpubUsageType>05</EpubUsageType>
@@ -89,10 +106,24 @@
 				<EpubUsageType>11</EpubUsageType>
 				<EpubUsageStatus>03</EpubUsageStatus>
 			</EpubUsageConstraint>
+			<TitleDetail>
+				<TitleType>01</TitleType>
+				<TitleElement>
+					<SequenceNumber>1</SequenceNumber>
+					<TitleElementLevel>01</TitleElementLevel>
+					<TitleText>ONIX Display Metadata - Text and Image Content</TitleText>
+				</TitleElement>
+			</TitleDetail>
 			<Language>
 				<LanguageRole>01</LanguageRole>
 				<LanguageCode>eng</LanguageCode>
 			</Language>
 		</DescriptiveDetail>
+		<PublishingDetail>
+			<Publisher>
+				<PublishingRole>01</PublishingRole>
+				<PublisherName>Acme Publishing</PublisherName>
+			</Publisher>
+		</PublishingDetail>
 	</Product>
 </ONIXMessage>

@@ -1,5 +1,5 @@
 
-var xpath = {
+const xpath = {
 	ways_of_reading: {
 		all_textual_content_can_be_modified: {
 			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="displayTransformability"]',
@@ -324,7 +324,7 @@ var xpath = {
 		lang_known_limited_accessibility: {
 			onix: '(/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "09"]/onix:ProductFormFeatureDescription/@lang | /onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "09"]/onix:ProductFormFeatureDescription/ancestor::*/@lang)[last()]'
 		},
-		publisher_contact_for_accessibility: {
+		accessibility_summary_publisher_contact: {
 			onix: '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "99"]/onix:ProductFormFeatureDescription'
 		}
 	},
@@ -404,6 +404,28 @@ var xpath = {
 		ruby_annotations: {
 			epub3: '/opf:package/opf:metadata/opf:meta[@property="schema:accessibilityFeature" and normalize-space()="rubyAnnotations"]',
 			epub2: '/opf:package/opf:metadata/opf:meta[@name="schema:accessibilityFeature" and normalize-space(@content)="rubyAnnotations"]'
+		}
+	},
+	pub_info: {
+		title: {
+			epub3: '/opf:package/opf:metadata/dc:title',
+			epub2: '/opf:package/opf:metadata/dc:title',
+			onix: '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:TitleDetail[onix:TitleType="01"]/onix:TitleElement'
+		},
+		uid: {
+			epub3: '/opf:package/opf:metadata/dc:identifier[normalize-space(@id) = normalize-space(/opf:package/@unique-identifier)]',
+			epub2: '/opf:package/opf:metadata/dc:identifier[normalize-space(@id) = normalize-space(/opf:package/@unique-identifier)]',
+			onix: '/onix:ONIXMessage/onix:Product/onix:ProductIdentifier/onix:IDValue'
+		},
+		publisher: {
+			epub3: '/opf:package/opf:metadata/dc:publisher',
+			epub2: '/opf:package/opf:metadata/dc:publisher',
+			onix: '/onix:ONIXMessage/onix:Product/onix:PublishingDetail/onix:Publisher[onix:PublishingRole="01"]/onix:PublisherName'
+		},
+		language: {
+			epub3: '/opf:package/opf:metadata/dc:language',
+			epub2: '/opf:package/opf:metadata/dc:language',
+			onix: '/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:Language[onix:LanguageRole="01"]/onix:LanguageCode'
 		}
 	}
 };
