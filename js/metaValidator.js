@@ -38,6 +38,13 @@ function validateRecord() {
 	try {
 		const parser = new DOMParser();
 		record = parser.parseFromString(xml, "text/xml");
+		
+		const parserError = record.getElementsByTagName("parsererror");
+		
+		if (parserError.length > 0) {
+			const error = parserError[0].textContent.replace(/This page.*?:/, '').replace(/Below is a.*/, '');
+			_errors.push('Error parsing xml: ' + error);
+		}
 	}
 	
 	catch (e) {
