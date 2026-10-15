@@ -152,6 +152,7 @@ function evalidate(property, checks, format, record) {
 		check.claim = checks.includes('claim');
 		check.email = checks.includes('email');
 		check.single = checks.includes('single');
+		check.duplicates = checks.includes('duplicates');
 	
 	let valid_claim = false;
 	let ams_arrays = [];
