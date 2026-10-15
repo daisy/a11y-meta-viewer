@@ -168,7 +168,7 @@ function evalidate(property, checks, format, record) {
 			
 				if (terms.hasOwnProperty(property+'_lc') && terms[property+'_lc'].includes(value.toLowerCase())) {
 					
-					const correct_spelling = '';
+					let correct_spelling = '';
 					
 					for (term of terms[property]) {
 						if (term.toLowerCase() === value.toLowerCase()) {
@@ -587,8 +587,6 @@ function resetVariables() {
 
 function checkConformance() {
 
-	const stray_claims = false;
-	
 	if (_conformance['0908'] || _conformance['0909']) {
 	
 		if (_conformance['0908'] && _conformance['0909']) {
