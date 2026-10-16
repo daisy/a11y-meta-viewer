@@ -97,6 +97,7 @@
 				<ProductFormFeatureType>12</ProductFormFeatureType>
 				<ProductFormFeatureValue>00</ProductFormFeatureValue>
 			</ProductFormFeature>
+			<PrimaryContentType>45</PrimaryContentType>
 			<EpubTechnicalProtection>00</EpubTechnicalProtection>
 			<EpubUsageConstraint>
 				<EpubUsageType>05</EpubUsageType>
