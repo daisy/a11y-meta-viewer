@@ -655,7 +655,7 @@ const metaDisplayProcessor = (function() {
 			
 			if (conf_info.certification_date) {
 			
-				const localized_date = conf_info.certification_date;
+				let localized_date = conf_info.certification_date;
 				
 				if (conf_info.certification_date.match(/^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}:\d{2}.*?)?/)) {
 					const report_date = new Date(conf_info.certification_date.replace('-','/').replace(/T.+/, ''));
