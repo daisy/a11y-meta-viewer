@@ -142,12 +142,12 @@ function evalidate(property, checks, format, record) {
 	
 	// check for one or more instance of a property
 	
-	if (checks.includes('required') && !nodes) {
+	if (checks.includes('required') && !nodes.snapshotLength) {
 		_errors.push(messages[property]['required']);
 		return;
 	}
 	
-	else if (checks.includes('recommended') && !nodes) {
+	else if (checks.includes('recommended') && !nodes.snapshotLength) {
 		_warnings.push(messages[property]['recommended']);
 		return;
 	}
@@ -584,7 +584,8 @@ function resetVariables() {
 		nosoundhazard: false,
 		unknown: false,
 		unknownflashinghazard: false,
-		unknownmotionsimulationhazard: false
+		unknownmotionsimulationhazard: false,
+		unknownsoundhazard: false
 	}
 }
 
@@ -666,12 +667,22 @@ function checkConformance() {
 
 function checkFeatureConsistency(features) {
 	
-	if (features.includes('none') && features.length > 1) {
-		_errors.push(messages['accessibilityFeature']['none_mix']);
+	if (features.includes('none')) {
+		if (features.length > 1) {
+			_errors.push(messages['accessibilityFeature']['none_mix']);
+		}
+		else {
+			_errors.push(messages['accessibilityFeature']['none_invalid']);
+		}
 	}
 	
-	if (features.includes('unknown') && features.length > 1) {
-		_errors.push(messages['accessibilityFeature']['unknown_mix']);
+	if (features.includes('unknown')) {
+		if (features.length > 1) {
+			_errors.push(messages['accessibilityFeature']['unknown_mix']);
+		}
+		else {
+			_errors.push(messages['accessibilityFeature']['unknown_invalid']);
+		}
 	}
 	
 	if (features.includes('withadditionalwordsegmentation') && features.includes('withoutadditionalwordsegmentation')) {
@@ -696,6 +707,18 @@ function checkFeatureConsistency(features) {
 
 function checkHazards() {
 
+	let hazardCount = 0;
+	
+	Object.keys(_hazards).forEach(function(haz) {
+		if (_hazards[haz]) {
+			hazardCount += 1;
+		}
+	});
+	
+	if (hazardCount == 0) {
+		
+	}
+	
 	if (_hazards['none']) {
 	
 		if (_hazards['noflashinghazard'] || _hazards['nomotionsimulationhazard'] || _hazards['nosoundhazard']) {
@@ -715,9 +738,20 @@ function checkHazards() {
 			_warnings.push(messages['accessibilityHazard']['unknown_indiv']);
 		}
 		
-		else if (_hazards['flashing'] || _hazards['motionsimulation'] || _hazards['sound'] || _hazards['unknown'] || 
+		else if (_hazards['flashing'] || _hazards['motionsimulation'] || _hazards['sound'] || _hazards['none'] || 
 			_hazards['noflashinghazard'] || _hazards['nomotionsimulationhazard'] || _hazards['nosoundhazard']) {
 			_errors.push(messages['accessibilityHazard']['unknown_mix']);
+		}
+		
+		_errors.push(messages['accessibilityHazard']['unknown_invalid']);
+	}
+	
+	if (!_hazards['none'] && !_hazards['unknown'] && hazardCount > 0) {
+		const flash = (_hazards['flashing'] || _hazards['noflashinghazard'] || _hazards['unknownflashinghazard']);
+		const motion = (_hazards['motionsimulation'] || _hazards['nomotionsimulationhazard'] || _hazards['unknownmotionsimulationhazard']);
+		const sound = (_hazards['sound'] || _hazards['nosoundhazard'] || _hazards['unknownsoundhazard']);
+		if (!(flash && motion && sound)) {
+			_errors.push(messages['accessibilityHazard']['individual_incomplete']);
 		}
 	}
 	
@@ -733,6 +767,10 @@ function checkHazards() {
 		_errors.push(messages['accessibilityHazard']['noflashing_unknown']);
 	}
 	
+	if (_hazards['unknownflashinghazard']) {
+		_errors.push(messages['accessibilityHazard']['flashing_invalid']);
+	}
+	
 	if (_hazards['motionsimulation'] && _hazards['nomotionsimulationhazard']) {
 		_errors.push(messages['accessibilityHazard']['motion_none']);
 	}
@@ -741,8 +779,12 @@ function checkHazards() {
 		_errors.push(messages['accessibilityHazard']['motion_unknown']);
 	}
 	
-	if (_hazards['nomotionsimulationhazard'] || _hazards['unknownmotionsimulationhazard']) {
+	if (_hazards['nomotionsimulationhazard'] && _hazards['unknownmotionsimulationhazard']) {
 		_errors.push(messages['accessibilityHazard']['nomotion_unknown']);
+	}
+	
+	if (_hazards['unknownmotionsimulationhazard']) {
+		_errors.push(messages['accessibilityHazard']['motion_invalid']);
 	}
 	
 	if (_hazards['sound'] && _hazards['nosoundhazard']) {
@@ -753,7 +795,7 @@ function checkHazards() {
 		_errors.push(messages['accessibilityHazard']['sound_unknown']);
 	}
 	
-	if (_hazards['nosoundhazard'] || _hazards['unknownsoundhazard']) {
+	if (_hazards['nosoundhazard'] && _hazards['unknownsoundhazard']) {
 		_errors.push(messages['accessibilityHazard']['nosound_unknown']);
 	}
 }
@@ -815,7 +857,7 @@ function displayResult() {
 		h2.classList.add('pass');
 	}
 	
-	result += '<p class="disclaimer">Note: Validation is limited to accessibility metadata checks. Other errors and warnings may exist in the metadata.</p>'
+	result += '<p class="disclaimer">Note: Validation is limited to <a href="docs/validation.html">accessibility metadata checks</a>. Other errors and warnings may exist in the metadata.</p>'
 	
 	err_div.innerHTML = result;
 	err_div.parentNode.removeAttribute('hidden');
