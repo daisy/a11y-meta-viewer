@@ -232,7 +232,7 @@ function evalidate(property, checks, format, record) {
 			try {
 				new URL(value);
 			} catch (err) {
-				_errors.push(messages[property]['badurl'].replace('%var%', '<code>' + value + '</code>'));
+				_errors.push(messages[property]['badurl'].replace('%var%', '<code>' + escapeHtml(value) + '</code>'));
 			}
 			
 			if (!value.match(/^http(s):/i)) {
@@ -247,6 +247,10 @@ function evalidate(property, checks, format, record) {
 			if (found.includes(value.toLowerCase())) {
 				if (property === 'accessibilitySummary') {
 					_warnings.push(messages[property]['duplicates']);
+				}
+				
+				else if (property === 'certifierCredential' || property === 'certifierReport') {
+					_warnings.push(messages[property]['duplicates'].replace('%tag%', '<code>' + escapeHtml(value) + '</code>'));
 				}
 				
 				else {

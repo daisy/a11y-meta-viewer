@@ -12,7 +12,7 @@ const epub = {
 	},
 	
 	certifierCredential: {
-		epub3: '/opf:package/opf:metadata/opf:link[@rel = "a11y:certifierCredential"]/@href|/opf:package/opf:metadata/opf:link[@property = "a11y:certifierCredential"]',
+		epub3: '/opf:package/opf:metadata/opf:link[@rel = "a11y:certifierCredential"]/@href|/opf:package/opf:metadata/opf:meta[@property = "a11y:certifierCredential"]',
 		epub2: '/opf:package/opf:metadata/opf:meta[@name = "a11y:certifierCredential"]'
 	},
 	
