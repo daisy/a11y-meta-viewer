@@ -235,7 +235,7 @@ function evalidate(property, checks, format, record) {
 				_errors.push(messages[property]['badurl'].replace('%var%', '<code>' + escapeHtml(value) + '</code>'));
 			}
 			
-			if (!value.match(/^http(s):/i)) {
+			if (!value.match(/^https?:/i)) {
 				_warnings.push(messages[property]['nohttp']);
 			}
 		}
@@ -366,6 +366,8 @@ function validateONIX(record) {
 
 	ovalidate('conformsTo', ['required'], record);
 	ovalidate('certifiedBy', ['required'], record);
+	ovalidate('certifierCredential', [], record);
+	ovalidate('certifierReport', [], record);
 	ovalidate('accessibilityFeature', ['required'], record);
 	ovalidate('accessModeSufficient', ['required'], record);
 	ovalidate('accessibilityHazard', ['required'], record);
@@ -504,12 +506,24 @@ function ovalidate(property, checks, record) {
 			}
 		}
 		
-		else if (property === 'certifiedBy') {
+		else if ((property === 'certifiedBy') || (property === 'certifierCredential') || (property === 'certifierReport')) {
 			if (found.includes(desc.toLowerCase())) {
-				_warnings.push(messages['certifiedBy']['duplicates'].replace('%var%', escapeHtml(desc)));
+				_warnings.push(messages[property]['duplicates'].replace('%tag%', escapeHtml(desc)));
 			}
 			else {
 				found.push(desc.toLowerCase());
+			}
+			
+			if (property === 'certifierReport') {
+				try {
+					new URL(desc);
+				} catch (err) {
+					_errors.push(messages[property]['badurl'].replace('%var%', '<code>' + escapeHtml(desc) + '</code>'));
+				}
+				
+				if (!desc.match(/^https?:/i)) {
+					_warnings.push(messages[property]['nohttp']);
+				}
 			}
 		}
 		
