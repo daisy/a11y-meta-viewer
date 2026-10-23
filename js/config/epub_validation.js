@@ -11,6 +11,16 @@ const epub = {
 		epub2: '/opf:package/opf:metadata/opf:meta[@name = "a11y:certifiedBy"]'
 	},
 	
+	certifierCredential: {
+		epub3: '/opf:package/opf:metadata/opf:link[@rel = "a11y:certifierCredential"]/@href|/opf:package/opf:metadata/opf:link[@property = "a11y:certifierCredential"]',
+		epub2: '/opf:package/opf:metadata/opf:meta[@name = "a11y:certifierCredential"]'
+	},
+	
+	certifierReport: {
+		epub3: '/opf:package/opf:metadata/opf:link[@rel = "a11y:certifierReport"]/@href|/opf:package/opf:metadata/opf:meta[@property = "a11y:certifierReport"]',
+		epub2: '/opf:package/opf:metadata/opf:meta[@name = "a11y:certifierReport"]'
+	},
+	
 	accessibilityFeature: {
 		epub3: '/opf:package/opf:metadata/opf:meta[@property = "schema:accessibilityFeature"]',
 		epub2: '/opf:package/opf:metadata/opf:meta[@name = "schema:accessibilityFeature"]'

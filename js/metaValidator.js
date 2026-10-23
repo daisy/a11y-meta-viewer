@@ -7,6 +7,7 @@ let _warnings = [];
 
 let _hazards = {};
 let _conformance = {};
+let _certifier = false;
 
 const escapeHtml = unsafe => {
 	return unsafe
@@ -86,6 +87,10 @@ function validateEPUB(record, input_format) {
 	
 	evalidate('certifiedBy', ['required', 'duplicates'], input_format, record);
 	
+	evalidate('certifierCredential', ['duplicates'], input_format, record);
+	
+	evalidate('certifierReport', ['duplicates', 'url'], input_format, record);
+	
 	evalidate('accessibilityFeature', ['required', 'single', 'duplicates', 'terms'], input_format, record);
 	
 	evalidate('accessModeSufficient', ['required'], input_format, record);
@@ -152,6 +157,13 @@ function evalidate(property, checks, format, record) {
 		return;
 	}
 	
+	else {
+		if (property === 'certifiedBy') {
+			// store presence for later comparison with the credential and report
+			_certifier = true;
+		}
+	}
+	
 	
 	// value checks to run
 	const check = {};
@@ -160,6 +172,7 @@ function evalidate(property, checks, format, record) {
 		check.email = checks.includes('email');
 		check.single = checks.includes('single');
 		check.duplicates = checks.includes('duplicates');
+		check.url = checks.includes('url');
 	
 	let valid_claim = false;
 	const ams_arrays = [];
@@ -199,7 +212,6 @@ function evalidate(property, checks, format, record) {
 		
 		
 		if (check.claim) {
-		
 			if (value.match('EPUB Accessibility 1\.[12] - WCAG 2\.[0-2] Level A{1,3}')
 				|| value.match('http://www\.idpf\.org/epub/a11y/accessibility-20170105.html#wcag-a{1,3}')) {
 				valid_claim = true;
@@ -213,6 +225,18 @@ function evalidate(property, checks, format, record) {
 		if (check.single) {
 			if (value.match(/[\s,]/)) {
 				_errors.push(messages['general']['single'].replace('%tag%', '<code>' + escapeHtml(nodes.snapshotItem(i).outerHTML) + '</code>'));
+			}
+		}
+		
+		if (check.url) {
+			try {
+				new URL(value);
+			} catch (err) {
+				_errors.push(messages[property]['badurl'].replace('%var%', '<code>' + value + '</code>'));
+			}
+			
+			if (!value.match(/^http(s):/i)) {
+				_warnings.push(messages[property]['nohttp']);
 			}
 		}
 		
@@ -587,6 +611,8 @@ function resetVariables() {
 		unknownmotionsimulationhazard: false,
 		unknownsoundhazard: false
 	}
+	
+	_certifier = false;
 }
 
 

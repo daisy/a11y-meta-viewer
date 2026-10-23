@@ -2,7 +2,7 @@
 const messages = {
 	
 	conformsTo: {
-		required: 'No conformance claims found.',
+		required: 'No conformance claim found.',
 		duplicates: 'Duplicate conformance claim found: %tag%',
 		claim: 'None of the conformance claims contain a valid EPUB Accessibility identifier.',
 		nounknown: 'Inaccessible and unknown accessibility claims cannot both be declared.',
@@ -18,6 +18,16 @@ const messages = {
 	certifiedBy: {
 		required: 'Evaluator not declared.',
 		duplicates: 'Duplicate evaluator declared: %tag%'
+	},
+	
+	certifierCredential: {
+		duplicates: 'Duplicate certifier credential declared: %tag%'
+	},
+	
+	certifierReport: {
+		duplicates: 'Duplicate certifier report declared: %tag%',
+		badurl: 'Certifier report does not specify a valid URL: %var%',
+		nohttp: 'Certifier report URL should begin with "http(s)://".'
 	},
 	
 	accessibilityFeature: {
@@ -90,6 +100,6 @@ const messages = {
 	},
 	
 	general: {
-		single: 'Do not declare multiple values in a single tag: %tag%'
+		single: 'Do not declare multiple values in a single tag: %tag%',
 	}
 };
