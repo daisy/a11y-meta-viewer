@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>{{ page.title }} - DAISY Accessibility Metadata Viewer</title>
+		<link rel="stylesheet" type="text/css" href="../css/viewer.css" />
+		<style>
+			main {
+				margin-top: 5rem;
+			}
+			main > * {
+				margin-left: 4rem;
+			}
+			h2 {
+				background-color: unset;
+				color: rgb(32,53,139);
+				margin-left: 2rem;
+				font-size: 2.4rem;
+			}
+		</style>
+		<script src="../js/addCopyright.js" defer="defer"></script>
+	</head>
+	
+	<body>
+		{%include header.html %}
+		<main>
+			{{content}}
+		</main>
+		{%include footer.html %}
+	</body>
+</html>
