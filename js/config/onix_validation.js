@@ -9,6 +9,14 @@ const onix = {
 		'/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and (onix:ProductFormFeatureValue = "90" or onix:ProductFormFeatureValue = "93")]'
 	],
 	
+	certifierCredential: [
+		'/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and (onix:ProductFormFeatureValue = "88" or onix:ProductFormFeatureValue = "89")]'
+	],
+	
+	certifierReport: [
+		'/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and (onix:ProductFormFeatureValue >= "94" and onix:ProductFormFeatureValue <= "96")]'
+	],
+	
 	contactEmail: [
 		'/onix:ONIXMessage/onix:Product/onix:DescriptiveDetail/onix:ProductFormFeature[onix:ProductFormFeatureType = "09" and onix:ProductFormFeatureValue = "99"]'
 	],

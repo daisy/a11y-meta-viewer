@@ -7,6 +7,7 @@ let _warnings = [];
 
 let _hazards = {};
 let _conformance = {};
+let _certifier = false;
 
 const escapeHtml = unsafe => {
 	return unsafe
@@ -86,6 +87,10 @@ function validateEPUB(record, input_format) {
 	
 	evalidate('certifiedBy', ['required', 'duplicates'], input_format, record);
 	
+	evalidate('certifierCredential', ['duplicates'], input_format, record);
+	
+	evalidate('certifierReport', ['duplicates', 'url'], input_format, record);
+	
 	evalidate('accessibilityFeature', ['required', 'single', 'duplicates', 'terms'], input_format, record);
 	
 	evalidate('accessModeSufficient', ['required'], input_format, record);
@@ -152,6 +157,13 @@ function evalidate(property, checks, format, record) {
 		return;
 	}
 	
+	else {
+		if (property === 'certifiedBy') {
+			// store presence for later comparison with the credential and report
+			_certifier = true;
+		}
+	}
+	
 	
 	// value checks to run
 	const check = {};
@@ -160,6 +172,7 @@ function evalidate(property, checks, format, record) {
 		check.email = checks.includes('email');
 		check.single = checks.includes('single');
 		check.duplicates = checks.includes('duplicates');
+		check.url = checks.includes('url');
 	
 	let valid_claim = false;
 	const ams_arrays = [];
@@ -199,7 +212,6 @@ function evalidate(property, checks, format, record) {
 		
 		
 		if (check.claim) {
-		
 			if (value.match('EPUB Accessibility 1\.[12] - WCAG 2\.[0-2] Level A{1,3}')
 				|| value.match('http://www\.idpf\.org/epub/a11y/accessibility-20170105.html#wcag-a{1,3}')) {
 				valid_claim = true;
@@ -216,6 +228,18 @@ function evalidate(property, checks, format, record) {
 			}
 		}
 		
+		if (check.url) {
+			try {
+				new URL(value);
+			} catch (err) {
+				_errors.push(messages[property]['badurl'].replace('%var%', '<code>' + escapeHtml(value) + '</code>'));
+			}
+			
+			if (!value.match(/^https?:/i)) {
+				_warnings.push(messages[property]['nohttp']);
+			}
+		}
+		
 		
 		// check for duplicates
 		
@@ -223,6 +247,10 @@ function evalidate(property, checks, format, record) {
 			if (found.includes(value.toLowerCase())) {
 				if (property === 'accessibilitySummary') {
 					_warnings.push(messages[property]['duplicates']);
+				}
+				
+				else if (property === 'certifierCredential' || property === 'certifierReport') {
+					_warnings.push(messages[property]['duplicates'].replace('%tag%', '<code>' + escapeHtml(value) + '</code>'));
 				}
 				
 				else {
@@ -338,6 +366,8 @@ function validateONIX(record) {
 
 	ovalidate('conformsTo', ['required'], record);
 	ovalidate('certifiedBy', ['required'], record);
+	ovalidate('certifierCredential', [], record);
+	ovalidate('certifierReport', [], record);
 	ovalidate('accessibilityFeature', ['required'], record);
 	ovalidate('accessModeSufficient', ['required'], record);
 	ovalidate('accessibilityHazard', ['required'], record);
@@ -476,12 +506,24 @@ function ovalidate(property, checks, record) {
 			}
 		}
 		
-		else if (property === 'certifiedBy') {
+		else if ((property === 'certifiedBy') || (property === 'certifierCredential') || (property === 'certifierReport')) {
 			if (found.includes(desc.toLowerCase())) {
-				_warnings.push(messages['certifiedBy']['duplicates'].replace('%var%', escapeHtml(desc)));
+				_warnings.push(messages[property]['duplicates'].replace('%tag%', escapeHtml(desc)));
 			}
 			else {
 				found.push(desc.toLowerCase());
+			}
+			
+			if (property === 'certifierReport') {
+				try {
+					new URL(desc);
+				} catch (err) {
+					_errors.push(messages[property]['badurl'].replace('%var%', '<code>' + escapeHtml(desc) + '</code>'));
+				}
+				
+				if (!desc.match(/^https?:/i)) {
+					_warnings.push(messages[property]['nohttp']);
+				}
 			}
 		}
 		
@@ -587,6 +629,8 @@ function resetVariables() {
 		unknownmotionsimulationhazard: false,
 		unknownsoundhazard: false
 	}
+	
+	_certifier = false;
 }
 
 
