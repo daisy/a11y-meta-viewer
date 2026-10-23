@@ -35,3 +35,4 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
         branch: 'public'
         jekyll_src: './'
+        ruby_ver: 4.0.7
