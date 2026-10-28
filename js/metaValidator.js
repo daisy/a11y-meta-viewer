@@ -1,6 +1,8 @@
 /* validate input metadata */
 
-let _isONIX = false;
+let _format = '';
+
+let _record = null;
 
 let _errors = [];
 let _warnings = [];
@@ -20,11 +22,6 @@ const escapeHtml = unsafe => {
 
 function validateRecord() {
 
-	console.clear();
-	
-	_errors = [];
-	_warnings = [];
-	
 	resetVariables();
 	
 	const xml = document.getElementById('input_record').value;
@@ -34,13 +31,11 @@ function validateRecord() {
 		return;
 	}
 	
-	let record = '';
-	
 	try {
 		const parser = new DOMParser();
-		record = parser.parseFromString(xml, "text/xml");
+		_record = parser.parseFromString(xml, "text/xml");
 		
-		const parserError = record.getElementsByTagName("parsererror");
+		const parserError = _record.getElementsByTagName("parsererror");
 		
 		if (parserError.length > 0) {
 			const error = parserError[0].textContent.replace(/This page.*?:/, '').replace(/Below is a.*/, '');
@@ -50,25 +45,23 @@ function validateRecord() {
 	
 	catch (e) {
 		alert('Error parsing metadata record: ' + e);
-		record = null;
+		_record = null;
 	}
 	
-	if (!record) {
+	if (!_record) {
 		return;
 	}
 	
-	const root = record.documentElement;
-	let input_format = 'epub3';
+	const root = _record.documentElement;
 	
 	if (root.nodeName == 'package') {
-		_isONIX = false;
-		input_format = root.getAttribute('version') == '2.0' ? 'epub2' : input_format;
-		validateEPUB(record, input_format);
+		_format = root.getAttribute('version') == '2.0' ? 'epub2' : 'epub3';
+		validateEPUB();
 	}
 	
 	else if (root.nodeName == 'ONIXMessage') {
-		_isONIX = true;
-		validateONIX(record);
+		_format = 'onix';
+		validateONIX();
 	}
 	
 	else {
@@ -81,27 +74,27 @@ function validateRecord() {
 
 
 
-function validateEPUB(record, input_format) {
+function validateEPUB() {
 
-	evalidate('conformsTo', ['required', 'duplicates', 'claim'], input_format, record);
+	evalidate('conformsTo', ['required', 'duplicates', 'claim']);
 	
-	evalidate('certifiedBy', ['required', 'duplicates'], input_format, record);
+	evalidate('certifiedBy', ['required', 'duplicates']);
 	
-	evalidate('certifierCredential', ['duplicates'], input_format, record);
+	evalidate('certifierCredential', ['duplicates']);
 	
-	evalidate('certifierReport', ['duplicates', 'url'], input_format, record);
+	evalidate('certifierReport', ['duplicates', 'url']);
 	
-	evalidate('accessibilityFeature', ['required', 'single', 'duplicates', 'terms'], input_format, record);
+	evalidate('accessibilityFeature', ['required', 'single', 'duplicates', 'terms']);
 	
-	evalidate('accessModeSufficient', ['required'], input_format, record);
+	evalidate('accessModeSufficient', ['required']);
 	
-	evalidate('accessibilityHazard', ['required', 'single', 'duplicates', 'terms'], input_format, record);
+	evalidate('accessibilityHazard', ['required', 'single', 'duplicates', 'terms']);
 	
-	evalidate('accessMode', ['recommended', 'single', 'duplicates', 'terms'], input_format, record);
+	evalidate('accessMode', ['recommended', 'single', 'duplicates', 'terms']);
 	
-	evalidate('accessibilitySummary', ['recommended', 'duplicates'], input_format, record);
+	evalidate('accessibilitySummary', ['recommended', 'duplicates']);
 
-	evalidate('contactEmail', ['duplicates', 'single', 'email'], input_format, record);
+	evalidate('contactEmail', ['duplicates', 'single', 'email']);
 
 }
 
@@ -136,13 +129,13 @@ const terms = {};
 
 // epub validation routines
 
-function evalidate(property, checks, format, record) {
+function evalidate(property, checks) {
 
 	// get all matching property declarations
 	
-	const xpath = epub[property][format];
+	const xpath = epub[property][_format];
 	
-	const nodes = record.evaluate( xpath, record, nsResolver, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null );
+	const nodes = _record.evaluate( xpath, _record, nsResolver, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null );
 	
 	
 	// check for one or more instance of a property
@@ -180,7 +173,7 @@ function evalidate(property, checks, format, record) {
 	
 	for (let i = 0; i < nodes.snapshotLength; i++) {
 	
-		const value = nodes.snapshotItem(i).textContent.trim();
+		const value = (_format === 'epub3') ? nodes.snapshotItem(i).textContent.trim() : nodes.snapshotItem(i).getAttribute('content').trim();
 		
 		if (check.terms) {
 		
@@ -362,18 +355,18 @@ function checkEmail(email) {
 
 
 
-function validateONIX(record) {
+function validateONIX() {
 
-	ovalidate('conformsTo', ['required'], record);
-	ovalidate('certifiedBy', ['required'], record);
-	ovalidate('certifierCredential', [], record);
-	ovalidate('certifierReport', [], record);
-	ovalidate('accessibilityFeature', ['required'], record);
-	ovalidate('accessModeSufficient', ['required'], record);
-	ovalidate('accessibilityHazard', ['required'], record);
-	ovalidate('accessMode', ['recommended'], record);
-	ovalidate('accessibilitySummary', ['recommended'], record);
-	ovalidate('contactEmail', ['email'], record);
+	ovalidate('conformsTo', ['required']);
+	ovalidate('certifiedBy', ['required']);
+	ovalidate('certifierCredential', []);
+	ovalidate('certifierReport', []);
+	ovalidate('accessibilityFeature', ['required']);
+	ovalidate('accessModeSufficient', ['required']);
+	ovalidate('accessibilityHazard', ['required']);
+	ovalidate('accessMode', ['recommended']);
+	ovalidate('accessibilitySummary', ['recommended']);
+	ovalidate('contactEmail', ['email']);
 
 }
 
@@ -439,9 +432,9 @@ const map = {};
 	};
 
 
-function ovalidate(property, checks, record) {
+function ovalidate(property, checks) {
 
-	const nodes = getNodes(property, record);
+	const nodes = getNodes(property);
 	
 	if (nodes.length === 0) {
 		
@@ -577,14 +570,14 @@ function ovalidate(property, checks, record) {
 
 
 
-function getNodes(property, record) {
+function getNodes(property) {
 
 	const xpaths = onix[property];
 	
 	const nodes = [];
 	
 	xpaths.forEach(function(xpath) {
-		const matches = record.evaluate( xpath, record, nsResolver, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null );
+		const matches = _record.evaluate( xpath, _record, nsResolver, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null );
 		let node = matches.iterateNext();
 		while (node) {
 			nodes.push(node);
@@ -602,6 +595,15 @@ function getNodes(property, record) {
 // resets all hazard statuses
 
 function resetVariables() {
+
+	console.clear();
+	
+	_format = '';
+	_record = null;
+	
+	_errors = [];
+	_warnings = [];
+	
 	_conformance = {
 		'0902': false,
 		'0903': false,
