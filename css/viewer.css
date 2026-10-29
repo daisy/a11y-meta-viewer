@@ -336,7 +336,7 @@ div.validation h2.fail {
 	background-color: rgb(100,0,0);
 }
 
-div.validation p {
+div.validation h3 {
 	margin-left: 2rem;
 }
 

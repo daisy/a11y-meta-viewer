@@ -1,5 +1,5 @@
 
-const messages = {
+const _messages = {
 	
 	conformsTo: {
 		required: 'No conformance claim found.',
@@ -99,7 +99,31 @@ const messages = {
 		email: 'The accessibility contact email must be a valid email address.'
 	},
 	
+	accessibilityAPI: {
+		duplicates: 'Duplicate accessibility API declared: %tag%',
+		spelling: 'Non-standard capitalization "%var%" found in accessibility API declaration. Expected "%val%".',
+		unknown: 'Unknown accessibility API declaration: %tag%',
+		deprecated: 'Accessibility API "%var%" is deprecated.'
+	},
+	
+	accessibilityControl: {
+		duplicates: 'Duplicate accessibility control declared: %tag%',
+		spelling: 'Non-standard capitalization "%var%" found in accessibility feature declaration. Expected "%val%".',
+		unknown: 'Unknown accessibility feature declaration: %tag%',
+		deprecated: 'Accessibility control "%var%" is deprecated.'
+	},
+	
 	general: {
 		single: 'Do not declare multiple values in a single tag: %tag%',
+		deprecated: 'It is not advised to set the %var% property in EPUB publications',
+		unknown_property: 'Unknown accessibility property %var% declared.'
+	},
+	
+	ui: {
+		errors: 'Errors',
+		warnings: 'Warnings',
+		usage: 'Usage notes',
+		clean: 'No issues were found.',
+		disclaimer: 'Note: Validation is limited to <a href="docs/validation.html">accessibility metadata checks</a>. Other errors and warnings may exist in the metadata.'
 	}
 };

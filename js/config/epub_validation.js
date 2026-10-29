@@ -1,8 +1,13 @@
 
-const epub = {
+const _epub = {
+	
+	a11y: {
+		epub3: '/opf:package/opf:metadata/opf:*[contains(@property, "a11y:") or contains(@rel, "a11y:")]',
+		epub2: '/opf:package/opf:metadata/opf:meta[contains(@name, "a11y:")]'
+	},
 	
 	conformsTo: {
-		epub3: '/opf:package/opf:metadata/opf:*[@property = "dcterms:conformsTo"]',
+		epub3: '/opf:package/opf:metadata/opf:*[@rel = "dcterms:conformsTo"]/@href|/opf:package/opf:metadata/opf:meta[@property = "dcterms:conformsTo"]',
 		epub2: '/opf:package/opf:metadata/opf:meta[@name = "dcterms:conformsTo"]'
 	},
 	
@@ -49,5 +54,15 @@ const epub = {
 	contactEmail: {
 		epub3: '/opf:package/opf:metadata/opf:meta[@property = "a11y:contactEmail"]',
 		epub2: '/opf:package/opf:metadata/opf:meta[@name = "a11y:contactEmail"]'
+	},
+	
+	accessibilityAPI: {
+		epub3: '/opf:package/opf:metadata/opf:meta[@property = "schema:accessibilityAPI"]',
+		epub2: '/opf:package/opf:metadata/opf:meta[@name = "schema:accessibilityAPI"]'
+	},
+	
+	accessibilityControl: {
+		epub3: '/opf:package/opf:metadata/opf:meta[@property = "schema:accessibilityControl"]',
+		epub2: '/opf:package/opf:metadata/opf:meta[@name = "schema:accessibilityControl"]'
 	}
 };
