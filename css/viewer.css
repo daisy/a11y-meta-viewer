@@ -337,6 +337,14 @@ div.validation h2.fail {
 }
 
 div.validation h3 {
+	margin: 1rem 0 0 2rem;
+}
+
+div.validation ul {
+	margin-top: 0.5rem;
+}
+
+div.validation p {
 	margin-left: 2rem;
 }
 

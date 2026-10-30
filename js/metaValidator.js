@@ -10,14 +10,6 @@ let _hazards = {};
 let _conformance = {};
 let _certifier = false;
 
-const escapeHtml = unsafe => {
-	return unsafe
-		.replaceAll("&", "&amp;")
-		.replaceAll("<", "&lt;")
-		.replaceAll(/ xmlns="[^"]+"/g, '');
-};
-
-
 
 function validateRecord() {
 
@@ -78,6 +70,8 @@ function validateEPUB() {
 	evalidate('conformsTo', ['required', 'duplicates', 'claim']);
 	
 	evalidate('certifiedBy', ['required', 'duplicates']);
+	
+	evalidate('date', ['duplicates', 'date']);
 	
 	evalidate('certifierCredential', ['duplicates']);
 	
@@ -163,7 +157,7 @@ function evalidate(property, checks) {
 	}
 	
 	else if (checks.includes('deprecated') && nodes.snapshotLength) {
-		_msg.usage.push(_messages.general.deprecated.replace('%var%', '<code>'+property+'</code>'));
+		_msg.usage.push(_messages.general.deprecated.replace('%var%', tag(property)));
 	}
 	
 	else {
@@ -182,6 +176,7 @@ function evalidate(property, checks) {
 		check.single = checks.includes('single');
 		check.duplicates = checks.includes('duplicates');
 		check.url = checks.includes('url');
+		check.date = checks.includes('date');
 	
 	let valid_claim = false;
 	const ams_arrays = [];
@@ -206,15 +201,15 @@ function evalidate(property, checks) {
 						}
 					}
 					
-					_msg.warnings.push(_messages[property]['spelling'].replace('%var%', escapeHtml(value)).replace('%val%', correct_spelling));
+					_msg.warnings.push(_messages[property]['spelling'].replace('%var%', tag(value)).replace('%val%', tag(correct_spelling)));
 				}
 				
 				else if (terms.hasOwnProperty(property+'_deprecated') && terms[property+'_deprecated'].includes(value.toLowerCase())) {
-					_msg.warnings.push(_messages[property]['deprecated'].replace('%var%', escapeHtml(value)));
+					_msg.warnings.push(_messages[property]['deprecated'].replace('%var%', tag(value)));
 				}
 				
 				else {
-					_msg.warnings.push(_messages[property]['unknown'].replace('%tag%', '<code>' + escapeHtml(nodes.snapshotItem(i).outerHTML) + '</code>'));
+					_msg.warnings.push(_messages[property]['unknown'].replace('%tag%', tag(nodes.snapshotItem(i).outerHTML)));
 				}
 			}
 		}
@@ -233,7 +228,7 @@ function evalidate(property, checks) {
 		
 		if (check.single) {
 			if (value.match(/[\s,]/)) {
-				_msg.errors.push(_messages['general']['single'].replace('%tag%', '<code>' + escapeHtml(nodes.snapshotItem(i).outerHTML) + '</code>'));
+				_msg.errors.push(_messages['general']['single'].replace('%tag%', tag(nodes.snapshotItem(i).outerHTML)));
 			}
 		}
 		
@@ -241,11 +236,30 @@ function evalidate(property, checks) {
 			try {
 				new URL(value);
 			} catch (err) {
-				_msg.errors.push(_messages[property]['badurl'].replace('%var%', '<code>' + escapeHtml(value) + '</code>'));
+				_msg.errors.push(_messages[property]['badurl'].replace('%var%', tag(value)));
 			}
 			
 			if (!value.match(/^https?:/i)) {
 				_msg.warnings.push(_messages[property]['nohttp']);
+			}
+		}
+		
+		if (check.date) {
+			
+			if (!value.match(/^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}:\d{2}Z)?$/)) {
+				_msg.errors.push(_messages[property]['isodate'].replace('%tag%', tag(nodes.snapshotItem(i).outerHTML)));
+			}
+			
+			else {
+				if (!value.match(/^\d{4}-\d{2}-\d{2}$/)) {
+					_msg.usage.push(_messages[property]['prefdate'].replace('%var%', tag(value)));
+				}
+				
+				const date = new Date(value);
+				
+				if (isNaN(date.getTime())) {
+					_msg.errors.push(_messages[property]['baddate'].replace('%tag%', tag(nodes.snapshotItem(i).outerHTML)));
+				}
 			}
 		}
 		
@@ -259,11 +273,11 @@ function evalidate(property, checks) {
 				}
 				
 				else if (property === 'certifierCredential' || property === 'certifierReport') {
-					_msg.warnings.push(_messages[property]['duplicates'].replace('%tag%', '<code>' + escapeHtml(value) + '</code>'));
+					_msg.warnings.push(_messages[property]['duplicates'].replace('%tag%', tag(value)));
 				}
 				
 				else {
-					_msg.warnings.push(_messages[property]['duplicates'].replace('%tag%', '<code>' + escapeHtml(nodes.snapshotItem(i).outerHTML) + '</code>'));
+					_msg.warnings.push(_messages[property]['duplicates'].replace('%tag%', tag(nodes.snapshotItem(i).outerHTML)));
 				}
 			}
 			
@@ -277,7 +291,7 @@ function evalidate(property, checks) {
 		
 		if (property === 'accessModeSufficient') {
 			if (value.match(/\s/) && !value.match(/,/)) {
-				_msg.errors.push(_messages[property]['separator'].replace('%tag%', '<code>' + escapeHtml(nodes.snapshotItem(i).outerHTML) + '</code>'));
+				_msg.errors.push(_messages[property]['separator'].replace('%tag%', tag(nodes.snapshotItem(i).outerHTML)));
 			}
 			const arr = value.split(/[\s,]+/);
 			ams_arrays.push(arr);
@@ -307,7 +321,7 @@ function evalidate(property, checks) {
 				&& pname !== 'a11y:minimumLines'
 				&& pname !== 'a11y:producer'
 				&& pname !== 'a11y:tactileGraphics' ) {
-				_msg.usage.push(_messages.general.unknown_property.replace('%var%', '<code>'+pname+'</code>'));
+				_msg.usage.push(_messages.general.unknown_property.replace('%var%', tag(pname)));
 			}
 		}
 	}
@@ -338,7 +352,7 @@ function evalidate(property, checks) {
 			// check for identical sets in same or different order
 			for (let k = i+1; k < ams_arrays.length; k++) {
 				if (arraysEqualIgnoreOrder(ams_arrays[i], ams_arrays[k])) {
-					_msg.errors.push(_messages[property]['duplicates'].replace('%var%', escapeHtml(ams_arrays[k].join(','))));
+					_msg.errors.push(_messages[property]['duplicates'].replace('%var%', tag(ams_arrays[k].join(','))));
 				}
 			}
 			
@@ -359,11 +373,11 @@ function evalidate(property, checks) {
 							}
 						}
 						
-						_msg.warnings.push(_messages['accessModeSufficient']['spelling'].replace('%var%', escapeHtml(value)).replace('%val%', correct_spelling));
+						_msg.warnings.push(_messages['accessModeSufficient']['spelling'].replace('%var%', tag(value)).replace('%val%', tag(correct_spelling)));
 					}
 					
 					else {
-						_msg.warnings.push(_messages['accessModeSufficient']['unknown'].replace('%tag%', '<code>' + escapeHtml(nodes.snapshotItem(i).outerHTML) + '</code>'));
+						_msg.warnings.push(_messages['accessModeSufficient']['unknown'].replace('%tag%', tag(nodes.snapshotItem(i).outerHTML)));
 					}
 				}
 			});
@@ -386,6 +400,16 @@ function checkEmail(email) {
 	}
 }
 
+
+
+function tag(value) {
+	let safe = value
+				.replaceAll("&", "&amp;")
+				.replaceAll("<", "&lt;")
+				.replaceAll(/ xmlns="[^"]+"/g, '');
+
+	return '<code>' + safe + '</code>';
+}
 
 
 
@@ -528,7 +552,7 @@ function ovalidate(property, checks) {
 		if (property === 'conformsTo') {
 			if (_conformance.hasOwnProperty(id)) {
 				if (_conformance[id]) {
-					_msg.warnings.push(_messages['conformsTo']['onixdup'].replace('%var%', escapeHtml(value)));
+					_msg.warnings.push(_messages['conformsTo']['onixdup'].replace('%var%', tag(value)));
 				}
 				else {
 					_conformance[id] = true;
@@ -538,7 +562,7 @@ function ovalidate(property, checks) {
 		
 		else if ((property === 'certifiedBy') || (property === 'certifierCredential') || (property === 'certifierReport')) {
 			if (found.includes(desc.toLowerCase())) {
-				_msg.warnings.push(_messages[property]['duplicates'].replace('%tag%', escapeHtml(desc)));
+				_msg.warnings.push(_messages[property]['duplicates'].replace('%tag%', tag(desc)));
 			}
 			else {
 				found.push(desc.toLowerCase());
@@ -548,7 +572,7 @@ function ovalidate(property, checks) {
 				try {
 					new URL(desc);
 				} catch (err) {
-					_msg.errors.push(_messages[property]['badurl'].replace('%var%', '<code>' + escapeHtml(desc) + '</code>'));
+					_msg.errors.push(_messages[property]['badurl'].replace('%var%', tag(desc)));
 				}
 				
 				if (!desc.match(/^https?:/i)) {
@@ -559,7 +583,7 @@ function ovalidate(property, checks) {
 		
 		else if (property === 'accessibilityFeature') {
 			if (found.includes(map.features[id])) {
-				_msg.warnings.push(_messages['accessibilityFeature']['duplicates'].replace('%tag%', '<code>' + escapeHtml(node.outerHTML) + '</code>'));
+				_msg.warnings.push(_messages['accessibilityFeature']['duplicates'].replace('%tag%', tag(node.outerHTML)));
 			}
 			else {
 				found.push(map.features[id]);
@@ -569,7 +593,7 @@ function ovalidate(property, checks) {
 		else if (property === 'accessibilityHazard') {
 			if (map.hazards.hasOwnProperty(id)) {
 				if (_hazards[map.hazards[id]]) {
-					_msg.warnings.push(_messages['accessibilityHazard']['onixdup'].replace('%var%', escapeHtml(value)));
+					_msg.warnings.push(_messages['accessibilityHazard']['onixdup'].replace('%var%', tag(value)));
 				}
 				else {
 					_hazards[map.hazards[id]] = true;

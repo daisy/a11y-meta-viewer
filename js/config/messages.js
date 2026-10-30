@@ -20,6 +20,13 @@ const _messages = {
 		duplicates: 'Duplicate evaluator declared: %tag%'
 	},
 	
+	date: {
+		duplicates: 'Duplicate evaluation date declared: %tag%',
+		isodate: 'Date is not a valid ISO 8601 date: %tag%',
+		baddate: 'Invalid date: %tag%',
+		prefdate: 'The preferred format for certification dates is YYYY-MM-DD. Found: %var%'
+	},
+	
 	certifierCredential: {
 		duplicates: 'Duplicate certifier credential declared: %tag%'
 	},
@@ -35,7 +42,7 @@ const _messages = {
 		duplicates: 'Duplicate accessibility feature declared: %tag%',
 		spelling: 'Non-standard capitalization "%var%" found in accessibility feature declaration. Expected "%val%".',
 		unknown: 'Unknown accessibility feature declaration: %tag%',
-		deprecated: 'Accessibility feature "%var%" is deprecated.',
+		deprecated: 'Accessibility feature value "%var%" is deprecated.',
 		none_mix: 'Declares both that there are no accessibility features and that there are accessibility features.',
 		none_invalid: 'Declaring there are no accessibility features does not meet the requirements of the EPUB Accessibility standard.',
 		unknown_mix: 'Declares both that accessibility features are unknown and that there are accessibility features.',
@@ -103,14 +110,14 @@ const _messages = {
 		duplicates: 'Duplicate accessibility API declared: %tag%',
 		spelling: 'Non-standard capitalization "%var%" found in accessibility API declaration. Expected "%val%".',
 		unknown: 'Unknown accessibility API declaration: %tag%',
-		deprecated: 'Accessibility API "%var%" is deprecated.'
+		deprecated: 'Accessibility API value "%var%" is deprecated.'
 	},
 	
 	accessibilityControl: {
 		duplicates: 'Duplicate accessibility control declared: %tag%',
 		spelling: 'Non-standard capitalization "%var%" found in accessibility feature declaration. Expected "%val%".',
 		unknown: 'Unknown accessibility feature declaration: %tag%',
-		deprecated: 'Accessibility control "%var%" is deprecated.'
+		deprecated: 'Accessibility control value "%var%" is deprecated.'
 	},
 	
 	general: {
