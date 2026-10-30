@@ -163,9 +163,9 @@ const metaDisplayProcessor = (function() {
 		 
 		// 3.1.1.2 Variables setup
 		
-		const all_textual_content_can_be_modified = checkForNode(xpath.ways_of_reading.all_textual_content_can_be_modified[_input_format]);
+		const all_textual_content_can_be_modified = checkForNode(_xpath.ways_of_reading.all_textual_content_can_be_modified[_input_format]);
 		
-		const is_fixed_layout = checkForNode(xpath.ways_of_reading.is_fixed_layout[_input_format]);
+		const is_fixed_layout = checkForNode(_xpath.ways_of_reading.is_fixed_layout[_input_format]);
 		
 		// 3.1.1.3 Instructions
 		
@@ -215,26 +215,26 @@ const metaDisplayProcessor = (function() {
 		 
 		// 3.1.2.2 Variables setup
 		
-		const all_necessary_content_textual = checkForNode(xpath.ways_of_reading.all_necessary_content_textual[_input_format]); 
+		const all_necessary_content_textual = checkForNode(_xpath.ways_of_reading.all_necessary_content_textual[_input_format]); 
 		
-		const audio_only_content = checkForNode(xpath.ways_of_reading.audio_only_content[_input_format]);
+		const audio_only_content = checkForNode(_xpath.ways_of_reading.audio_only_content[_input_format]);
 		
 		// onix algorithm only
-		const real_text = _isONIX ? checkForNode(xpath.ways_of_reading.real_text[_input_format]) : false;
+		const real_text = _isONIX ? checkForNode(_xpath.ways_of_reading.real_text[_input_format]) : false;
 		
 		
 		// epub algorithm only
-		const some_sufficient_text = !_isONIX ? checkForNode(xpath.ways_of_reading.some_sufficient_text[_input_format]) : false;
+		const some_sufficient_text = !_isONIX ? checkForNode(_xpath.ways_of_reading.some_sufficient_text[_input_format]) : false;
 		
-		const textual_alternatives = checkForNode(xpath.ways_of_reading.textual_alternatives[_input_format]);
+		const textual_alternatives = checkForNode(_xpath.ways_of_reading.textual_alternatives[_input_format]);
 		
 		if (!textual_alternatives && _isONIX) {
 			// onix transcript check requires a different xpath - only test if text alternatives haven't already been found
-			textual_alternatives = checkForNode(xpath.ways_of_reading.transcripts[_input_format]);
+			textual_alternatives = checkForNode(_xpath.ways_of_reading.transcripts[_input_format]);
 		}
 		
 		// epub algorithm only
-		const visual_only_content = !_isONIX ? checkForNode(xpath.ways_of_reading.visual_only_content[_input_format]) : false;
+		const visual_only_content = !_isONIX ? checkForNode(_xpath.ways_of_reading.visual_only_content[_input_format]) : false;
 		
 		
 		
@@ -313,28 +313,28 @@ const metaDisplayProcessor = (function() {
 		 */
 		 
 		// 3.1.3.2 Variables setup
-		const all_content_audio = checkForNode(xpath.ways_of_reading.all_content_audio[_input_format]);
+		const all_content_audio = checkForNode(_xpath.ways_of_reading.all_content_audio[_input_format]);
 		
 		// onix algorithm only
-		const all_content_pre_recorded = _isONIX ? checkForNode(xpath.ways_of_reading.all_content_pre_recorded[_input_format]) : false;
+		const all_content_pre_recorded = _isONIX ? checkForNode(_xpath.ways_of_reading.all_content_pre_recorded[_input_format]) : false;
 		
 		// epub algorithm only
-		const audio_content = !_isONIX ? checkForNode(xpath.ways_of_reading.audio_content[_input_format]) : false;
+		const audio_content = !_isONIX ? checkForNode(_xpath.ways_of_reading.audio_content[_input_format]) : false;
 		
 		// onix algorithm only
-		const audiobook = _isONIX ? checkForNode(xpath.ways_of_reading.audiobook[_input_format]) : false;
+		const audiobook = _isONIX ? checkForNode(_xpath.ways_of_reading.audiobook[_input_format]) : false;
 
 		// onix algorithm only
-		const non_textual_content_audio = _isONIX ? checkForNode(xpath.ways_of_reading.non_textual_content_audio[_input_format]) : false;
+		const non_textual_content_audio = _isONIX ? checkForNode(_xpath.ways_of_reading.non_textual_content_audio[_input_format]) : false;
 		
 		// onix algorithm only
-		const non_textual_content_audio_in_video = _isONIX ? checkForNode(xpath.ways_of_reading.non_textual_content_audio_in_video[_input_format]) : false;
+		const non_textual_content_audio_in_video = _isONIX ? checkForNode(_xpath.ways_of_reading.non_textual_content_audio_in_video[_input_format]) : false;
 		
 		// onix has to check two variables for media overlays
 		const synchronised_pre_recorded_audio = !_isONIX ?
-											checkForNode(xpath.ways_of_reading.synchronised_pre_recorded_audio[_input_format]) :
-											(checkForNode(xpath.ways_of_reading.synchronised_pre_recorded_audio[_input_format])
-												&& checkForNode(xpath.ways_of_reading.synchronised_pre_recorded_audio_2[_input_format]));
+											checkForNode(_xpath.ways_of_reading.synchronised_pre_recorded_audio[_input_format]) :
+											(checkForNode(_xpath.ways_of_reading.synchronised_pre_recorded_audio[_input_format])
+												&& checkForNode(_xpath.ways_of_reading.synchronised_pre_recorded_audio_2[_input_format]));
 		
 		
 		// 3.1.3.3 Instructions
@@ -459,13 +459,13 @@ const metaDisplayProcessor = (function() {
 		
 			conf_info.conformance = _vocab['conformance']['conformance-details-claim'][_mode];
 			
-			conf_info.certifier = _record.evaluate(xpath.conformance.certifier[_input_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+			conf_info.certifier = _record.evaluate(_xpath.conformance.certifier[_input_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
 			
-			conf_info.certifier_credentials = _record.evaluate(xpath.conformance.certifier_credential[_input_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+			conf_info.certifier_credentials = _record.evaluate(_xpath.conformance.certifier_credential[_input_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
 			
-			conf_info.certification_date = _record.evaluate(xpath.conformance.certification_date[_input_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+			conf_info.certification_date = _record.evaluate(_xpath.conformance.certification_date[_input_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
 			
-			conf_info.certifier_report = _record.evaluate(xpath.conformance.certifier_report[_input_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+			conf_info.certifier_report = _record.evaluate(_xpath.conformance.certifier_report[_input_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
 		
 		// 3.2.3 Instructions
 		
@@ -714,13 +714,13 @@ const metaDisplayProcessor = (function() {
 		// /opf:package/opf:metadata/opf:meta[@property="dcterms:conformsTo" and matches(normalize-space(), "EPUB Accessibility 1\.1 - WCAG 2\.[0-2] Level [A]+")]
 		// using contains() instead to match most of it
 		
-		let conformance = _record.evaluate(xpath.conformance.conformance[_input_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+		let conformance = _record.evaluate(_xpath.conformance.conformance[_input_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
 		
-		const epub10_wcag20a = checkForNode(xpath.conformance.epub10a[_input_format]);
+		const epub10_wcag20a = checkForNode(_xpath.conformance.epub10a[_input_format]);
 		
-		const epub10_wcag20aa = checkForNode(xpath.conformance.epub10aa[_input_format]);
+		const epub10_wcag20aa = checkForNode(_xpath.conformance.epub10aa[_input_format]);
 		
-		const epub10_wcag20aaa = checkForNode(xpath.conformance.epub10aaa[_input_format]);
+		const epub10_wcag20aaa = checkForNode(_xpath.conformance.epub10aaa[_input_format]);
 		
 		if (conformance) {
 		
@@ -773,15 +773,15 @@ const metaDisplayProcessor = (function() {
 	function processONIXConformance() {
 	
 		const conf_info = {}
-			conf_info.epub_accessibility_10 = checkForNode(xpath.conformance.epub_accessibility_10_1[_input_format]) || checkForNode(xpath.conformance.epub_accessibility_10_2[_input_format]);
-			conf_info.epub_accessibility_11 = checkForNode(xpath.conformance.epub_accessibility_11[_input_format]);
-			conf_info.level_a = checkForNode(xpath.conformance.level_a_1[_input_format]) || checkForNode(xpath.conformance.level_a_2[_input_format]);
-			conf_info.level_aa = checkForNode(xpath.conformance.level_aa_1[_input_format]) || checkForNode(xpath.conformance.level_aa_2[_input_format]);
-			conf_info.level_aaa = checkForNode(xpath.conformance.level_aaa[_input_format]);
-			conf_info.lia_compliant = checkForNode(xpath.conformance.lia_compliant[_input_format]);
-			conf_info.wcag_20 = checkForNode(xpath.conformance.wcag_20_1[_input_format]) || checkForNode(xpath.conformance.wcag_20_2[_input_format]) || checkForNode(xpath.conformance.wcag_20_3[_input_format]);
-			conf_info.wcag_21 = checkForNode(xpath.conformance.wcag_21[_input_format]);
-			conf_info.wcag_22 = checkForNode(xpath.conformance.wcag_22[_input_format]);
+			conf_info.epub_accessibility_10 = checkForNode(_xpath.conformance.epub_accessibility_10_1[_input_format]) || checkForNode(_xpath.conformance.epub_accessibility_10_2[_input_format]);
+			conf_info.epub_accessibility_11 = checkForNode(_xpath.conformance.epub_accessibility_11[_input_format]);
+			conf_info.level_a = checkForNode(_xpath.conformance.level_a_1[_input_format]) || checkForNode(_xpath.conformance.level_a_2[_input_format]);
+			conf_info.level_aa = checkForNode(_xpath.conformance.level_aa_1[_input_format]) || checkForNode(_xpath.conformance.level_aa_2[_input_format]);
+			conf_info.level_aaa = checkForNode(_xpath.conformance.level_aaa[_input_format]);
+			conf_info.lia_compliant = checkForNode(_xpath.conformance.lia_compliant[_input_format]);
+			conf_info.wcag_20 = checkForNode(_xpath.conformance.wcag_20_1[_input_format]) || checkForNode(_xpath.conformance.wcag_20_2[_input_format]) || checkForNode(_xpath.conformance.wcag_20_3[_input_format]);
+			conf_info.wcag_21 = checkForNode(_xpath.conformance.wcag_21[_input_format]);
+			conf_info.wcag_22 = checkForNode(_xpath.conformance.wcag_22[_input_format]);
 		
 		// set empty keys for unused epub variables
 		conf_info.epub_input_format;
@@ -808,13 +808,13 @@ const metaDisplayProcessor = (function() {
 		
 		// 3.3.2 Variables setup
 		
-		const index_navigation = checkForNode(xpath.navigation.index_navigation[_input_format]);
+		const index_navigation = checkForNode(_xpath.navigation.index_navigation[_input_format]);
 		
-		const next_previous_structural_navigation = checkForNode(xpath.navigation.next_previous_structural_navigation[_input_format]);
+		const next_previous_structural_navigation = checkForNode(_xpath.navigation.next_previous_structural_navigation[_input_format]);
 		
-		const page_navigation = checkForNode(xpath.navigation.page_navigation[_input_format]);
+		const page_navigation = checkForNode(_xpath.navigation.page_navigation[_input_format]);
 		
-		const table_of_contents_navigation = checkForNode(xpath.navigation.table_of_contents_navigation[_input_format]);
+		const table_of_contents_navigation = checkForNode(_xpath.navigation.table_of_contents_navigation[_input_format]);
 		
 		// 3.3.3 Instructions
 		
@@ -927,35 +927,35 @@ const metaDisplayProcessor = (function() {
 		// 3.4.2 Variables setup
 		
 		// onix algorithm only
-		const charts_diagrams_as_non_graphical_data = _isONIX ? checkForNode(xpath.rich_content.charts_diagrams_as_non_graphical_data[_input_format]) : false;
+		const charts_diagrams_as_non_graphical_data = _isONIX ? checkForNode(_xpath.rich_content.charts_diagrams_as_non_graphical_data[_input_format]) : false;
 		
 		// epub algorithm only
-		const chemical_formula_as_latex = !_isONIX ? checkForNode(xpath.rich_content.chemical_formula_as_latex[_input_format]) : false;
+		const chemical_formula_as_latex = !_isONIX ? checkForNode(_xpath.rich_content.chemical_formula_as_latex[_input_format]) : false;
 		
-		const chemical_formula_as_mathml = checkForNode(xpath.rich_content.chemical_formula_as_mathml[_input_format]);
+		const chemical_formula_as_mathml = checkForNode(_xpath.rich_content.chemical_formula_as_mathml[_input_format]);
 		
-		const closed_captions = checkForNode(xpath.rich_content.closed_captions[_input_format]);
-		
-		// epub algorithm only
-		const contains_charts_diagrams = !_isONIX ? checkForNode(xpath.rich_content.contains_charts_diagrams[_input_format]) : false;
+		const closed_captions = checkForNode(_xpath.rich_content.closed_captions[_input_format]);
 		
 		// epub algorithm only
-		const contains_chemical_formula = !_isONIX ? checkForNode(xpath.rich_content.contains_chemical_formula[_input_format]) : false;
+		const contains_charts_diagrams = !_isONIX ? checkForNode(_xpath.rich_content.contains_charts_diagrams[_input_format]) : false;
 		
-		const contains_math_formula = checkForNode(xpath.rich_content.contains_math_formula[_input_format]);
+		// epub algorithm only
+		const contains_chemical_formula = !_isONIX ? checkForNode(_xpath.rich_content.contains_chemical_formula[_input_format]) : false;
 		
-		const full_alternative_textual_descriptions = checkForNode(xpath.rich_content.full_alternative_textual_descriptions[_input_format]);
+		const contains_math_formula = checkForNode(_xpath.rich_content.contains_math_formula[_input_format]);
 		
-		const math_formula_as_latex = checkForNode(xpath.rich_content.math_formula_as_latex[_input_format]);
+		const full_alternative_textual_descriptions = checkForNode(_xpath.rich_content.full_alternative_textual_descriptions[_input_format]);
 		
-		const math_formula_as_mathml = checkForNode(xpath.rich_content.math_formula_as_mathml[_input_format]);
+		const math_formula_as_latex = checkForNode(_xpath.rich_content.math_formula_as_latex[_input_format]);
 		
-		const open_captions = checkForNode(xpath.rich_content.open_captions[_input_format]);
+		const math_formula_as_mathml = checkForNode(_xpath.rich_content.math_formula_as_mathml[_input_format]);
 		
-		const transcript = checkForNode(xpath.rich_content.transcript[_input_format]);
+		const open_captions = checkForNode(_xpath.rich_content.open_captions[_input_format]);
+		
+		const transcript = checkForNode(_xpath.rich_content.transcript[_input_format]);
 
 		// onix algorithm only
-		const short_textual_alternative_images = _isONIX ? checkForNode(xpath.rich_content.short_textual_alternative_images[_input_format]) : false;
+		const short_textual_alternative_images = _isONIX ? checkForNode(_xpath.rich_content.short_textual_alternative_images[_input_format]) : false;
 
 
 		// 3.4.3 Instructions
@@ -1145,27 +1145,27 @@ const metaDisplayProcessor = (function() {
 		
 		// 3.5.2 Variables setup
 		
-		const flashing_hazard = checkForNode(xpath.hazards.flashing_hazard[_input_format]);
+		const flashing_hazard = checkForNode(_xpath.hazards.flashing_hazard[_input_format]);
 		
-		const motion_simulation_hazard = checkForNode(xpath.hazards.motion_simulation_hazard[_input_format]);
+		const motion_simulation_hazard = checkForNode(_xpath.hazards.motion_simulation_hazard[_input_format]);
 		
-		const no_flashing_hazard = checkForNode(xpath.hazards.no_flashing_hazard[_input_format]);
+		const no_flashing_hazard = checkForNode(_xpath.hazards.no_flashing_hazard[_input_format]);
 		
-		const no_hazards_or_warnings_confirmed = checkForNode(xpath.hazards.no_hazards_or_warnings_confirmed[_input_format]);
+		const no_hazards_or_warnings_confirmed = checkForNode(_xpath.hazards.no_hazards_or_warnings_confirmed[_input_format]);
 		
-		const no_motion_hazard = checkForNode(xpath.hazards.no_motion_hazard[_input_format]);
+		const no_motion_hazard = checkForNode(_xpath.hazards.no_motion_hazard[_input_format]);
 		
-		const no_sound_hazard = checkForNode(xpath.hazards.no_sound_hazard[_input_format]);
+		const no_sound_hazard = checkForNode(_xpath.hazards.no_sound_hazard[_input_format]);
 		
-		const sound_hazard = checkForNode(xpath.hazards.sound_hazard[_input_format]);
+		const sound_hazard = checkForNode(_xpath.hazards.sound_hazard[_input_format]);
 		
-		const unknown_flashing_hazard = checkForNode(xpath.hazards.unknown_flashing_hazard[_input_format]);
+		const unknown_flashing_hazard = checkForNode(_xpath.hazards.unknown_flashing_hazard[_input_format]);
 		
-		const unknown_if_contains_hazards = checkForNode(xpath.hazards.unknown_if_contains_hazards[_input_format]);
+		const unknown_if_contains_hazards = checkForNode(_xpath.hazards.unknown_if_contains_hazards[_input_format]);
 		
-		const unknown_motion_hazard = checkForNode(xpath.hazards.unknown_motion_hazard[_input_format]);
+		const unknown_motion_hazard = checkForNode(_xpath.hazards.unknown_motion_hazard[_input_format]);
 		
-		const unknown_sound_hazard = checkForNode(xpath.hazards.unknown_sound_hazard[_input_format]);
+		const unknown_sound_hazard = checkForNode(_xpath.hazards.unknown_sound_hazard[_input_format]);
 		
 		// 3.5.3 Instructions
 		
@@ -1324,25 +1324,25 @@ const metaDisplayProcessor = (function() {
 		// 3.6.2 Variables setup
 		
 		// onix algorithm only
-		const accessibility_addendum = _isONIX ? _record.evaluate(xpath.summary.accessibility_addendum[_input_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue : '';
+		const accessibility_addendum = _isONIX ? _record.evaluate(_xpath.summary.accessibility_addendum[_input_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue : '';
 
-		const accessibility_summary =  _record.evaluate(xpath.summary.accessibility_summary[_input_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+		const accessibility_summary =  _record.evaluate(_xpath.summary.accessibility_summary[_input_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
 		
 		// onix algorithm only
-		const known_limited_accessibility = _isONIX ? _record.evaluate(xpath.summary.known_limited_accessibility[_input_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue : '';
+		const known_limited_accessibility = _isONIX ? _record.evaluate(_xpath.summary.known_limited_accessibility[_input_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue : '';
 		
 		// onix algorithm only
-		const lang_attribute_accessibility_addendum = _isONIX ? _record.evaluate(xpath.summary.lang_attribute_accessibility_addendum[_input_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue : '';
+		const lang_attribute_accessibility_addendum = _isONIX ? _record.evaluate(_xpath.summary.lang_attribute_accessibility_addendum[_input_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue : '';
 		
-		const lang_attribute_accessibility_summary = _record.evaluate(xpath.summary.lang_attribute_accessibility_summary[_input_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+		const lang_attribute_accessibility_summary = _record.evaluate(_xpath.summary.lang_attribute_accessibility_summary[_input_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
 		
 		// onix algorithm only
-		const lang_known_limited_accessibility = _isONIX ? _record.evaluate(xpath.summary.lang_known_limited_accessibility[_input_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue : '';
+		const lang_known_limited_accessibility = _isONIX ? _record.evaluate(_xpath.summary.lang_known_limited_accessibility[_input_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue : '';
 		
-		const language_of_text = _record.evaluate(xpath.summary.language_of_text[_input_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+		const language_of_text = _record.evaluate(_xpath.summary.language_of_text[_input_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
 
 		// onix algorithm only
-		const accessibility_summary_publisher_contact = _record.evaluate(xpath.summary.accessibility_summary_publisher_contact[_input_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
+		const accessibility_summary_publisher_contact = _record.evaluate(_xpath.summary.accessibility_summary_publisher_contact[_input_format], _record, nsResolver, XPathResult.STRING_TYPE, null).stringValue;
 		
 
 		// 3.6.3 Instructions
@@ -1476,7 +1476,7 @@ const metaDisplayProcessor = (function() {
 			result.display = _output_format === 'html' ? document.createElement('div') : '[';
 		
 		// 3.7.2 Variables setup
-		const exemption = checkForNode(xpath.legal.exemption[_input_format]);
+		const exemption = checkForNode(_xpath.legal.exemption[_input_format]);
 		
 		// 3.7.3 Instructions
 		
@@ -1520,54 +1520,54 @@ const metaDisplayProcessor = (function() {
 		// 3.8.2 Variables setup
 		
 		// epub algorithm only
-		const aria = _input_format == !_isONIX ? checkForNode(xpath.add_info.aria[_input_format]) : false;
+		const aria = _input_format == !_isONIX ? checkForNode(_xpath.add_info.aria[_input_format]) : false;
 		
 		// epub algorithm only
-		const audio_descriptions = !_isONIX ? checkForNode(xpath.add_info.audio_descriptions[_input_format]) : false;
+		const audio_descriptions = !_isONIX ? checkForNode(_xpath.add_info.audio_descriptions[_input_format]) : false;
 		
 		// epub algorithm only
-		const braille = !_isONIX ? checkForNode(xpath.add_info.braille[_input_format]) : false;
+		const braille = !_isONIX ? checkForNode(_xpath.add_info.braille[_input_format]) : false;
 		
 		// onix algorithm only
-		const color_not_sole_means_of_conveying_information = _isONIX ? checkForNode(xpath.add_info.color_not_sole_means_of_conveying_information[_input_format]) : false;
+		const color_not_sole_means_of_conveying_information = _isONIX ? checkForNode(_xpath.add_info.color_not_sole_means_of_conveying_information[_input_format]) : false;
 		
 		// onix algorithm only
-		const dyslexia_readability = _isONIX ? checkForNode(xpath.add_info.dyslexia_readability[_input_format]) : false;
+		const dyslexia_readability = _isONIX ? checkForNode(_xpath.add_info.dyslexia_readability[_input_format]) : false;
 
 		// epub algorithm only
-		const full_ruby_annotations = !_isONIX ? checkForNode(xpath.add_info.full_ruby_annotations[_input_format]) : false;
+		const full_ruby_annotations = !_isONIX ? checkForNode(_xpath.add_info.full_ruby_annotations[_input_format]) : false;
 		
-		const high_contrast_between_foreground_and_background_audio = checkForNode(xpath.add_info.high_contrast_between_foreground_and_background_audio[_input_format]);
+		const high_contrast_between_foreground_and_background_audio = checkForNode(_xpath.add_info.high_contrast_between_foreground_and_background_audio[_input_format]);
 		
-		const high_contrast_between_text_and_background = checkForNode(xpath.add_info.high_contrast_between_text_and_background[_input_format]);
-		
-		// epub algorithm only
-		const large_print = !_isONIX ? checkForNode(xpath.add_info.large_print[_input_format]) : false;
+		const high_contrast_between_text_and_background = checkForNode(_xpath.add_info.high_contrast_between_text_and_background[_input_format]);
 		
 		// epub algorithm only
-		const page_break_markers = !_isONIX ? checkForNode(xpath.add_info.page_break_markers[_input_format]) : false;
+		const large_print = !_isONIX ? checkForNode(_xpath.add_info.large_print[_input_format]) : false;
 		
 		// epub algorithm only
-		const ruby_annotations = !_isONIX ? checkForNode(xpath.add_info.ruby_annotations[_input_format]) : false;
-		
-		const sign_language = checkForNode(xpath.add_info.sign_language[_input_format]);
+		const page_break_markers = !_isONIX ? checkForNode(_xpath.add_info.page_break_markers[_input_format]) : false;
 		
 		// epub algorithm only
-		const tactile_graphic = !_isONIX ? checkForNode(xpath.add_info.tactile_graphic[_input_format]) : false;
+		const ruby_annotations = !_isONIX ? checkForNode(_xpath.add_info.ruby_annotations[_input_format]) : false;
+		
+		const sign_language = checkForNode(_xpath.add_info.sign_language[_input_format]);
 		
 		// epub algorithm only
-		const tactile_object = !_isONIX ? checkForNode(xpath.add_info.tactile_object[_input_format]) : false;
+		const tactile_graphic = !_isONIX ? checkForNode(_xpath.add_info.tactile_graphic[_input_format]) : false;
 		
-		const text_to_speech_hinting = checkForNode(xpath.add_info.text_to_speech_hinting[_input_format]);
+		// epub algorithm only
+		const tactile_object = !_isONIX ? checkForNode(_xpath.add_info.tactile_object[_input_format]) : false;
+		
+		const text_to_speech_hinting = checkForNode(_xpath.add_info.text_to_speech_hinting[_input_format]);
 
 		// onix algorithm only
-		const ultra_high_contrast_between_text_and_background = _isONIX ? checkForNode(xpath.add_info.ultra_high_contrast_between_text_and_background[_input_format]) : false;
+		const ultra_high_contrast_between_text_and_background = _isONIX ? checkForNode(_xpath.add_info.ultra_high_contrast_between_text_and_background[_input_format]) : false;
 		
 		// onix algorithm only
-		const visible_page_numbering = _isONIX ? checkForNode(xpath.add_info.page_break_markers[_input_format]) : false;
+		const visible_page_numbering = _isONIX ? checkForNode(_xpath.add_info.page_break_markers[_input_format]) : false;
 		
 		// onix algorithm only
-		const without_background_sounds = _isONIX ? checkForNode(xpath.add_info.without_background_sounds[_input_format]) : false;
+		const without_background_sounds = _isONIX ? checkForNode(_xpath.add_info.without_background_sounds[_input_format]) : false;
 		
 		
 		// 3.8.3 Instructions
@@ -1808,7 +1808,7 @@ const metaDisplayProcessor = (function() {
 			result.translation.version = '';
 			result.translation.desc = '';
 		
-		const title_node = _record.evaluate( xpath['pub_info']['title'][_input_format], _record, nsResolver, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null );
+		const title_node = _record.evaluate( _xpath['pub_info']['title'][_input_format], _record, nsResolver, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null );
 		
 		if (title_node.snapshotLength) {
 		
@@ -1840,19 +1840,19 @@ const metaDisplayProcessor = (function() {
 			}
 		}
 		
-		const uid_node = _record.evaluate( xpath['pub_info']['uid'][_input_format], _record, nsResolver, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null );
+		const uid_node = _record.evaluate( _xpath['pub_info']['uid'][_input_format], _record, nsResolver, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null );
 		
 		if (uid_node.snapshotLength) {
 			result.pub.id = uid_node.snapshotItem(0).textContent.trim();
 		}
 		
-		const pub_node = _record.evaluate( xpath['pub_info']['publisher'][_input_format], _record, nsResolver, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null );
+		const pub_node = _record.evaluate( _xpath['pub_info']['publisher'][_input_format], _record, nsResolver, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null );
 		
 		if (pub_node.snapshotLength) {
 			result.pub.publisher = pub_node.snapshotItem(0).textContent.trim();
 		}
 		
-		const lang_node = _record.evaluate( xpath['pub_info']['language'][_input_format], _record, nsResolver, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null );
+		const lang_node = _record.evaluate( _xpath['pub_info']['language'][_input_format], _record, nsResolver, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null );
 		
 		if (lang_node.snapshotLength) {
 			result.pub.lang = lang_node.snapshotItem(0).textContent.trim();

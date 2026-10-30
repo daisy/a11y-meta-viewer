@@ -4,20 +4,11 @@ let _format = '';
 
 let _record = null;
 
-let _errors = [];
-let _warnings = [];
+let _msg = {};
 
 let _hazards = {};
 let _conformance = {};
 let _certifier = false;
-
-const escapeHtml = unsafe => {
-	return unsafe
-		.replaceAll("&", "&amp;")
-		.replaceAll("<", "&lt;")
-		.replaceAll(/ xmlns="[^"]+"/g, '');
-};
-
 
 
 function validateRecord() {
@@ -39,7 +30,7 @@ function validateRecord() {
 		
 		if (parserError.length > 0) {
 			const error = parserError[0].textContent.replace(/This page.*?:/, '').replace(/Below is a.*/, '');
-			_errors.push('Error parsing xml: ' + error);
+			_msg.errors.push('Error parsing xml: ' + error);
 		}
 	}
 	
@@ -65,7 +56,7 @@ function validateRecord() {
 	}
 	
 	else {
-		_errors.push('Invalid xml document - package or onix root element not found');
+		_msg.errors.push('Invalid xml document - package or onix root element not found');
 	}
 	
 	displayResult();
@@ -79,6 +70,8 @@ function validateEPUB() {
 	evalidate('conformsTo', ['required', 'duplicates', 'claim']);
 	
 	evalidate('certifiedBy', ['required', 'duplicates']);
+	
+	evalidate('date', ['duplicates', 'date']);
 	
 	evalidate('certifierCredential', ['duplicates']);
 	
@@ -96,6 +89,11 @@ function validateEPUB() {
 
 	evalidate('contactEmail', ['duplicates', 'single', 'email']);
 
+	evalidate('a11y', []);
+
+	evalidate('accessibilityAPI', ['deprecated', 'single', 'duplicates', 'terms']);
+
+	evalidate('accessibilityControl', ['deprecated', 'single', 'duplicates', 'terms']);
 }
 
 
@@ -117,14 +115,22 @@ const terms = {};
 	terms.accessModeSufficient_lc = terms.accessModeSufficient.map(item => item.toLowerCase());
 
 	terms.accessibilityHazard = ['flashing', 'motionSimulation', 'sound', 'none', 'unknown',
-						'noFlashingHazard', 'noMotionSimulationHazard', 'noSoundHazard',
-						'unknownFlashingHazard', 'unknownMotionSimulationHazard', 'unknownSoundHazard'];
+									'noFlashingHazard', 'noMotionSimulationHazard', 'noSoundHazard',
+									'unknownFlashingHazard', 'unknownMotionSimulationHazard', 'unknownSoundHazard'];
 	terms.accessibilityHazard_lc = terms.accessibilityHazard.map(item => item.toLowerCase());
 	
 	terms.accessMode = ['textual', 'visual', 'auditory', 'tactile', 'chartOnVisual', 'chemOnVisual',
 						'colorDependent', 'diagramOnVisual', 'mathOnVisual', 'musicOnVisual', 'textOnVisual'];
 	terms.accessMode_lc = terms.accessMode.map(item => item.toLowerCase());
 	
+	terms.accessibilityAPI = ['AndroidAccessibility', 'ATK', 'AT-SPI', 'FuchsiaAccessibility', 'iAccessible2',
+								'JavaAccessibility', 'MSAA', 'NSAccessibility', 'UIAccessibility', 'UIAutomation'];
+	terms.accessibilityAPI_lc = terms.accessibilityAPI.map(item => item.toLowerCase());
+	terms.accessibilityAPI_deprecated = [ 'aria', 'blackberryaccessibility', 'iosaccessibility', 'macosxaccessibility' ];
+	
+	terms.accessibilityControl = ['fullKeyboardControl', 'fullMouseControl', 'fullSwitchControl', 'fullTouchControl',
+									'fullVideoControl', 'fullVoiceControl' ];
+	terms.accessibilityControl_lc = terms.accessibilityControl.map(item => item.toLowerCase());
 
 
 // epub validation routines
@@ -133,7 +139,7 @@ function evalidate(property, checks) {
 
 	// get all matching property declarations
 	
-	const xpath = epub[property][_format];
+	const xpath = _epub[property][_format];
 	
 	const nodes = _record.evaluate( xpath, _record, nsResolver, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null );
 	
@@ -141,13 +147,17 @@ function evalidate(property, checks) {
 	// check for one or more instance of a property
 	
 	if (checks.includes('required') && !nodes.snapshotLength) {
-		_errors.push(messages[property]['required']);
+		_msg.errors.push(_messages[property]['required']);
 		return;
 	}
 	
 	else if (checks.includes('recommended') && !nodes.snapshotLength) {
-		_warnings.push(messages[property]['recommended']);
+		_msg.warnings.push(_messages[property]['recommended']);
 		return;
+	}
+	
+	else if (checks.includes('deprecated') && nodes.snapshotLength) {
+		_msg.usage.push(_messages.general.deprecated.replace('%var%', tag(property)));
 	}
 	
 	else {
@@ -166,6 +176,7 @@ function evalidate(property, checks) {
 		check.single = checks.includes('single');
 		check.duplicates = checks.includes('duplicates');
 		check.url = checks.includes('url');
+		check.date = checks.includes('date');
 	
 	let valid_claim = false;
 	const ams_arrays = [];
@@ -190,16 +201,16 @@ function evalidate(property, checks) {
 						}
 					}
 					
-					_warnings.push(messages[property]['spelling'].replace('%var%', escapeHtml(value)).replace('%val%', correct_spelling));
+					_msg.warnings.push(_messages[property]['spelling'].replace('%var%', tag(value)).replace('%val%', tag(correct_spelling)));
+				}
+				
+				else if (terms.hasOwnProperty(property+'_deprecated') && terms[property+'_deprecated'].includes(value.toLowerCase())) {
+					_msg.warnings.push(_messages[property]['deprecated'].replace('%var%', tag(value)));
 				}
 				
 				else {
-					_warnings.push(messages[property]['unknown'].replace('%tag%', '<code>' + escapeHtml(nodes.snapshotItem(i).outerHTML) + '</code>'));
+					_msg.warnings.push(_messages[property]['unknown'].replace('%tag%', tag(nodes.snapshotItem(i).outerHTML)));
 				}
-			}
-			
-			else if (terms.hasOwnProperty(property+'_deprecated') && terms[property+'_deprecated'].includes(value.toLowerCase())) {
-				_warnings.push(messages[property]['deprecated'].replace('%var%', escapeHtml(value)));
 			}
 		}
 		
@@ -217,7 +228,7 @@ function evalidate(property, checks) {
 		
 		if (check.single) {
 			if (value.match(/[\s,]/)) {
-				_errors.push(messages['general']['single'].replace('%tag%', '<code>' + escapeHtml(nodes.snapshotItem(i).outerHTML) + '</code>'));
+				_msg.errors.push(_messages['general']['single'].replace('%tag%', tag(nodes.snapshotItem(i).outerHTML)));
 			}
 		}
 		
@@ -225,11 +236,30 @@ function evalidate(property, checks) {
 			try {
 				new URL(value);
 			} catch (err) {
-				_errors.push(messages[property]['badurl'].replace('%var%', '<code>' + escapeHtml(value) + '</code>'));
+				_msg.errors.push(_messages[property]['badurl'].replace('%var%', tag(value)));
 			}
 			
 			if (!value.match(/^https?:/i)) {
-				_warnings.push(messages[property]['nohttp']);
+				_msg.warnings.push(_messages[property]['nohttp']);
+			}
+		}
+		
+		if (check.date) {
+			
+			if (!value.match(/^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}:\d{2}Z)?$/)) {
+				_msg.errors.push(_messages[property]['isodate'].replace('%tag%', tag(nodes.snapshotItem(i).outerHTML)));
+			}
+			
+			else {
+				if (!value.match(/^\d{4}-\d{2}-\d{2}$/)) {
+					_msg.usage.push(_messages[property]['prefdate'].replace('%var%', tag(value)));
+				}
+				
+				const date = new Date(value);
+				
+				if (isNaN(date.getTime())) {
+					_msg.errors.push(_messages[property]['baddate'].replace('%tag%', tag(nodes.snapshotItem(i).outerHTML)));
+				}
 			}
 		}
 		
@@ -239,15 +269,15 @@ function evalidate(property, checks) {
 		if (check.duplicates) {
 			if (found.includes(value.toLowerCase())) {
 				if (property === 'accessibilitySummary') {
-					_warnings.push(messages[property]['duplicates']);
+					_msg.warnings.push(_messages[property]['duplicates']);
 				}
 				
 				else if (property === 'certifierCredential' || property === 'certifierReport') {
-					_warnings.push(messages[property]['duplicates'].replace('%tag%', '<code>' + escapeHtml(value) + '</code>'));
+					_msg.warnings.push(_messages[property]['duplicates'].replace('%tag%', tag(value)));
 				}
 				
 				else {
-					_warnings.push(messages[property]['duplicates'].replace('%tag%', '<code>' + escapeHtml(nodes.snapshotItem(i).outerHTML) + '</code>'));
+					_msg.warnings.push(_messages[property]['duplicates'].replace('%tag%', tag(nodes.snapshotItem(i).outerHTML)));
 				}
 			}
 			
@@ -261,7 +291,7 @@ function evalidate(property, checks) {
 		
 		if (property === 'accessModeSufficient') {
 			if (value.match(/\s/) && !value.match(/,/)) {
-				_errors.push(messages[property]['separator'].replace('%tag%', '<code>' + escapeHtml(nodes.snapshotItem(i).outerHTML) + '</code>'));
+				_msg.errors.push(_messages[property]['separator'].replace('%tag%', tag(nodes.snapshotItem(i).outerHTML)));
 			}
 			const arr = value.split(/[\s,]+/);
 			ams_arrays.push(arr);
@@ -273,11 +303,32 @@ function evalidate(property, checks) {
 				_hazards[hazard] = true;
 			}
 		}
+		
+		
+		// check if it's an known property
+		
+		if (property === 'a11y') {
+			const pname = (_format === 'epub2') ? nodes.snapshotItem(i).getAttribute('name') : (nodes.snapshotItem(i).getAttribute('property') ? nodes.snapshotItem(i).getAttribute('property') : nodes.snapshotItem(i).getAttribute('rel'));
+			
+			if (   pname !== 'a11y:certifiedBy'
+				&& pname !== 'a11y:certifierCredential'
+				&& pname !== 'a11y:certifierReport'
+				&& pname !== 'a11y:contactEmail'
+				&& pname !== 'a11y:brailleCellType'
+				&& pname !== 'a11y:brailleSystem'
+				&& pname !== 'a11y:completeTranscription'
+				&& pname !== 'a11y:minimumCells'
+				&& pname !== 'a11y:minimumLines'
+				&& pname !== 'a11y:producer'
+				&& pname !== 'a11y:tactileGraphics' ) {
+				_msg.usage.push(_messages.general.unknown_property.replace('%var%', tag(pname)));
+			}
+		}
 	}
 	
 	if (check.claim) {
 		if (!valid_claim) {
-			_errors.push(messages[property]['claim']);
+			_msg.errors.push(_messages[property]['claim']);
 		}
 	}
 	
@@ -301,7 +352,7 @@ function evalidate(property, checks) {
 			// check for identical sets in same or different order
 			for (let k = i+1; k < ams_arrays.length; k++) {
 				if (arraysEqualIgnoreOrder(ams_arrays[i], ams_arrays[k])) {
-					_errors.push(messages[property]['duplicates'].replace('%var%', escapeHtml(ams_arrays[k].join(','))));
+					_msg.errors.push(_messages[property]['duplicates'].replace('%var%', tag(ams_arrays[k].join(','))));
 				}
 			}
 			
@@ -322,11 +373,11 @@ function evalidate(property, checks) {
 							}
 						}
 						
-						_warnings.push(messages['accessModeSufficient']['spelling'].replace('%var%', escapeHtml(value)).replace('%val%', correct_spelling));
+						_msg.warnings.push(_messages['accessModeSufficient']['spelling'].replace('%var%', tag(value)).replace('%val%', tag(correct_spelling)));
 					}
 					
 					else {
-						_warnings.push(messages['accessModeSufficient']['unknown'].replace('%tag%', '<code>' + escapeHtml(nodes.snapshotItem(i).outerHTML) + '</code>'));
+						_msg.warnings.push(_messages['accessModeSufficient']['unknown'].replace('%tag%', tag(nodes.snapshotItem(i).outerHTML)));
 					}
 				}
 			});
@@ -345,10 +396,20 @@ function checkEmail(email) {
 		input.value = email;
 	
 	if (! (typeof input.checkValidity === 'function' ? input.checkValidity() : /\S+@\S+\.\S+/.test(email))) {
-		_errors.push(messages['contactEmail']['email']);
+		_msg.errors.push(_messages['contactEmail']['email']);
 	}
 }
 
+
+
+function tag(value) {
+	let safe = value
+				.replaceAll("&", "&amp;")
+				.replaceAll("<", "&lt;")
+				.replaceAll(/ xmlns="[^"]+"/g, '');
+
+	return '<code>' + safe + '</code>';
+}
 
 
 
@@ -439,15 +500,15 @@ function ovalidate(property, checks) {
 	if (nodes.length === 0) {
 		
 		if (property === 'accessModeSufficient') {
-			_errors.push(messages['accessModeSufficient']['oreq'])
+			_msg.errors.push(_messages['accessModeSufficient']['oreq'])
 		}
 		
 		else if (checks.includes('required')) {
-			_errors.push(messages[property]['required']);
+			_msg.errors.push(_messages[property]['required']);
 		}
 		
 		else if (checks.includes('recommended')) {
-			_warnings.push(messages[property]['recommended']);
+			_msg.warnings.push(_messages[property]['recommended']);
 		}
 		
 		return;
@@ -491,7 +552,7 @@ function ovalidate(property, checks) {
 		if (property === 'conformsTo') {
 			if (_conformance.hasOwnProperty(id)) {
 				if (_conformance[id]) {
-					_warnings.push(messages['conformsTo']['onixdup'].replace('%var%', escapeHtml(value)));
+					_msg.warnings.push(_messages['conformsTo']['onixdup'].replace('%var%', tag(value)));
 				}
 				else {
 					_conformance[id] = true;
@@ -501,7 +562,7 @@ function ovalidate(property, checks) {
 		
 		else if ((property === 'certifiedBy') || (property === 'certifierCredential') || (property === 'certifierReport')) {
 			if (found.includes(desc.toLowerCase())) {
-				_warnings.push(messages[property]['duplicates'].replace('%tag%', escapeHtml(desc)));
+				_msg.warnings.push(_messages[property]['duplicates'].replace('%tag%', tag(desc)));
 			}
 			else {
 				found.push(desc.toLowerCase());
@@ -511,18 +572,18 @@ function ovalidate(property, checks) {
 				try {
 					new URL(desc);
 				} catch (err) {
-					_errors.push(messages[property]['badurl'].replace('%var%', '<code>' + escapeHtml(desc) + '</code>'));
+					_msg.errors.push(_messages[property]['badurl'].replace('%var%', tag(desc)));
 				}
 				
 				if (!desc.match(/^https?:/i)) {
-					_warnings.push(messages[property]['nohttp']);
+					_msg.warnings.push(_messages[property]['nohttp']);
 				}
 			}
 		}
 		
 		else if (property === 'accessibilityFeature') {
 			if (found.includes(map.features[id])) {
-				_warnings.push(messages['accessibilityFeature']['duplicates'].replace('%tag%', '<code>' + escapeHtml(node.outerHTML) + '</code>'));
+				_msg.warnings.push(_messages['accessibilityFeature']['duplicates'].replace('%tag%', tag(node.outerHTML)));
 			}
 			else {
 				found.push(map.features[id]);
@@ -532,7 +593,7 @@ function ovalidate(property, checks) {
 		else if (property === 'accessibilityHazard') {
 			if (map.hazards.hasOwnProperty(id)) {
 				if (_hazards[map.hazards[id]]) {
-					_warnings.push(messages['accessibilityHazard']['onixdup'].replace('%var%', escapeHtml(value)));
+					_msg.warnings.push(_messages['accessibilityHazard']['onixdup'].replace('%var%', tag(value)));
 				}
 				else {
 					_hazards[map.hazards[id]] = true;
@@ -542,11 +603,11 @@ function ovalidate(property, checks) {
 		
 		if (property === 'accessibilitySummary') {
 			if ((_conformance['0902'] || _conformance['0903']) && value === '92') {
-				_errors.push(messages['accessibilitySummary']['summary11for10']);
+				_msg.errors.push(_messages['accessibilitySummary']['summary11for10']);
 			}
 			
 			else if (_conformance['0904'] && value === '00') {
-				_errors.push(messages['accessibilitySummary']['summary10for11']);
+				_msg.errors.push(_messages['accessibilitySummary']['summary10for11']);
 			}
 		}
 		
@@ -572,7 +633,7 @@ function ovalidate(property, checks) {
 
 function getNodes(property) {
 
-	const xpaths = onix[property];
+	const xpaths = _onix[property];
 	
 	const nodes = [];
 	
@@ -601,8 +662,9 @@ function resetVariables() {
 	_format = '';
 	_record = null;
 	
-	_errors = [];
-	_warnings = [];
+	_msg.errors = [];
+	_msg.warnings = [];
+	_msg.usage = [];
 	
 	_conformance = {
 		'0902': false,
@@ -644,7 +706,7 @@ function checkConformance() {
 	if (_conformance['0908'] || _conformance['0909']) {
 	
 		if (_conformance['0908'] && _conformance['0909']) {
-			_errors.push(messages['conformsTo']['nounknown']);
+			_msg.errors.push(_messages['conformsTo']['nounknown']);
 		}
 		
 		else {
@@ -657,11 +719,11 @@ function checkConformance() {
 				
 				else if (_conformance[key]) {
 					if (_conformance['0908']) {
-						_errors.push(messages['conformsTo']['unknownmix']);
+						_msg.errors.push(_messages['conformsTo']['unknownmix']);
 						break;
 					}
 					else {
-						_errors.push(messages['conformsTo']['inaccessiblemix']);
+						_msg.errors.push(_messages['conformsTo']['inaccessiblemix']);
 						break;
 					}
 				}
@@ -672,7 +734,7 @@ function checkConformance() {
 	else if (_conformance['0902'] || _conformance['0903']) {
 	
 		if (_conformance['0902'] && _conformance['0903']) {
-			_errors.push(messages['conformsTo']['dual10']);
+			_msg.errors.push(_messages['conformsTo']['dual10']);
 		}
 		
 		else {
@@ -684,7 +746,7 @@ function checkConformance() {
 				}
 				
 				else if (_conformance[key]) {
-					_errors.push(messages['conformsTo']['epub10mix']);
+					_msg.errors.push(_messages['conformsTo']['epub10mix']);
 					break;
 				}
 			}
@@ -694,16 +756,16 @@ function checkConformance() {
 	else if (_conformance['0904']) {
 	
 		if (!_conformance['0980'] && !_conformance['0981'] && !_conformance['0982']) {
-			_errors.push(messages['conformsTo']['nowcag']);
+			_msg.errors.push(_messages['conformsTo']['nowcag']);
 		}
 		
 		if (!_conformance['0984'] && !_conformance['0985'] && !_conformance['0986']) {
-			_errors.push(messages['conformsTo']['nolevel']);
+			_msg.errors.push(_messages['conformsTo']['nolevel']);
 		}
 	}
 	
 	else {
-		_errors.push(messages['conformsTo']['noepub']);
+		_msg.errors.push(_messages['conformsTo']['noepub']);
 	}
 }
 
@@ -715,36 +777,36 @@ function checkFeatureConsistency(features) {
 	
 	if (features.includes('none')) {
 		if (features.length > 1) {
-			_errors.push(messages['accessibilityFeature']['none_mix']);
+			_msg.errors.push(_messages['accessibilityFeature']['none_mix']);
 		}
 		else {
-			_errors.push(messages['accessibilityFeature']['none_invalid']);
+			_msg.errors.push(_messages['accessibilityFeature']['none_invalid']);
 		}
 	}
 	
 	if (features.includes('unknown')) {
 		if (features.length > 1) {
-			_errors.push(messages['accessibilityFeature']['unknown_mix']);
+			_msg.errors.push(_messages['accessibilityFeature']['unknown_mix']);
 		}
 		else {
-			_errors.push(messages['accessibilityFeature']['unknown_invalid']);
+			_msg.errors.push(_messages['accessibilityFeature']['unknown_invalid']);
 		}
 	}
 	
 	if (features.includes('withadditionalwordsegmentation') && features.includes('withoutadditionalwordsegmentation')) {
-		_errors.push(messages['accessibilityFeature']['seg_mix']);
+		_msg.errors.push(_messages['accessibilityFeature']['seg_mix']);
 	}
 	
 	if (features.includes('horizontalwriting') && features.includes('verticalwriting')) {
-		_errors.push(messages['accessibilityFeature']['mode_mix']);
+		_msg.errors.push(_messages['accessibilityFeature']['mode_mix']);
 	}
 	
 	if (features.includes('rubyannotations') && features.includes('fullrubyannotations')) {
-		_errors.push(messages['accessibilityFeature']['ruby_mix']);
+		_msg.errors.push(_messages['accessibilityFeature']['ruby_mix']);
 	}
 	
 	if (features.includes('taggedpdf')) {
-		_errors.push(messages['accessibilityFeature']['pdf']);
+		_msg.errors.push(_messages['accessibilityFeature']['pdf']);
 	}
 }
 
@@ -768,12 +830,12 @@ function checkHazards() {
 	if (_hazards['none']) {
 	
 		if (_hazards['noflashinghazard'] || _hazards['nomotionsimulationhazard'] || _hazards['nosoundhazard']) {
-			_warnings.push(messages['accessibilityHazard']['none_indiv'])
+			_msg.warnings.push(_messages['accessibilityHazard']['none_indiv'])
 		}
 		
 		else if (_hazards['flashing'] || _hazards['motionsimulation'] || _hazards['sound'] || _hazards['unknown'] || 
 			_hazards['unknownflashinghazard'] || _hazards['unknownmotionsimulationhazard'] || _hazards['unknownsoundhazard']) {
-			_errors.push(messages['accessibilityHazard']['none_mix']);
+			_msg.errors.push(_messages['accessibilityHazard']['none_mix']);
 		}
 	
 	}
@@ -781,15 +843,15 @@ function checkHazards() {
 	if (_hazards['unknown']) {
 		
 		if (_hazards['unknownflashinghazard'] || _hazards['unknownmotionsimulationhazard'] || _hazards['unknownsoundhazard']) {
-			_warnings.push(messages['accessibilityHazard']['unknown_indiv']);
+			_msg.warnings.push(_messages['accessibilityHazard']['unknown_indiv']);
 		}
 		
 		else if (_hazards['flashing'] || _hazards['motionsimulation'] || _hazards['sound'] || _hazards['none'] || 
 			_hazards['noflashinghazard'] || _hazards['nomotionsimulationhazard'] || _hazards['nosoundhazard']) {
-			_errors.push(messages['accessibilityHazard']['unknown_mix']);
+			_msg.errors.push(_messages['accessibilityHazard']['unknown_mix']);
 		}
 		
-		_errors.push(messages['accessibilityHazard']['unknown_invalid']);
+		_msg.errors.push(_messages['accessibilityHazard']['unknown_invalid']);
 	}
 	
 	if (!_hazards['none'] && !_hazards['unknown'] && hazardCount > 0) {
@@ -797,52 +859,52 @@ function checkHazards() {
 		const motion = (_hazards['motionsimulation'] || _hazards['nomotionsimulationhazard'] || _hazards['unknownmotionsimulationhazard']);
 		const sound = (_hazards['sound'] || _hazards['nosoundhazard'] || _hazards['unknownsoundhazard']);
 		if (!(flash && motion && sound)) {
-			_errors.push(messages['accessibilityHazard']['individual_incomplete']);
+			_msg.errors.push(_messages['accessibilityHazard']['individual_incomplete']);
 		}
 	}
 	
 	if (_hazards['flashing'] && _hazards['noflashinghazard']) {
-		_errors.push(messages['accessibilityHazard']['flashing_none']);
+		_msg.errors.push(_messages['accessibilityHazard']['flashing_none']);
 	}
 	
 	if (_hazards['flashing'] && _hazards['unknownflashinghazard']) {
-		_errors.push(messages['accessibilityHazard']['flashing_unknown']);
+		_msg.errors.push(_messages['accessibilityHazard']['flashing_unknown']);
 	}
 	
 	if (_hazards['noflashinghazard'] && _hazards['unknownflashinghazard']) {
-		_errors.push(messages['accessibilityHazard']['noflashing_unknown']);
+		_msg.errors.push(_messages['accessibilityHazard']['noflashing_unknown']);
 	}
 	
 	if (_hazards['unknownflashinghazard']) {
-		_errors.push(messages['accessibilityHazard']['flashing_invalid']);
+		_msg.errors.push(_messages['accessibilityHazard']['flashing_invalid']);
 	}
 	
 	if (_hazards['motionsimulation'] && _hazards['nomotionsimulationhazard']) {
-		_errors.push(messages['accessibilityHazard']['motion_none']);
+		_msg.errors.push(_messages['accessibilityHazard']['motion_none']);
 	}
 	
 	if (_hazards['motionsimulation'] && _hazards['unknownmotionsimulationhazard']) {
-		_errors.push(messages['accessibilityHazard']['motion_unknown']);
+		_msg.errors.push(_messages['accessibilityHazard']['motion_unknown']);
 	}
 	
 	if (_hazards['nomotionsimulationhazard'] && _hazards['unknownmotionsimulationhazard']) {
-		_errors.push(messages['accessibilityHazard']['nomotion_unknown']);
+		_msg.errors.push(_messages['accessibilityHazard']['nomotion_unknown']);
 	}
 	
 	if (_hazards['unknownmotionsimulationhazard']) {
-		_errors.push(messages['accessibilityHazard']['motion_invalid']);
+		_msg.errors.push(_messages['accessibilityHazard']['motion_invalid']);
 	}
 	
 	if (_hazards['sound'] && _hazards['nosoundhazard']) {
-		_errors.push(messages['accessibilityHazard']['sound_none']);
+		_msg.errors.push(_messages['accessibilityHazard']['sound_none']);
 	}
 	
 	if (_hazards['sound'] && _hazards['unknownsoundhazard']) {
-		_errors.push(messages['accessibilityHazard']['sound_unknown']);
+		_msg.errors.push(_messages['accessibilityHazard']['sound_unknown']);
 	}
 	
 	if (_hazards['nosoundhazard'] && _hazards['unknownsoundhazard']) {
-		_errors.push(messages['accessibilityHazard']['nosound_unknown']);
+		_msg.errors.push(_messages['accessibilityHazard']['nosound_unknown']);
 	}
 }
 
@@ -874,36 +936,29 @@ function displayResult() {
 	
 	let result = '';
 	
-	if (_errors.length || _warnings.length) {
+	if (_msg.errors.length || _msg.warnings.length || _msg.usage.length) {
 	
-		if (_errors.length) {
-			result += '<p>The following errors were found:</p>';
-			result += '<ul>';
-			_errors.forEach(function (err) {
-				result += '<li>' + err + '</li>';
-			});
-			result += '</ul>';
-		}
+		['errors', 'warnings', 'usage'].forEach(function(type) {
+			
+			if (_msg[type].length) {
+				result += '<h3>' + _messages.ui[type] + '</h3>';
+				result += '<ul>';
+				_msg[type].forEach(function (message) {
+					result += '<li>' + message + '</li>';
+				});
+				result += '</ul>';
+			}
+		});
 		
-		if (_warnings.length) {
-			result += '<p>The following warnings were found:</p>';
-			result += '<ul>';
-			_warnings.forEach(function (warn) {
-				result += '<li>' + warn + '</li>';
-			})
-			result += '</ul>';
-		}
-		
-		result += '</ul>';
 		h2.classList.add('fail');
 	}
 	
 	else {
-		result = '<p>No errors or warnings found.</p>';
+		result = '<p>' + _messages.ui.clean + '</p>';
 		h2.classList.add('pass');
 	}
 	
-	result += '<p class="disclaimer">Note: Validation is limited to <a href="docs/validation.html">accessibility metadata checks</a>. Other errors and warnings may exist in the metadata.</p>'
+	result += '<p class="disclaimer">' + _messages.ui.disclaimer + '</p>';
 	
 	err_div.innerHTML = result;
 	err_div.parentNode.removeAttribute('hidden');
