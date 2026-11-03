@@ -137,6 +137,17 @@ a.close img {
 	width: 2.4rem;
 }
 
+/* publication header */
+
+div.pub {
+	margin-bottom: 2rem;
+}
+
+div.pub h3 {
+	color: rgb(32,53,139);
+	font-size: 120%
+}
+
 /* flex layout */
 
 div.grid {
