@@ -72,16 +72,40 @@ function showDisplayMetadata(suppressNoInfo, output_format) {
 		result_field.textContent = '';
 	
 	let result = '';
+	const html_header = document.createElement('div');
+		html_header.classList.add('pub');
+	
+	const pub_meta = metaDisplayProcessor.processGeneralInfo();
 	
 	if (output_format === 'html') {
+		const pub_h2 = document.createElement('h3');
+			pub_h2.appendChild(document.createTextNode(pub_meta.pub.title));
+		
+		html_header.appendChild(pub_h2);
+		
+		if (pub_meta.pub.publisher || pub_meta.pub.id) {
+			const pub_label = document.createElement('div');
+				pub_label.classList.add('sub');
+			
+			const pub_identifier = pub_meta.pub.id ? pub_meta.pub.id.replace(/urn:[^:]+:/i, '') : '';
+			
+			if (pub_meta.pub.publisher && pub_identifier) {
+				pub_label.innerHTML = pub_meta.pub.publisher + ' &#8212; ' + pub_identifier;
+			}
+			
+			else {
+				// formatting doesn't matter as only one actually has a value
+				pub_label.innerHTML = pub_meta.pub.publisher + pub_identifier;
+			}
+				
+			html_header.appendChild(pub_label);
+		}
+		
 		result = document.createElement('div');
 		result.classList.add('grid');
 	}
 	
 	else {
-		
-		const pub_meta = metaDisplayProcessor.processGeneralInfo();
-		
 		result = '{';
 		result += '\n\t"about": {';
 			result += '\n\t\t"created": "' + new Date().toISOString() + '",';
@@ -238,6 +262,7 @@ function showDisplayMetadata(suppressNoInfo, output_format) {
 	
 	if (result) {
 		if (output_format === 'html') {
+			result_field.appendChild(html_header);
 			result_field.appendChild(result);
 		}
 		else {
@@ -407,9 +432,9 @@ function saveResult() {
 
 	const isJSON = document.getElementById('format').value === 'json' ? true : false;
 	
-	let html_head = '<!DOCTYPE html>\n<html lang="' + document.getElementById('lang').value + '>\n<head>\n<meta charset="utf-8">\n<title>Accessibility Statements</title>\n<style>html, body { margin: 0; padding: 2rem; } body { font-family: Calibri,Helvetica,Arial,sans-serif; font-size: 1.2rem; background-color: rgb(251,252,253); color: rgb(0,0,0); line-height: 2.6rem; } h3 { display: inline-block; font-size: 94%; margin: 0; } div.grid-body > h4 { font-size: 94%; font-weight: normal; font-style: italic; margin-top: 4rem; } div.grid { display: grid; grid-template-columns: fit-content(40%) 1fr; gap: 2rem; } div.grid-body > * { font-size: 98%; padding-top: 0; margin-top: 0; } div.grid-body ul { padding-left: 2rem; }</style>\n</head>\n<body>\n';
+	const html_head = '<!DOCTYPE html>\n<html lang="' + document.getElementById('lang').value + '>\n<head>\n<meta charset="utf-8">\n<title>Accessibility Statements</title>\n<style>html, body { margin: 0; padding: 1rem 2rem; } body { font-family: Calibri,Helvetica,Arial,sans-serif; font-size: 1.2rem; background-color: rgb(251,252,253); color: rgb(0,0,0); line-height: 2.6rem; } h3 { display: inline-block; font-size: 94%; margin: 0; } div.grid-body > h4 { font-size: 94%; font-weight: normal; font-style: italic; margin-top: 4rem; } div.grid { display: grid; grid-template-columns: fit-content(40%) 1fr; gap: 2rem; } div.grid-body > * { font-size: 98%; padding-top: 0; margin-top: 0; } div.grid-body ul { padding-left: 2rem; } div.pub { margin-bottom: 2rem; } div.pub h3 { color: rgb(32,53,139); font-size: 120% }</style>\n</head>\n<body>\n';
 	
-	let html_foot = '</body>\n</html>';
+	const html_foot = '</body>\n</html>';
 	
 	const markupContent = isJSON ? document.querySelector('#result-body > pre').innerHTML : html_head + document.getElementById('result-body').outerHTML + html_foot;
 	
