@@ -1,0 +1,136 @@
+
+const _messages = {
+	
+	conformsTo: {
+		required: 'No conformance claim found.',
+		duplicates: 'Duplicate conformance claim found: %tag%',
+		claim: 'None of the conformance claims contain a valid EPUB Accessibility identifier.',
+		nounknown: 'Inaccessible and unknown accessibility claims cannot both be declared.',
+		noepub: 'No information about the EPUB Accessibility version provided.',
+		unknownmix: 'An unknown accessibility claim cannot also declare conformance to EPUB Accessibility or WCAG using code list 196',
+		unknownmix: 'An inaccessibility claim cannot also declare conformance to EPUB Accessibility or WCAG using code list 196',
+		dual10: 'Claims of conformance to EPUB Accessibility 1.0 at both Level A and Level AA found. Only specify the highest level achieved.',
+		nowcag: 'The WCAG version conformed to must be declared.',
+		nolevel: 'The WCAG level conformed to must be declared.',
+		onixdup: 'Duplicate conformance claim value "%var%" declared from code list 196.'
+	},
+	
+	certifiedBy: {
+		required: 'Evaluator not declared.',
+		duplicates: 'Duplicate evaluator declared: %tag%'
+	},
+	
+	date: {
+		duplicates: 'Duplicate evaluation date declared: %tag%',
+		isodate: 'Date is not a valid ISO 8601 date: %tag%',
+		baddate: 'Invalid date: %tag%',
+		prefdate: 'The preferred format for certification dates is YYYY-MM-DD. Found: %var%'
+	},
+	
+	certifierCredential: {
+		duplicates: 'Duplicate certifier credential declared: %tag%'
+	},
+	
+	certifierReport: {
+		duplicates: 'Duplicate certifier report declared: %tag%',
+		badurl: 'Certifier report does not specify a valid URL: %var%',
+		nohttp: 'Certifier report URL should begin with "http(s)://".'
+	},
+	
+	accessibilityFeature: {
+		required: 'At least one accessibility feature is required.',
+		duplicates: 'Duplicate accessibility feature declared: %tag%',
+		spelling: 'Non-standard capitalization "%var%" found in accessibility feature declaration. Expected "%val%".',
+		unknown: 'Unknown accessibility feature declaration: %tag%',
+		deprecated: 'Accessibility feature value "%var%" is deprecated.',
+		none_mix: 'Declares both that there are no accessibility features and that there are accessibility features.',
+		none_invalid: 'Declaring there are no accessibility features does not meet the requirements of the EPUB Accessibility standard.',
+		unknown_mix: 'Declares both that accessibility features are unknown and that there are accessibility features.',
+		unknown_invalid: 'Declaring the accessibility features are unknown does not meet the requirements of the EPUB Accessibility standard.',
+		seg_mix: 'The accessibility features "withAdditionalWordSegmentation" and "withoutAdditionalWordSegmentation" must not be declared together.',
+		mode_mix: 'The accessibility features "verticalWriting" and "horizontalWriting" must not be declared together.',
+		ruby_mix: 'The accessibility features "rubyAnnotations" and "fullRubyAnnotations" must not be declared together.',
+		pdf: 'The accessibility feature "taggedPDF" is not valid for EPUB publications.'
+	},
+	
+	accessModeSufficient: {
+		required: 'At least one set of sufficient access modes is required.',
+		oreq: 'No sufficient access modes found. This error can be ignored if ONIX does not yet have a value for the content.',
+		duplicates: 'Duplicate sufficient access mode set "%var%" declared.',
+		spelling: 'Non-standard capitalization "%var%" found in sufficient access mode declaration. Expected "%val%".',
+		unknown: 'Unknown sufficient access mode type: %tag%',
+		separator: 'Sufficient access mode values must be separated by commas: %tag%'
+	},
+	
+	accessibilityHazard: {
+		required: 'No information about accessibility hazards has been provided.',
+		duplicates: 'Duplicate accessibility hazard declared: %tag%',
+		spelling: 'Non-standard capitalization "%var%" found in accessibility hazard declaration. Expected "%val%".',
+		unknown: 'Unknown hazard type: %tag%',
+		none_indiv: 'Do not declare a global no hazard value as well as individual no hazard values.',
+		none_mix: 'Do not mix a no hazard declaration with any other hazard declarations.',
+		individual_incomplete: 'When declaring individual hazards each of the flashing, motion simulation, and sound hazards must be covered.',
+		unknown_indiv: 'Do not mix an unknown hazard declaration with the individual unknown hazard values.',
+		unknown_mix: 'Do not mix an unknown hazard declaration with any other hazard declarations.',
+		unknown_invalid: 'Declaring hazards are unknown does not meet the requirements of the EPUB Accessibility standard.',
+		flashing_none: 'Declares both that there is a flashing and that there is not a flashing hazard.',
+		flashing_unknown: 'Declares both that there is a flashing and that a flashing hazard is unknown.',
+		flashing_invalid: 'Declaring the flashing hazard is unknown does not meet the requirements of the EPUB Accessibility standard.',
+		noflashing_unknown: 'Declares both that there is no flashing hazard and that a flashing hazard is unknown.',
+		motion_none: 'Declares both that there is a motion simulation hazard and that there is not a motion simulation.',
+		motion_unknown: 'Declares both a motion simulation and an unknownmotion simulation hazard.',
+		motion_invalid: 'Declaring the motion simulation hazard is unknown does not meet the requirements of the EPUB Accessibility standard.',
+		nomotion_unknown: 'Declares both that there is no motion simulation hazard and that a motion simulation hazard is unknown.',
+		sound_none: 'Declares both that there is a sound hazard and there is not a sound hazard.',
+		sound_unknown: 'Declares both that there is a sound hazard and that a sound hazard is unknown.',
+		nosound_unknown: 'Declares both that there is no sound hazard and that a sound hazard is unknown.',
+		onixdup: 'Duplicate hazard value "%var%" declared.'
+	},
+	
+	accessMode: {
+		recommended: 'At least one access mode is recommended.',
+		duplicates: 'Duplicate access mode declared: %tag%',
+		spelling: 'Non-standard capitalization "%var%" found in access mode declaration. Expected "%val%".',
+		unknown: 'Unknown access mode type: %tag%'
+	},
+	
+	accessibilitySummary: {
+		recommended: 'An accessibility summary may be needed if there is important information not captured by the other accessibility metadata.',
+		duplicates: 'More than one accessibility summary declared. Multiple summaries are not likely to be rendered and the property cannot be repeated for translations.',
+		summary11for10: 'Do not use List 196 Code 99 to supply a summary for publications that conform to EPUB Accessibility 1.0.',
+		summary10for11: 'Do not use List 196 Code 00 to supply a summary for publications that conform to EPUB Accessibility 1.1 and above.'
+	},
+	
+	contactEmail: {
+		duplicates: 'More than one accessibility contact declared. Multiple addresses are not likely to be rendered.',
+		email: 'The accessibility contact email must be a valid email address.'
+	},
+	
+	accessibilityAPI: {
+		duplicates: 'Duplicate accessibility API declared: %tag%',
+		spelling: 'Non-standard capitalization "%var%" found in accessibility API declaration. Expected "%val%".',
+		unknown: 'Unknown accessibility API declaration: %tag%',
+		deprecated: 'Accessibility API value "%var%" is deprecated.'
+	},
+	
+	accessibilityControl: {
+		duplicates: 'Duplicate accessibility control declared: %tag%',
+		spelling: 'Non-standard capitalization "%var%" found in accessibility feature declaration. Expected "%val%".',
+		unknown: 'Unknown accessibility feature declaration: %tag%',
+		deprecated: 'Accessibility control value "%var%" is deprecated.'
+	},
+	
+	general: {
+		single: 'Do not declare multiple values in a single tag: %tag%',
+		deprecated: 'It is not advised to set the %var% property in EPUB publications',
+		unknown_property: 'Unknown accessibility property %var% declared.'
+	},
+	
+	ui: {
+		errors: 'Errors',
+		warnings: 'Warnings',
+		usage: 'Usage notes',
+		clean: 'No issues were found.',
+		disclaimer: 'Note: Validation is limited to <a href="docs/validation.html">accessibility metadata checks</a>. Other errors and warnings may exist in the metadata.'
+	}
+};
