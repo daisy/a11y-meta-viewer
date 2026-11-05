@@ -53,7 +53,7 @@
 			<textarea id="input_record" rows="15" autocomplete="off" aria-label="Metadata record"></textarea>
 			
 			<div>
-				<button onclick="processRecord()">Preview</button>
+				<button onclick="metadataViewer.process()">Preview</button>
 				<button onclick="metadataValidator.validate()">Validate</button>
 				<input id="email" type="email" required="required" hidden="hidden"/>
 			</div>
@@ -67,7 +67,7 @@
 					<div class="options">
 						<fieldset>
 							<legend>Message type:</legend>
-							<select id="mode" onchange="reprocessRecord()">
+							<select id="mode" onchange="metadataViewer.reprocess()">
 								<option value="compact">Compact</option>
 								<option value="descriptive">Descriptive</option>
 							</select>
@@ -75,7 +75,7 @@
 						
 						<fieldset>
 							<legend>Language:</legend>
-							<select id="lang" onchange="reprocessRecord()">
+							<select id="lang" onchange="metadataViewer.reprocess()">
 								<option value="en">English</option>
 								<option value="sv">Svenska</option>
 								<!--	<option value="fr-fr">French (France)</option>
@@ -88,7 +88,7 @@
 						
 						<fieldset>
 							<legend>Format:</legend>
-							<select id="format" onchange="reprocessRecord()">
+							<select id="format" onchange="metadataViewer.reprocess()">
 								<option value="html">HTML</option>
 								<option value="json">JSON</option>
 							</select>
@@ -96,7 +96,7 @@
 						
 						<fieldset>
 							<legend>Fields with no information available:</legend>
-							<select id="no-info" onchange="reprocessRecord()">
+							<select id="no-info" onchange="metadataViewer.reprocess()">
 								<option value="show">Show</option>
 								<option value="hide">Hide</option>
 							</select>
@@ -169,6 +169,8 @@
 				</section>
 			</section>
 			
+			<script src="js/records.js"></script>
+			<script src="js/explainers.js"></script>
 			<script src="js/metaValidator.js"></script>
 			<script src="js/metaDisplayProcessor.js"></script>
 			<script src="js/metaViewer.js"></script>
@@ -179,15 +181,23 @@
 				  get: (searchParams, prop) => searchParams.get(prop),
 				});
 				
-				if (params.record) {
-					document.getElementById('input_record').value = params.record;
-					processRecord();
-				}
+				const validate = params.validate && params.validate === 'true' ? true : false;
+				const save = params.save && params.save === 'true' ? true : false;
 				
-				else if (window.location.hash && window.location.hash.startsWith('#record-')) {
-					// github crashes on long query strings so passing in record via fragment for now
-					document.getElementById('input_record').value = decodeURI(window.location.hash.substring(8));
-					processRecord();
+				// github/iis/etc. won't allow long query strings by default so also accounting for record via fragment
+				const recordFrag = window.location.hash && window.location.hash.startsWith('#record-') ? true : false;
+				
+				if (params.record || recordFrag) {
+					
+					document.getElementById('input_record').value = params.record ? params.record : decodeURIComponent(window.location.hash.substring(8));
+					
+					if (validate) {
+						metadataValidator.validate()
+					}
+					
+					else {
+						metadataViewer.process(save);
+					}
 				}
 			</script>
 			<script>
